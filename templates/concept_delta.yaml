@@ -1,0 +1,22 @@
+cycle: "001"
+mode: strawman
+agent: strawman
+document: docs/active/design-doc.md
+
+concepts_added: []
+concepts_modified: []
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified: []
+walls_identified: []
+
+stance:
+  supports: []
+  challenges: []
+  neutral: []
+
+rationale: []
+
+next_recommended_mode: steelman
+confidence: null

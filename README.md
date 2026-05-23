@@ -1,2 +1,81 @@
+<<<<<<< HEAD
 # crucible
 Crucible is an agentic debate engine for recursive document refinement. Multiple AI reviewers challenge, defend, mutate, and evolve ideas through structured review cycles, preserving commits, rationale, concept lineage, dead ends, and resistance patterns as inspectable intellectual history.
+=======
+# Crucible
+
+> Give it to the Crucible.
+
+Crucible is a Git-native debate engine for improving design documents, strategy memos, architecture proposals, and other durable work products through structured agentic review cycles.
+
+The core idea: two or more agents pass a Markdown document back and forth, each reviewing from a deliberate stance, committing changes with rationale, and opening or updating pull requests that preserve the evolution of the work.
+
+Crucible generates evolutionary pressure. Fossil can observe, index, and visualize the resulting concept lineage.
+
+## Core tenets
+
+1. People can create meaningfully better work products using agentic review cycles.
+2. Agentic review cycles can act as a useful proxy for human debate when roles, rationale, and evidence are explicitly preserved.
+3. The debate history is part of the work product, not disposable process exhaust.
+4. Concept mutation, dead ends, and resistance are first-class artifacts.
+
+## Review modes
+
+- `strawman`: expands possibilities and creates conceptual variation.
+- `steelman`: strengthens coherence, structure, and implementation viability.
+- `adversarial`: stress-tests assumptions, incentives, failure modes, and hidden risks.
+
+## Basic workflow
+
+```text
+seed document
+  -> strawman pass
+  -> steelman pass
+  -> adversarial pass
+  -> repeat until convergence, escalation, or termination
+```
+
+Each pass should produce:
+
+- document changes
+- rationale metadata
+- concept registry updates
+- commit summary
+- PR summary
+- recommended next pass
+
+## Relationship to Fossil
+
+```text
+Crucible = debate engine / pressure system
+Fossil    = lineage archive / concept observability system
+```
+
+Crucible makes ideas mutate. Fossil shows what happened to them.
+
+## Quickstart
+
+```bash
+make init
+make new-cycle MODE=strawman DOC=docs/active/design-doc.md
+make extract-concepts DOC=docs/active/design-doc.md CYCLE=001 MODE=strawman
+make pr-body CYCLE=001 MODE=strawman
+```
+
+## Repository layout
+
+```text
+.github/                 GitHub workflows and PR templates
+agents/                  Agent role definitions
+prompts/                 Reusable prompts for agent passes
+docs/active/             Current work products under review
+docs/snapshots/          Point-in-time document snapshots
+reviews/cycles/          Per-cycle review artifacts
+concepts/registry/       Concept, edge, mutation, dead-end, and wall registers
+concepts/lineage/        Derived lineage outputs
+scripts/                 Local automation scripts
+templates/               Cycle, metadata, and PR templates
+examples/                Example seed documents and generated outputs
+visualizations/          Generated graph/timeline artifacts
+```
+>>>>>>> e77f73a (Initial Crucible scaffold)

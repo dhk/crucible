@@ -1,0 +1,32 @@
+name: Crucible Validate
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "reviews/**"
+      - "concepts/**"
+      - "scripts/**"
+      - "templates/**"
+      - ".github/workflows/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate registries
+        run: python scripts/validate_registry.py
+
+      - name: Build concept graph
+        run: python scripts/build_graph.py
+
+      - name: Compute idea health
+        run: python scripts/compute_idea_health.py
