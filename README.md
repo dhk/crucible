@@ -84,15 +84,20 @@ make pr-body CYCLE=001 MODE=strawman
 
 ```text
 .github/                 GitHub workflows and PR templates
-agents/                  Agent role definitions
+agents/                  Agent role definitions (strawman, steelman, adversarial)
 prompts/                 Reusable prompts for agent passes
-docs/active/             Current work products under review
-docs/snapshots/          Point-in-time document snapshots
-reviews/cycles/          Per-cycle review artifacts
-concepts/registry/       Concept, edge, mutation, dead-end, and island registers
+docs/
+  active/                Work products currently under debate
+  concepts/              Core theory: debate engine, lifecycle model, islands, convergence
+  design/                UX specs and visualization design documents
+  architecture/          System design: schema, storage, build pipeline
+  research/              Prior art, theoretical grounding, open questions
+  snapshots/             Point-in-time document snapshots
+reviews/cycles/          Per-cycle review artifacts (document delta, rationale, concept delta)
+concepts/registry/       Concept, edge, mutation, and island registers (CSV)
 concepts/lineage/        Derived lineage outputs
 scripts/                 Local automation scripts
 templates/               Cycle, metadata, and PR templates
-examples/                Example seed documents and generated outputs
+examples/                Example seed documents and outputs
 visualizations/          Observatory UI prototype and generated graph artifacts
 ```
