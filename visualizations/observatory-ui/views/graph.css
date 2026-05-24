@@ -1,0 +1,114 @@
+/* Concept Graph — supplemental styles (spec §4)
+   Extends styles.css. Uses the same CSS variable tokens. */
+
+/* ── Legend overlay ─────────────────────────────────────────── */
+.graph-legend {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 14px;
+  background: rgba(10, 13, 18, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.graph-legend-head {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.graph-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+/* ── Node label overrides (paint-order + halo) ──────────────── */
+/* These are already in styles.css but we make them explicit     */
+/* so graph.css can be loaded independently in tests.            */
+
+.node-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--text);
+  paint-order: stroke fill;
+  stroke: var(--bg-0, #06080c);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  letter-spacing: -0.005em;
+}
+
+.node-label.dim {
+  fill: var(--text-mute);
+  font-size: 10.5px;
+}
+
+.node-label.faint {
+  fill: var(--text-dim);
+  font-size: 10.5px;
+}
+
+.node-id {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text-dim);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  pointer-events: none;
+  paint-order: stroke fill;
+  stroke: var(--bg-0, #06080c);
+  stroke-width: 3px;
+}
+
+/* ── Island bands ───────────────────────────────────────────── */
+.island-band {
+  fill: rgba(255, 255, 255, 0.018);
+  stroke: rgba(255, 255, 255, 0.055);
+  stroke-dasharray: 3 4;
+  stroke-width: 1;
+}
+
+.island-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  fill: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  paint-order: stroke fill;
+  stroke: var(--bg-0, #06080c);
+  stroke-width: 2px;
+  pointer-events: none;
+}
+
+/* ── Fossil / dead-end nodes ────────────────────────────────── */
+/* Handled via SVG attrs in JSX, but we expose a CSS token       */
+/* in case callsites want to override the dashed stroke color.   */
+:root {
+  --fossil-stroke: rgba(255, 255, 255, 0.28);
+  --fossil-opacity: 0.60;
+}
+
+/* ── Smooth SVG transitions ─────────────────────────────────── */
+.graph-svg circle,
+.graph-svg path,
+.graph-svg text {
+  transition: opacity 200ms ease;
+}
+
+/* Disable transition on layout-critical elements */
+.graph-svg defs * {
+  transition: none;
+}
