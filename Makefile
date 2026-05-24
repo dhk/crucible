@@ -20,3 +20,6 @@ idea-health:
 
 export-graph:
 	$(PYTHON) scripts/build_graph.py
+
+build-observatory:
+	$(PYTHON) scripts/build_observatory.py --doc $(DOC) --out visualizations/observatory.json

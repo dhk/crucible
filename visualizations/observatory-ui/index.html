@@ -10,6 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="views/graph.css" />
+<link rel="stylesheet" href="views/timeline.css" />
+<link rel="stylesheet" href="views/agents.css" />
 </head>
 <body>
 <div id="root"></div>
@@ -18,6 +21,7 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
+<!-- data.js: mock data used as fallback when observatory.json is not found -->
 <script src="data.js"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="views/graph.jsx"></script>
@@ -28,9 +32,31 @@
 <script type="text/babel" src="app.jsx"></script>
 
 <script type="text/babel" data-presets="env,react">
-  // Boot
-  const root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(<App />);
+  // Boot — try to load real observatory.json, fall back to data.js mock globals
+  async function boot() {
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    try {
+      const res = await fetch('../observatory.json');
+      if (res.ok) {
+        const data = await res.json();
+        // Hydrate globals from real data
+        Object.assign(window, {
+          DOC:       data.document,
+          AGENTS:    Object.fromEntries(data.agents.map(a => [a.id, a])),
+          CONCEPTS:  data.concepts,
+          EDGES:     data.edges,
+          CYCLES:    data.cycles,
+          BRANCHES:  data.branches,
+          ISLANDS:   data.islands,
+          DEAD_ENDS: data.deadEnds,
+        });
+      }
+    } catch (_) {
+      // Network error or file absent — data.js globals already set, continue
+    }
+    root.render(<App />);
+  }
+  boot();
 </script>
 </body>
 </html>
