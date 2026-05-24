@@ -640,3 +640,54 @@ dl, dt, dd { margin: 0; }
 
 /* ===== UTILITY ===== */
 .spacer { flex: 1; }
+
+/* ===== DARK-VAR ALIASES =================================================
+   The shared views (timeline, branches, agents, islands) were built against
+   the dark theme's CSS variable names. Map them to DHK light equivalents so
+   they render correctly inside Tree View.html.
+   ===================================================================== */
+:root {
+  --bg-0: var(--bg);
+  --bg-1: var(--bg2);
+  --bg-2: var(--bg3);
+  --surface-1: var(--surface);
+  --surface-2: var(--bg);
+  --surface-3: var(--bg2);
+  --border-faint:  rgba(0,0,0,0.04);
+  --border-soft:   rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --edge-support:    rgba(22,163,74,0.45);
+  --edge-contradict: rgba(217,79,42,0.55);
+  --edge-mutation:   rgba(124,58,237,0.45);
+  --edge-lineage:    rgba(0,0,0,0.12);
+}
+
+/* ===== COMMIT HASH IN INSPECTOR ========================================= */
+.lineage-commit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+}
+.commit-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.commit-hash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  text-decoration: none;
+  background: var(--state-adopted-bg);
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(22,163,74,0.2);
+  letter-spacing: 0.04em;
+}
+.commit-hash:hover {
+  background: rgba(22,163,74,0.16);
+  text-decoration: underline;
+}

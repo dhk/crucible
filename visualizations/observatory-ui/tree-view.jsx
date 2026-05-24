@@ -143,6 +143,7 @@ function buildTreeLayout(concepts, edges, { padX, padY, levelGap, rowGap }) {
 // ============================================================
 function TreeApp() {
   // ---- Core state ----
+  const [view,               setView]              = useState('tree');
   const [selectedConceptId, setSelectedConceptId] = useState('C05');
   const [selectedCycleId,   setSelectedCycleId]   = useState(null);
   const [hoveredCycleId,    setHoveredCycleId]     = useState(null);
@@ -308,11 +309,11 @@ function TreeApp() {
           </span>
         </div>
         <nav className="nav-tabs">
-          <button className="nav-tab">Timeline</button>
-          <button className="nav-tab active">Concept Tree</button>
-          <button className="nav-tab">Branches</button>
-          <button className="nav-tab">Agents</button>
-          <button className="nav-tab">Islands</button>
+          <button className={`nav-tab${view === 'timeline'  ? ' active' : ''}`} onClick={() => setView('timeline')}>Timeline</button>
+          <button className={`nav-tab${view === 'tree'      ? ' active' : ''}`} onClick={() => setView('tree')}>Concept Tree</button>
+          <button className={`nav-tab${view === 'branches'  ? ' active' : ''}`} onClick={() => setView('branches')}>Branches</button>
+          <button className={`nav-tab${view === 'agents'    ? ' active' : ''}`} onClick={() => setView('agents')}>Agents</button>
+          <button className={`nav-tab${view === 'islands'   ? ' active' : ''}`} onClick={() => setView('islands')}>Islands</button>
         </nav>
       </header>
 
@@ -384,19 +385,42 @@ function TreeApp() {
 
       {/* ===== CANVAS ===== */}
       <main className="canvas-area">
-        <div className="tree-svg-wrap">
-          <TreeCanvas
-            width={SVG_W}
-            height={SVG_H}
-            concepts={concepts}
-            layout={layout}
-            selectedConceptId={selectedConceptId}
-            ancestry={ancestry}
-            dimmedAgents={dimmedAgents}
-            showContradictions={showContradictions}
-            onSelectConcept={setSelectedConceptId}
-          />
-        </div>
+        {view === 'tree' && (
+          <div className="tree-svg-wrap">
+            <TreeCanvas
+              width={SVG_W}
+              height={SVG_H}
+              concepts={concepts}
+              layout={layout}
+              selectedConceptId={selectedConceptId}
+              ancestry={ancestry}
+              dimmedAgents={dimmedAgents}
+              activeCycleId={ancestry.size === 0 ? selectedCycleId : null}
+              showContradictions={showContradictions}
+              onSelectConcept={setSelectedConceptId}
+            />
+          </div>
+        )}
+        {view === 'timeline' && (
+          <div style={{ position: 'absolute', inset: 0, overflow: 'auto' }}>
+            <DebateTimeline selectedCycle={selectedCycleId} onSelectCycle={setSelectedCycleId} />
+          </div>
+        )}
+        {view === 'branches' && (
+          <div style={{ position: 'absolute', inset: 0, overflow: 'auto' }}>
+            <BranchExplorer selectedCycle={selectedCycleId} onSelectCycle={setSelectedCycleId} />
+          </div>
+        )}
+        {view === 'agents' && (
+          <div style={{ position: 'absolute', inset: 0, overflow: 'auto' }}>
+            <AgentObservatory />
+          </div>
+        )}
+        {view === 'islands' && (
+          <div style={{ position: 'absolute', inset: 0, overflow: 'auto' }}>
+            <IslandsView />
+          </div>
+        )}
       </main>
 
       {/* ===== INSPECTOR ===== */}
@@ -462,8 +486,16 @@ function TreeApp() {
 function TreeCanvas({
   width, height, concepts, layout,
   selectedConceptId, ancestry, dimmedAgents,
+  activeCycleId,
   showContradictions, onSelectConcept,
 }) {
+  // Pre-compute set of concept ids active in the selected cycle
+  const cycleConceptIds = useMemo(() => {
+    if (!activeCycleId) return null;
+    const cy = CYCLES.find(c => c.id === activeCycleId);
+    if (!cy) return null;
+    return new Set([...(cy.added || []), ...(cy.mutated || []), ...(cy.removed || [])]);
+  }, [activeCycleId]);
   const [hover, setHover] = useState(null);
   const { positions, parentOf, maxDepth } = layout;
 
@@ -524,7 +556,8 @@ function TreeCanvas({
           const dimByAncestry = ancestry.size > 0 && !inChain;
           const parentConcept = concepts.find(c => c.id === parent);
           const dimByAgent = parentConcept && dimmedAgents.has(parentConcept.agent);
-          const dimmed = dimByAncestry || dimByAgent;
+          const dimByCycle = cycleConceptIds && !cycleConceptIds.has(child) && !cycleConceptIds.has(parent);
+          const dimmed = dimByAncestry || dimByAgent || dimByCycle;
 
           const stroke = inChain
             ? 'var(--accent)'
@@ -561,7 +594,8 @@ function TreeCanvas({
           const inChain  = ancestry.has(c.id);
           const dimByAncestry = ancestry.size > 0 && !inChain;
           const dimByAgent    = dimmedAgents.has(c.agent);
-          const dimmed   = dimByAncestry || dimByAgent;
+          const dimByCycle    = cycleConceptIds && !cycleConceptIds.has(c.id);
+          const dimmed   = dimByAncestry || dimByAgent || dimByCycle;
           const agentColor = AGENT_HEX[c.agent];
           const stateTone  = STATE_TONE[c.state] || STATE_TONE.seed;
 
@@ -764,6 +798,18 @@ function Inspector({ concept, lineage, layout }) {
                 <div className="lineage-evt">{step.evt} · {AGENTS[step.agent]?.name}</div>
                 <div className="lineage-title">{step.title}</div>
                 <div className="lineage-quote">"{step.rationale}"</div>
+                {step.commit && (
+                  <div className="lineage-commit">
+                    <span className="commit-label">commit</span>
+                    <a
+                      className="commit-hash"
+                      href={`https://github.com/dhk/crucible/commit/${step.commit}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="View full diff on GitHub"
+                    >{step.commit}</a>
+                  </div>
+                )}
               </div>
             </div>
           ))}
