@@ -1,5 +1,5 @@
 /* global React, ReactDOM, AGENTS, STATES, CONCEPTS, EDGES, CYCLES, BRANCHES, DOC,
-   ConceptGraph, DebateTimeline, BranchExplorer, AgentObservatory, WallsView,
+   ConceptGraph, DebateTimeline, BranchExplorer, AgentObservatory, IslandsView,
    TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle, TweakSelect */
 
 const { useState, useEffect, useMemo, useRef } = React;
@@ -9,13 +9,13 @@ const VIEWS = [
   { id: 'timeline', label: 'Timeline',      short: 'T' },
   { id: 'branches', label: 'Branches',      short: 'B' },
   { id: 'agents',   label: 'Agents',        short: 'A' },
-  { id: 'walls',    label: 'Walls & Fossils', short: 'W' },
+  { id: 'islands',  label: 'Islands & Fossils', short: 'I' },
 ];
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "density": "comfortable",
   "showDeadEnds": true,
-  "showWalls": true,
+  "showIslands": true,
   "agentFilter": "all",
   "glow": true
 }/*EDITMODE-END*/;
@@ -74,7 +74,7 @@ function App() {
             <dt>Concepts</dt><dd>{DOC.concepts}</dd>
             <dt>Branches</dt><dd>{DOC.branches}</dd>
             <dt>Mutations</dt><dd>{DOC.mutations}</dd>
-            <dt>Walls</dt><dd>{DOC.walls}</dd>
+            <dt>Islands</dt><dd>{DOC.islands}</dd>
             <dt>Dead ends</dt><dd>{DOC.deadEnds}</dd>
           </dl>
         </div>
@@ -137,11 +137,11 @@ function App() {
         <div className="main-header">
           <span className="view-title">{VIEWS.find(v => v.id === view).label}</span>
           <span className="view-sub">
-            {view === 'graph'    && '24 concepts · 30 relations · 4 walls'}
+            {view === 'graph'    && '24 concepts · 30 relations · 4 islands'}
             {view === 'timeline' && 'Chronological replay of the debate'}
             {view === 'branches' && 'Competing directions of conceptual exploration'}
             {view === 'agents'   && 'Per-agent behavior, conflict patterns, mutation velocity'}
-            {view === 'walls'    && 'Structural resistance and abandoned terrain'}
+            {view === 'islands'  && 'Structural resistance and abandoned terrain'}
           </span>
           <div className="view-actions">
             {view === 'graph' && (
@@ -161,7 +161,7 @@ function App() {
             onSelect={setSelectedId}
             hoveredCycle={hoveredCycle}
             showDeadEnds={t.showDeadEnds}
-            showWalls={t.showWalls}
+            showIslands={t.showIslands}
             density={t.density}
             agentFilter={agentFilter}
           />
@@ -173,7 +173,7 @@ function App() {
           <BranchExplorer selectedCycle={selectedCycle} onSelectCycle={setSelectedCycle} />
         )}
         {view === 'agents' && <AgentObservatory />}
-        {view === 'walls' && <WallsView />}
+        {view === 'islands' && <IslandsView />}
       </main>
 
       <Inspector
@@ -193,7 +193,7 @@ function App() {
           <TweakRadio label="Density" value={t.density} onChange={v => setT('density', v)}
             options={[{value:'comfortable',label:'Comfortable'},{value:'dense',label:'Dense'}]}/>
           <TweakToggle label="Show dead-ends in graph" value={t.showDeadEnds} onChange={v => setT('showDeadEnds', v)} />
-          <TweakToggle label="Show wall strata in graph" value={t.showWalls} onChange={v => setT('showWalls', v)} />
+          <TweakToggle label="Show islands in graph" value={t.showIslands} onChange={v => setT('showIslands', v)} />
         </TweakSection>
         <TweakSection label="Filters">
           <TweakSelect label="Agent focus" value={t.agentFilter} onChange={v => setT('agentFilter', v)}

@@ -1,13 +1,13 @@
-/* global React, AGENTS, WALLS, DEAD_ENDS, CYCLES */
-// Walls & Dead-Ends — archaeological view.
-// Walls rendered as horizontal strata (deeper = older, more persistent).
+/* global React, AGENTS, ISLANDS, DEAD_ENDS, CYCLES */
+// Islands & Dead-Ends — archaeological view.
+// Islands rendered as horizontal strata (deeper = older, more persistent).
 // Dead-ends shown as fossilized concepts off to the side.
 
-function WallsView() {
+function IslandsView() {
   const W = 800, H = 540;
 
   return (
-    <div className="walls-stage">
+    <div className="islands-stage">
       <div className="strata-canvas">
         <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
           <defs>
@@ -35,8 +35,8 @@ function WallsView() {
           </text>
           <line x1="0" y1="70" x2={W} y2="70" stroke="rgba(255,255,255,0.12)" strokeWidth={1}/>
 
-          {/* Strata for walls */}
-          {WALLS.map((w, i) => {
+          {/* Strata for islands */}
+          {ISLANDS.map((w, i) => {
             const top = 70 + i * 105;
             const baseHeight = 88;
             const pattern = `url(#strata-hatch-${(i % 4) + 1})`;
@@ -53,7 +53,7 @@ function WallsView() {
                 {/* Top/bottom edge */}
                 <line x1="0" y1={top} x2={W} y2={top} stroke="rgba(255,255,255,0.05)" strokeWidth={1}/>
 
-                {/* Wall ID + name */}
+                {/* Island ID + name */}
                 <text x={24} y={top + 22}
                   fontFamily="var(--font-mono)" fontSize="10"
                   fill="var(--text-faint)" letterSpacing="0.08em">
@@ -103,7 +103,7 @@ function WallsView() {
           })}
 
           {/* Bottom — bedrock */}
-          <rect x="0" y={70 + WALLS.length * 105} width={W} height={H - (70 + WALLS.length * 105)}
+          <rect x="0" y={70 + ISLANDS.length * 105} width={W} height={H - (70 + ISLANDS.length * 105)}
             fill="rgba(255,255,255,0.025)"/>
           <text x={W / 2} y={H - 14} textAnchor="middle"
             fontFamily="var(--font-mono)" fontSize="9.5" letterSpacing="0.15em"
@@ -146,4 +146,4 @@ function WallsView() {
   );
 }
 
-window.WallsView = WallsView;
+window.IslandsView = IslandsView;

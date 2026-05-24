@@ -203,7 +203,7 @@ function TreeApp() {
           <button className="nav-tab active">Concept&nbsp;Tree</button>
           <button className="nav-tab">Branches</button>
           <button className="nav-tab">Agents</button>
-          <button className="nav-tab">Walls</button>
+          <button className="nav-tab">Islands</button>
         </nav>
       </header>
 

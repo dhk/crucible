@@ -1,7 +1,7 @@
-/* global React, AGENTS, STATES, CONCEPTS, EDGES, WALLS */
+/* global React, AGENTS, STATES, CONCEPTS, EDGES, ISLANDS */
 // Concept Graph — the centerpiece visualization.
 // Obsidian-style force-ish graph with glow halos. Positions are pre-baked.
-// Renders concepts as glowing nodes, edges by type, and walls as faint horizontal bands.
+// Renders concepts as glowing nodes, edges by type, and islands as faint horizontal bands.
 
 const { useState, useMemo } = React;
 
@@ -10,7 +10,7 @@ function ConceptGraph({
   onSelect,
   hoveredCycle = null,
   showDeadEnds = true,
-  showWalls = true,
+  showIslands = true,
   density = 'comfortable',
   agentFilter = null, // null = all
 }) {
@@ -120,14 +120,14 @@ function ConceptGraph({
           </pattern>
         </defs>
 
-        {/* Walls — geological strata bands behind everything */}
-        {showWalls && WALLS.map((w, i) => {
+        {/* Islands — resistance bands behind everything */}
+        {showIslands && ISLANDS.map((w, i) => {
           const top = 70 + i * 130;
           const height = 16 + w.severity * 14;
           return (
             <g key={w.id} opacity={0.7}>
-              <rect x="0" y={top} width={VW} height={height} className="wall-band" fill="url(#hatch)" />
-              <text x="14" y={top + height / 2 + 3} className="wall-label">{w.id} · {w.name}</text>
+              <rect x="0" y={top} width={VW} height={height} className="island-band" fill="url(#hatch)" />
+              <text x="14" y={top + height / 2 + 3} className="island-label">{w.id} · {w.name}</text>
             </g>
           );
         })}

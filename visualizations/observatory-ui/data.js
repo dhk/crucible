@@ -32,7 +32,7 @@ const DOC = {
   branches: 5,
   mutations: 47,
   concepts: 24,
-  walls: 4,
+  islands: 4,
   deadEnds: 5,
   seededAt: '2026-04-18',
   lastCycle: '2026-05-22',
@@ -60,7 +60,7 @@ const CONCEPTS = [
   { id: 'C06', name: 'Phylogenetic tree',         x: 620, y: 140, agent: 'strawman',    state: 'contested',   adoption: 0.55, originCycle: 3,  group: 'metaphor',
     desc: 'Evolutionary descent. Strong for lineage, weak for non-tree edges.' },
   { id: 'C07', name: 'Geological strata',         x: 780, y: 170, agent: 'strawman',    state: 'adopted',     adoption: 0.65, originCycle: 5,  group: 'metaphor',
-    desc: 'Walls visualized as bedrock layers — persistent, structural resistance.' },
+    desc: 'Islands visualized as bedrock layers — persistent, structural resistance.' },
   { id: 'C08', name: 'Argument graph',            x: 320, y: 175, agent: 'strawman',    state: 'fragmented',  adoption: 0.45, originCycle: 4,  group: 'metaphor',
     desc: 'Support/attack edges as in formal argumentation theory. Splintered into C05+C09.' },
   { id: 'C09', name: 'Neural / synaptic',         x: 195, y: 140, agent: 'strawman',    state: 'deprecated',  adoption: 0.25, originCycle: 5,  group: 'metaphor',
@@ -73,7 +73,7 @@ const CONCEPTS = [
     desc: 'Per-agent dashboard: conflict patterns, mutation velocity, convergence.' },
   { id: 'C12', name: 'Branch explorer',           x: 510, y: 460, agent: 'strawman',    state: 'adopted',     adoption: 0.70, originCycle: 3,  group: 'view',
     desc: 'Git-like branching of competing conceptual directions.' },
-  { id: 'C13', name: 'Wall explorer',             x: 660, y: 480, agent: 'adversarial', state: 'adopted',     adoption: 0.62, originCycle: 6,  group: 'view',
+  { id: 'C13', name: 'Island explorer',            x: 660, y: 480, agent: 'adversarial', state: 'adopted',     adoption: 0.62, originCycle: 6,  group: 'view',
     desc: 'Archaeological surface for persistent objections and structural resistance.' },
   { id: 'C14', name: 'Dead-end gallery',          x: 800, y: 440, agent: 'adversarial', state: 'adopted',     adoption: 0.60, originCycle: 6,  group: 'view',
     desc: 'Failed concepts preserved as negative knowledge. Explored terrain stays visible.' },
@@ -179,12 +179,12 @@ const BRANCHES = [
   { id: 'auto-summary',   label: 'auto-summary',      parent: 'main',      color: '#475569', cycles: [],                   status: 'closed', desc: 'Summarize debate into prose. Closed: erases nuance.' },
 ];
 
-// Persistent walls — structural resistance.
-const WALLS = [
-  { id: 'W1', name: 'Velocity vs. depth',          stratum: 0, severity: 0.85, cycles: [1,3,7,12], desc: 'Pressure to ship fast vs. preserve every rationale. Recurs at every escalation.' },
-  { id: 'W2', name: 'Scale beyond ~100 concepts',  stratum: 1, severity: 0.70, cycles: [7,18],     desc: 'Force-directed layouts degrade at population scale. No solution yet.' },
-  { id: 'W3', name: 'Cross-repo concept identity', stratum: 2, severity: 0.60, cycles: [8,9],      desc: 'When is "the same concept" in two repos the same? Open structural problem.' },
-  { id: 'W4', name: 'Hiding resistance signal',    stratum: 3, severity: 0.55, cycles: [9,11],     desc: 'Smoothing the debate (auto-summary, arbitration) erases the very signal Crucible exists to preserve.' },
+// Persistent islands — structural resistance.
+const ISLANDS = [
+  { id: 'I1', name: 'Velocity vs. depth',          stratum: 0, severity: 0.85, cycles: [1,3,7,12], desc: 'Pressure to ship fast vs. preserve every rationale. Recurs at every escalation.' },
+  { id: 'I2', name: 'Scale beyond ~100 concepts',  stratum: 1, severity: 0.70, cycles: [7,18],     desc: 'Force-directed layouts degrade at population scale. No solution yet.' },
+  { id: 'I3', name: 'Cross-repo concept identity', stratum: 2, severity: 0.60, cycles: [8,9],      desc: 'When is "the same concept" in two repos the same? Open structural problem.' },
+  { id: 'I4', name: 'Hiding resistance signal',    stratum: 3, severity: 0.55, cycles: [9,11],     desc: 'Smoothing the debate (auto-summary, arbitration) erases the very signal Crucible exists to preserve.' },
 ];
 
 // Dead ends — concepts that failed.
@@ -197,4 +197,4 @@ const DEAD_ENDS = [
 ];
 
 // Expose to global scope for cross-script access.
-Object.assign(window, { AGENTS, STATES, DOC, CONCEPTS, EDGES, CYCLES, BRANCHES, WALLS, DEAD_ENDS });
+Object.assign(window, { AGENTS, STATES, DOC, CONCEPTS, EDGES, CYCLES, BRANCHES, ISLANDS, DEAD_ENDS });

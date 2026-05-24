@@ -433,13 +433,13 @@ input, select, textarea { font-family: inherit; color: inherit; }
   pointer-events: none;
 }
 
-.wall-band {
+.island-band {
   fill: rgba(255,255,255,0.018);
   stroke: rgba(255,255,255,0.05);
   stroke-dasharray: 3 4;
   stroke-width: 1;
 }
-.wall-label {
+.island-label {
   font-family: var(--font-mono);
   font-size: 9.5px;
   fill: var(--text-faint);
@@ -578,8 +578,8 @@ input, select, textarea { font-family: inherit; color: inherit; }
 .chart-card-title { font-size: 13px; font-weight: 500; }
 .chart-card-sub { font-size: 11px; color: var(--text-dim); }
 
-/* ------- Walls & Dead Ends ------- */
-.walls-stage {
+/* ------- Islands & Dead Ends ------- */
+.islands-stage {
   position: absolute; inset: 56px 0 0 0;
   padding: 16px;
   display: grid;
