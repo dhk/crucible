@@ -1,6 +1,8 @@
 # Crucible
 
 > Give it to the Crucible.
+ <img width="1536" height="1024" alt="2c7f0f7823c9d207a01c83a8e5da5ca487421215568de7335011c1788ff788dc" src="https://github.com/user-attachments/assets/2359f094-89b3-4651-aaf3-8077fec37432" />
+
 
 Crucible is a Git-native debate engine that improves design documents, strategy memos, architecture proposals, and other durable work products through structured, agentic review cycles.
 
