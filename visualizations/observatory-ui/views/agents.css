@@ -1,0 +1,161 @@
+/* agents.css — additional styles for Agent Observatory & Islands views */
+
+/* ---- Agent card interactive states ---- */
+.agent-card--interactive {
+  cursor: pointer;
+  transition: border-color 160ms, box-shadow 160ms, transform 120ms;
+}
+
+.agent-card--interactive:hover {
+  border-color: var(--agent-color);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--agent-color) 30%, transparent),
+              inset 4px 0 0 var(--agent-color);
+  transform: translateY(-1px);
+}
+
+/* Role label under agent name */
+.agent-card-role {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* Sparkline wrapper */
+.agent-sparkline-wrap {
+  border-top: 1px solid var(--border-faint);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.agent-sparkline-label {
+  font-size: 9.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+/* ---- Interaction matrix ---- */
+.interaction-matrix-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 4px 8px;
+  height: 100%;
+}
+
+.interaction-matrix-grid {
+  display: grid;
+  grid-template-columns: 56px repeat(3, 1fr);
+  gap: 5px;
+  align-items: center;
+}
+
+.im-corner {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.im-axis-label {
+  font-size: 8.5px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  display: block;
+}
+
+.im-col-head {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.im-row-head {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  padding-right: 8px;
+  letter-spacing: 0.04em;
+}
+
+.im-cell {
+  height: 54px;
+  border-radius: 5px;
+  border: 1px solid var(--border-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  transition: background 200ms, border-color 200ms;
+}
+
+.im-cell-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.im-footnote {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-top: auto;
+}
+
+/* ---- Islands & Fossils enhancements ---- */
+
+/* Dead-end card fossil affordance */
+.deadend-card--fossil {
+  border-left: 3px dashed rgba(255, 255, 255, 0.15) !important;
+  cursor: pointer;
+  transition: border-color 140ms, background 140ms, box-shadow 140ms;
+}
+
+.deadend-card--fossil:hover {
+  border-left-color: rgba(255, 255, 255, 0.35) !important;
+  background: color-mix(in oklab, var(--surface-1) 80%, white 5%);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.015);
+}
+
+.deadend-card--active {
+  border-left-color: #fb7185 !important;
+  background: rgba(251, 113, 133, 0.04);
+  box-shadow: 0 0 0 1px rgba(251, 113, 133, 0.15);
+}
+
+/* Override the pseudo-element dashed left line from styles.css when we manage our own border */
+.deadend-card--fossil::before {
+  display: none !important;
+}
+
+/* Mono id chip in dead-end card */
+.deadend-id {
+  font-size: 10px;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+}
+
+/* Island highlight hint line */
+.deadend-island-hint {
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  color: #fb7185;
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
