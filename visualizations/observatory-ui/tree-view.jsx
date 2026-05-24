@@ -1,100 +1,100 @@
 /* global React, ReactDOM, AGENTS, STATES, CONCEPTS, EDGES, CYCLES, DOC */
-// Tree View — Crucible Observatory rendered in the DHK design system.
-// Concept Graph as horizontal phylogenetic tree: cycle on x-axis, lineage on y-axis.
+// Tree View — Crucible Observatory · DHK light design system.
+// Layout: depth-on-x phylogenetic tree, DFS leaf-slot y.
 
-const { useState, useMemo } = React;
+const { useState, useMemo, useEffect, useRef, useCallback } = React;
 
-// Map agent ids to the DHK accent palette
-const AGENT_COLOR = {
-  strawman:    'var(--strawman)',     /* green */
-  steelman:    'var(--steelman)',     /* blue  */
-  adversarial: 'var(--adversarial)',  /* orange */
-};
-const AGENT_COLOR_HEX = {
+// ---- Agent color table (DHK palette) ----
+const AGENT_HEX = {
   strawman:    '#16a34a',
-  steelman:    '#2970d6',
+  steelman:    '#2563eb',
   adversarial: '#d94f2a',
 };
 
+// ---- State tone table (light-mode colours) ----
 const STATE_TONE = {
-  seed:        { color: '#5a5850', bg: 'rgba(90, 88, 80, 0.10)' },
-  emergent:    { color: '#a16207', bg: 'rgba(217, 79, 42, 0.10)' },
-  contested:   { color: '#d94f2a', bg: 'rgba(217, 79, 42, 0.12)' },
-  adopted:     { color: '#16a34a', bg: 'rgba(22, 163, 74, 0.10)' },
-  dominant:    { color: '#15803d', bg: 'rgba(22, 163, 74, 0.16)' },
-  fragmented:  { color: '#7c5ce0', bg: 'rgba(124, 92, 224, 0.10)' },
-  deprecated:  { color: '#5a5850', bg: 'rgba(90, 88, 80, 0.06)' },
-  archived:    { color: '#5a5850', bg: 'rgba(90, 88, 80, 0.06)' },
-  resurrected: { color: '#2970d6', bg: 'rgba(41, 112, 214, 0.12)' },
+  seed:        { color: '#6b6860', bg: 'var(--state-seed-bg)' },
+  emergent:    { color: '#a16207', bg: 'var(--state-emergent-bg)' },
+  contested:   { color: '#d94f2a', bg: 'var(--state-contested-bg)' },
+  adopted:     { color: '#16a34a', bg: 'var(--state-adopted-bg)' },
+  dominant:    { color: '#15803d', bg: 'var(--state-dominant-bg)' },
+  fragmented:  { color: '#7c3aed', bg: 'var(--state-fragmented-bg)' },
+  deprecated:  { color: '#9c9a94', bg: 'var(--state-deprecated-bg)' },
+  archived:    { color: '#9c9a94', bg: 'var(--state-deprecated-bg)' },
+  resurrected: { color: '#0891b2', bg: 'var(--state-resurrected-bg)' },
 };
 
-// ---------- Layout: phylogenetic tree ----------
-// Topology-driven layout. x = depth from root (clean horizontal spread).
-// y = DFS leaf slot (siblings stacked vertically).
-// Cycle is shown as metadata on each node rather than driving x.
-function buildTreeLayout(concepts, edges, opts) {
-  const { width, padX, padY, levelGap, rowGap } = opts;
-
+// ============================================================
+// §9 — Tree layout algorithm
+// x = depth × levelGap  (topology, not time)
+// y = DFS leaf-slot × rowGap  (with +0.6 gap between roots)
+// ============================================================
+function buildTreeLayout(concepts, edges, { padX, padY, levelGap, rowGap }) {
+  // Build a lookup: concept id → originCycle
   const cycleOf = Object.fromEntries(concepts.map(c => [c.id, c.originCycle]));
-  const parentOf = {};
 
+  // --- Parent derivation (§9) ---
+  // For each concept: inbound support/mutation edges where source.originCycle < c.originCycle
+  // Sort by source.originCycle descending → pick the most-recent earlier predecessor.
+  const parentOf = {};
   concepts.forEach(c => {
     const inbound = edges
-      .filter(e => e.to === c.id && (e.type === 'support' || e.type === 'mutation'))
-      .filter(e => cycleOf[e.from] != null && cycleOf[e.from] < c.originCycle);
+      .filter(e =>
+        e.to === c.id &&
+        (e.type === 'support' || e.type === 'mutation') &&
+        cycleOf[e.from] != null &&
+        cycleOf[e.from] < c.originCycle
+      );
     inbound.sort((a, b) => cycleOf[b.from] - cycleOf[a.from]);
-    if (inbound.length > 0) {
-      parentOf[c.id] = inbound[0].from;
-    }
+    if (inbound.length > 0) parentOf[c.id] = inbound[0].from;
   });
 
-  // Forced parent hints for cleaner shape where data is ambiguous.
+  // Manual shape hints for ambiguous/cycle cases in the mock data
   const HINTS = {
     C16: 'C15', C17: 'C15',
     C14: 'C13', C22: 'C10',
     C19: 'C18', C20: 'C13',
-    C21: 'C03',
-    C02: 'C01', C24: 'C10', C23: 'C02',
+    C21: 'C03', C02: 'C01',
+    C24: 'C10', C23: 'C02',
     C05: 'C02', C03: 'C02',
     C11: 'C01', C12: 'C03',
-    C13: 'C07', C08: 'C05', C06: 'C05',
-    C04: 'C03', C18: 'C05',
-    C07: 'C08', C09: 'C08',
+    C13: 'C07', C08: 'C05',
+    C06: 'C05', C04: 'C03',
+    C18: 'C05', C07: 'C08',
+    C09: 'C08',
   };
+  const ids = new Set(concepts.map(c => c.id));
   Object.entries(HINTS).forEach(([k, v]) => {
-    if (concepts.find(c => c.id === k) && concepts.find(c => c.id === v)) {
-      parentOf[k] = v;
-    }
+    if (ids.has(k) && ids.has(v)) parentOf[k] = v;
   });
 
-  const childrenOf = {};
-  concepts.forEach(c => { childrenOf[c.id] = []; });
+  // --- Children lists ---
+  const childrenOf = Object.fromEntries(concepts.map(c => [c.id, []]));
   Object.entries(parentOf).forEach(([child, parent]) => {
     if (childrenOf[parent]) childrenOf[parent].push(child);
   });
 
-  // Sort children: by originCycle ascending, then adoption descending
+  // Children ordering (§9): originCycle ASC, adoption DESC, id ASC
+  const conceptMap = Object.fromEntries(concepts.map(c => [c.id, c]));
   Object.values(childrenOf).forEach(arr => {
     arr.sort((a, b) => {
-      const ca = concepts.find(c => c.id === a);
-      const cb = concepts.find(c => c.id === b);
-      return ca.originCycle - cb.originCycle ||
-             cb.adoption - ca.adoption ||
-             (ca.id < cb.id ? -1 : 1);
+      const ca = conceptMap[a], cb = conceptMap[b];
+      return (ca.originCycle - cb.originCycle) ||
+             (cb.adoption   - ca.adoption) ||
+             (a < b ? -1 : 1);
     });
   });
 
-  // Roots
+  // Roots: no parent, sorted by originCycle then id
   const roots = concepts
     .filter(c => !parentOf[c.id])
     .map(c => c.id)
     .sort((a, b) => {
-      const ca = concepts.find(c => c.id === a);
-      const cb = concepts.find(c => c.id === b);
-      return ca.originCycle - cb.originCycle || (ca.id < cb.id ? -1 : 1);
+      const ca = conceptMap[a], cb = conceptMap[b];
+      return (ca.originCycle - cb.originCycle) || (a < b ? -1 : 1);
     });
 
-  // Compute depth (x level) for each node
+  // Depth (x level) via BFS from roots
   const depthOf = {};
   function computeDepth(id, d) {
     depthOf[id] = d;
@@ -102,483 +102,666 @@ function buildTreeLayout(concepts, edges, opts) {
   }
   roots.forEach(r => computeDepth(r, 0));
 
-  // Assign y slots via DFS — leaves sequential
+  // DFS leaf-slot y assignment
+  // Leaves get sequential integer slots; internal nodes get midpoint of children.
+  // +0.6 slot gap between root subtrees.
   let slot = 0;
   const slotOf = {};
   function dfs(id) {
-    const ch = childrenOf[id];
+    const ch = childrenOf[id] || [];
     if (ch.length === 0) {
       slotOf[id] = slot++;
       return slotOf[id];
     }
-    const ys = ch.map(c => dfs(c));
+    const ys = ch.map(dfs);
     slotOf[id] = (ys[0] + ys[ys.length - 1]) / 2;
     return slotOf[id];
   }
-  roots.forEach(r => { dfs(r); slot += 0.6; /* gap between root subtrees */ });
+  roots.forEach(r => { dfs(r); slot += 0.6; });
 
-  const maxSlot = Math.max(1, slot - 1);
-  const maxDepth = Math.max(...Object.values(depthOf));
+  const maxSlot  = Math.max(1, slot - 1);
+  const maxDepth = Math.max(0, ...Object.values(depthOf));
 
-  // Final positions
+  // Final pixel coordinates
   const positions = {};
-  const height = padY * 2 + maxSlot * rowGap;
   concepts.forEach(c => {
-    const d = depthOf[c.id] ?? 0;
     positions[c.id] = {
-      x: padX + d * levelGap,
+      x: padX + (depthOf[c.id] ?? 0) * levelGap,
       y: padY + slotOf[c.id] * rowGap,
     };
   });
 
-  return { positions, parentOf, childrenOf, roots, depthOf, maxDepth, height };
+  const height = padY * 2 + maxSlot * rowGap;
+  const width  = padX * 2 + (maxDepth + 1) * levelGap;
+
+  return { positions, parentOf, childrenOf, roots, depthOf, maxDepth, height, width };
 }
 
-// ---------- App ----------
-function TreeApp() {
-  const [selectedId, setSelectedId] = useState('C05'); // Force-directed graph — illustrates lineage
-  const [showDeadEnds, setShowDeadEnds] = useState(true);
-  const [showContradict, setShowContradict] = useState(true);
 
+// ============================================================
+// App root
+// ============================================================
+function TreeApp() {
+  // ---- Core state ----
+  const [selectedConceptId, setSelectedConceptId] = useState('C05');
+  const [selectedCycleId,   setSelectedCycleId]   = useState(null);
+  const [hoveredCycleId,    setHoveredCycleId]     = useState(null);
+  const [showContradictions, setShowContradictions] = useState(true);
+  const [showDeadEnds,       setShowDeadEnds]       = useState(true);
+  const [dimmedAgents,       setDimmedAgents]       = useState(new Set());
+  const [playing,            setPlaying]            = useState(false);
+  const playRef = useRef(null);
+
+  // Filter concepts (dead ends = deprecated/archived)
   const concepts = useMemo(
-    () => CONCEPTS.filter(c => showDeadEnds || (c.state !== 'deprecated' && c.state !== 'archived')),
+    () => CONCEPTS.filter(c =>
+      showDeadEnds || (c.state !== 'deprecated' && c.state !== 'archived')
+    ),
     [showDeadEnds]
   );
 
-  const W = 1240;
+  // Layout constants
+  const PAD_X = 60, PAD_Y = 50, LEVEL_GAP = 150, ROW_GAP = 40;
   const layout = useMemo(
     () => buildTreeLayout(concepts, EDGES, {
-      width: W,
-      padX: 50, padY: 50,
-      levelGap: 150,
-      rowGap: 40,
+      padX: PAD_X, padY: PAD_Y,
+      levelGap: LEVEL_GAP, rowGap: ROW_GAP,
     }),
     [concepts]
   );
-  const H = Math.max(680, layout.height);
+  const SVG_W = Math.max(1100, layout.width  + 160);
+  const SVG_H = Math.max(640,  layout.height + 40);
 
-  const selected = CONCEPTS.find(c => c.id === selectedId);
+  // Selected concept
+  const selectedConcept = CONCEPTS.find(c => c.id === selectedConceptId) || null;
+
+  // Lineage events for selected concept
   const lineage = useMemo(() => {
-    if (!selected) return [];
-    const touched = CYCLES.filter(c =>
-      c.added.includes(selected.id) ||
-      c.mutated.includes(selected.id) ||
-      c.removed.includes(selected.id)
-    );
-    return touched.map(c => ({
-      ...c,
-      evt: c.added.includes(selected.id) ? 'introduced'
-         : c.mutated.includes(selected.id) ? 'mutated'
-         : 'removed',
-    }));
-  }, [selected]);
+    if (!selectedConcept) return [];
+    return CYCLES
+      .filter(cy =>
+        cy.added.includes(selectedConcept.id) ||
+        cy.mutated.includes(selectedConcept.id) ||
+        cy.removed.includes(selectedConcept.id)
+      )
+      .map(cy => ({
+        ...cy,
+        evt: cy.added.includes(selectedConcept.id)   ? 'introduced'
+           : cy.mutated.includes(selectedConcept.id) ? 'mutated'
+           :                                            'removed',
+      }));
+  }, [selectedConcept]);
 
-  // Ancestry chain (for highlight)
+  // Ancestry chain for highlight
   const ancestry = useMemo(() => {
     const chain = new Set();
-    if (!selected) return chain;
-    let cur = selected.id;
+    if (!selectedConcept) return chain;
+    let cur = selectedConcept.id;
     chain.add(cur);
-    while (layout.parentOf[cur]) {
-      cur = layout.parentOf[cur];
-      chain.add(cur);
-    }
+    while (layout.parentOf[cur]) { cur = layout.parentOf[cur]; chain.add(cur); }
     return chain;
-  }, [selected, layout]);
+  }, [selectedConcept, layout]);
+
+  // ---- Play controls ----
+  const stopPlay = useCallback(() => {
+    setPlaying(false);
+    if (playRef.current) { clearInterval(playRef.current); playRef.current = null; }
+  }, []);
+
+  const togglePlay = useCallback(() => {
+    setPlaying(prev => {
+      if (prev) { stopPlay(); return false; }
+      // Advance selectedCycleId every 1.5s
+      playRef.current = setInterval(() => {
+        setSelectedCycleId(cur => {
+          const idx = CYCLES.findIndex(c => c.id === cur);
+          if (idx === -1 || idx >= CYCLES.length - 1) { stopPlay(); return CYCLES[CYCLES.length - 1].id; }
+          return CYCLES[idx + 1].id;
+        });
+      }, 1500);
+      if (!selectedCycleId) setSelectedCycleId(CYCLES[0].id);
+      return true;
+    });
+  }, [selectedCycleId, stopPlay]);
+
+  const prevCycle = useCallback(() => {
+    setSelectedCycleId(cur => {
+      if (!cur) return CYCLES[CYCLES.length - 1].id;
+      const idx = CYCLES.findIndex(c => c.id === cur);
+      return idx > 0 ? CYCLES[idx - 1].id : CYCLES[0].id;
+    });
+  }, []);
+  const nextCycle = useCallback(() => {
+    setSelectedCycleId(cur => {
+      if (!cur) return CYCLES[0].id;
+      const idx = CYCLES.findIndex(c => c.id === cur);
+      return idx < CYCLES.length - 1 ? CYCLES[idx + 1].id : CYCLES[CYCLES.length - 1].id;
+    });
+  }, []);
+
+  // ---- §12 Keyboard shortcuts ----
+  useEffect(() => {
+    function onKey(e) {
+      // Ignore if focus is in an input/textarea
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); prevCycle(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); nextCycle(); }
+      if (e.key === ' ')          { e.preventDefault(); togglePlay(); }
+      if (e.key === 'Escape')     { e.preventDefault(); setSelectedConceptId(null); stopPlay(); }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [prevCycle, nextCycle, togglePlay, stopPlay]);
+
+  // Cleanup play timer on unmount
+  useEffect(() => () => { if (playRef.current) clearInterval(playRef.current); }, []);
+
+  // ---- Agent dim toggle ----
+  const toggleAgent = useCallback((agentId) => {
+    setDimmedAgents(prev => {
+      const next = new Set(prev);
+      next.has(agentId) ? next.delete(agentId) : next.add(agentId);
+      return next;
+    });
+  }, []);
+
+  // ---- Derived stats ----
+  const agentCounts = useMemo(() => {
+    const m = {};
+    CONCEPTS.forEach(c => { m[c.agent] = (m[c.agent] || 0) + 1; });
+    return m;
+  }, []);
+  const stateCounts = useMemo(() => {
+    const m = {};
+    CONCEPTS.forEach(c => { m[c.state] = (m[c.state] || 0) + 1; });
+    return m;
+  }, []);
+
+  // Current cycle object
+  const currentCycle = CYCLES.find(c => c.id === selectedCycleId) || null;
+  const cycleIndex   = currentCycle ? CYCLES.indexOf(currentCycle) : -1;
 
   return (
-    <>
-      <header className="site-header">
+    <div className="app-shell">
+
+      {/* ===== TOPBAR ===== */}
+      <header className="topbar">
         <div className="brand">
-          <span>Crucible</span>
+          Crucible
           <span className="brand-sub">Observatory</span>
         </div>
         <div className="crumb">
           <span>docs/active</span>
           <span className="slash">/</span>
-          <span className="doc">crucible-observability-ui.md</span>
+          <span className="doc">{DOC.path.split('/').pop()}</span>
         </div>
-        <nav className="nav">
+        <div className="status-pills">
+          <span className="status-pill green">
+            <span className="sw"></span>
+            {DOC.status}
+          </span>
+          <span className="status-pill">
+            {Math.round(DOC.convergence * 100)}% convergence
+          </span>
+          <span className="status-pill">
+            cycle {DOC.cycles}
+          </span>
+        </div>
+        <nav className="nav-tabs">
           <button className="nav-tab">Timeline</button>
-          <button className="nav-tab active">Concept&nbsp;Tree</button>
+          <button className="nav-tab active">Concept Tree</button>
           <button className="nav-tab">Branches</button>
           <button className="nav-tab">Agents</button>
           <button className="nav-tab">Islands</button>
         </nav>
       </header>
 
-      <div className="hero">
-        <div className="hero-top">
-          <span className="tag tag-study">DOC · DESIGN BRIEF</span>
-          <span className="tag tag-tree">CONCEPT TREE</span>
-          <span className="meta">cycle 12 · last pass 2d ago</span>
-        </div>
-        <h1>Concept tree</h1>
-        <p className="hero-lede">
-          A phylogeny of the ideas that survived twelve debate cycles. Time runs left to right.
-          Lineages descend from three seed concepts and branch as the strawman proposes, the steelman
-          reinforces, and the adversarial probes. Concepts that failed are kept visible as fossils.
-        </p>
-        <div className="hero-stats">
-          <div className="hero-stat"><span className="val">24</span><span className="label">Concepts</span></div>
-          <div className="hero-stat"><span className="val">12</span><span className="label">Cycles</span></div>
-          <div className="hero-stat"><span className="val">3</span><span className="label">Lineage roots</span></div>
-          <div className="hero-stat"><span className="val">5</span><span className="label">Dead ends</span></div>
-          <div className="hero-stat"><span className="val">74%</span><span className="label">Convergence</span></div>
-        </div>
-      </div>
+      {/* ===== LEFT RAIL ===== */}
+      <aside className="left-rail">
 
-      <div className="section-divider">
-        <span>Phylogeny</span>
-        <div className="rule"></div>
-        <span>cycles 1 – 12 · 2026-04-18 → 2026-05-22</span>
-      </div>
-
-      <div className="tree-toolbar">
-        <div className="metaphor-tabs">
-          <button className="metaphor-tab">Force graph</button>
-          <button className="metaphor-tab active">Tree</button>
-          <button className="metaphor-tab">Strata</button>
-        </div>
-        <div className="spacer"></div>
-        <button className={`chip-toggle ${showDeadEnds ? 'active' : ''}`} onClick={() => setShowDeadEnds(v => !v)}>
-          <span className="sw" style={{ background: 'var(--text-dim)', opacity: 0.5 }}></span>
-          Dead ends
-        </button>
-        <button className={`chip-toggle ${showContradict ? 'active' : ''}`} onClick={() => setShowContradict(v => !v)}>
-          <span className="sw" style={{ background: 'var(--accent-orange)' }}></span>
-          Contradictions
-        </button>
-      </div>
-
-      <div className="tree-stage">
-        <div className="tree-card">
-          <div className="tree-canvas">
-            <TreeCanvas
-              width={W} height={H}
-              concepts={concepts}
-              layout={layout}
-              selectedId={selectedId}
-              ancestry={ancestry}
-              onSelect={setSelectedId}
-              showContradict={showContradict}
-            />
+        {/* Document stats */}
+        <section>
+          <div className="rail-section-title">Document</div>
+          <div className="doc-stats">
+            <div className="doc-stat"><span className="label">Concepts</span><span className="val">{DOC.concepts}</span></div>
+            <div className="doc-stat"><span className="label">Cycles</span><span className="val">{DOC.cycles}</span></div>
+            <div className="doc-stat"><span className="label">Branches</span><span className="val">{DOC.branches}</span></div>
+            <div className="doc-stat"><span className="label">Dead ends</span><span className="val">{DOC.deadEnds}</span></div>
+            <div className="doc-stat"><span className="label">Mutations</span><span className="val">{DOC.mutations}</span></div>
           </div>
-        </div>
-        <Inspector concept={selected} lineage={lineage} layout={layout} />
-      </div>
+        </section>
 
-      <div className="tree-legend">
-        <div className="legend-card">
-          <div className="legend-title">Agents</div>
-          {Object.values(AGENTS).map(a => {
-            const n = CONCEPTS.filter(c => c.agent === a.id).length;
-            return (
-              <div key={a.id} className="legend-row">
-                <span className="sw" style={{ background: AGENT_COLOR_HEX[a.id] }}></span>
+        {/* Agent legend — click to dim */}
+        <section>
+          <div className="rail-section-title">Agents · click to dim</div>
+          <div className="agent-legend">
+            {Object.values(AGENTS).map(a => (
+              <div key={a.id}
+                className={`agent-row${dimmedAgents.has(a.id) ? ' dimmed' : ''}`}
+                onClick={() => toggleAgent(a.id)}>
+                <span className="sw" style={{ background: AGENT_HEX[a.id] }}></span>
                 <span className="name">{a.name}</span>
-                <span className="num">{n}</span>
+                <span className="cnt">{agentCounts[a.id] || 0}</span>
               </div>
-            );
-          })}
-        </div>
-        <div className="legend-card">
-          <div className="legend-title">Lifecycle state</div>
-          {['dominant','adopted','contested','emergent','fragmented','resurrected','deprecated'].map(s => {
-            const tone = STATE_TONE[s];
-            const n = CONCEPTS.filter(c => c.state === s).length;
-            return (
-              <div key={s} className="legend-row">
-                <span className="sw" style={{ background: tone.color, opacity: s === 'deprecated' ? 0.35 : 1 }}></span>
-                <span className="name">{STATES[s].label}</span>
-                <span className="num">{n}</span>
-              </div>
-            );
-          })}
-        </div>
-        <div className="legend-card">
-          <div className="legend-title">Edges</div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent)', borderTopStyle: 'solid' }}></span>
-            <span className="name">Lineage · parent → child</span>
+            ))}
           </div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent-purple)', borderTopStyle: 'dashed' }}></span>
-            <span className="name">Mutation · concept evolved</span>
-          </div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent-orange)', borderTopStyle: 'dotted', borderTopWidth: 2 }}></span>
-            <span className="name">Contradiction</span>
-          </div>
-        </div>
-      </div>
+        </section>
 
-      <footer className="site-footer">
-        <div className="inner">
-          <span>Crucible · Observatory</span>
-          <span className="spacer"></span>
-          <span>generated 2026-05-22</span>
-          <span>·</span>
-          <a href="../index.html">← dark mode</a>
+        {/* Lifecycle legend */}
+        <section>
+          <div className="rail-section-title">Lifecycle</div>
+          <div className="lifecycle-legend">
+            {['dominant','adopted','contested','emergent','fragmented','resurrected','deprecated'].map(s => {
+              const tone = STATE_TONE[s];
+              return (
+                <div key={s} className="lifecycle-row">
+                  <span className="sw" style={{ background: tone.color, opacity: s === 'deprecated' ? 0.4 : 1 }}></span>
+                  <span className="name">{STATES[s].label}</span>
+                  <span className="cnt">{stateCounts[s] || 0}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* View toggles */}
+        <div className="rail-toggles">
+          <button
+            className={`chip-toggle${showDeadEnds ? ' active' : ''}`}
+            onClick={() => setShowDeadEnds(v => !v)}>
+            <span className="sw" style={{ background: 'var(--text-mute)', opacity: 0.5 }}></span>
+            Dead ends
+          </button>
+          <button
+            className={`chip-toggle${showContradictions ? ' active' : ''}`}
+            onClick={() => setShowContradictions(v => !v)}>
+            <span className="sw" style={{ background: 'var(--accent-orange)' }}></span>
+            Contradictions
+          </button>
         </div>
+
+      </aside>
+
+      {/* ===== CANVAS ===== */}
+      <main className="canvas-area">
+        <div className="tree-svg-wrap">
+          <TreeCanvas
+            width={SVG_W}
+            height={SVG_H}
+            concepts={concepts}
+            layout={layout}
+            selectedConceptId={selectedConceptId}
+            ancestry={ancestry}
+            dimmedAgents={dimmedAgents}
+            showContradictions={showContradictions}
+            onSelectConcept={setSelectedConceptId}
+          />
+        </div>
+      </main>
+
+      {/* ===== INSPECTOR ===== */}
+      <aside className="inspector">
+        <Inspector
+          concept={selectedConcept}
+          lineage={lineage}
+          layout={layout}
+        />
+      </aside>
+
+      {/* ===== BOTTOM TIMELINE ===== */}
+      <footer className="bottom-timeline">
+        <div className="play-controls">
+          <button className="play-btn" title="Previous cycle (←)" onClick={prevCycle}>‹</button>
+          <button className={`play-btn primary`} title="Play/pause (Space)" onClick={togglePlay}>
+            {playing ? '⏸' : '▶'}
+          </button>
+          <button className="play-btn" title="Next cycle (→)" onClick={nextCycle}>›</button>
+        </div>
+
+        <div className="cycle-strip">
+          {CYCLES.map(cy => {
+            const agentColor = AGENT_HEX[cy.agent];
+            const isSel = selectedCycleId === cy.id;
+            return (
+              <div
+                key={cy.id}
+                className={`cycle-dot-wrap${isSel ? ' selected' : ''}`}
+                title={`Cycle ${cy.id} · ${cy.title}`}
+                onMouseEnter={() => setHoveredCycleId(cy.id)}
+                onMouseLeave={() => setHoveredCycleId(null)}
+                onClick={() => setSelectedCycleId(isSel ? null : cy.id)}>
+                <div
+                  className="cycle-dot"
+                  style={isSel ? {} : { borderColor: agentColor, opacity: 0.7 }}>
+                </div>
+                <span className="cycle-dot-label">C{String(cy.id).padStart(2,'0')}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        {currentCycle ? (
+          <div className="cycle-info">
+            C{String(currentCycle.id).padStart(2,'0')} · {currentCycle.title}
+          </div>
+        ) : (
+          <div className="cycle-info" style={{ color: 'var(--text-faint)' }}>
+            ← / → navigate · Space play · Esc clear
+          </div>
+        )}
       </footer>
-    </>
+
+    </div>
   );
 }
 
-// ---------- Tree canvas ----------
-function TreeCanvas({ width, height, concepts, layout, selectedId, ancestry, onSelect, showContradict }) {
+
+// ============================================================
+// Tree Canvas SVG
+// ============================================================
+function TreeCanvas({
+  width, height, concepts, layout,
+  selectedConceptId, ancestry, dimmedAgents,
+  showContradictions, onSelectConcept,
+}) {
   const [hover, setHover] = useState(null);
   const { positions, parentOf, maxDepth } = layout;
 
-  // Generation tick positions (depth = generation)
-  const genX = (d) => 50 + d * 150;
-  const totalGenerations = maxDepth + 1;
-
-  // Compute label-side: right of node always (tree grows left-to-right)
-  const labelSide = () => 'right';
+  // Generation axis positions
+  const genX = d => 60 + d * 150;
+  const totalGen = maxDepth + 1;
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} style={{ display: 'block', width: width + 'px', height: height + 'px', maxWidth: 'none' }}>
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      width={width}
+      height={height}
+      style={{ display: 'block', minWidth: width }}>
+
       <defs>
-        <pattern id="dot-grid" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="1" fill="var(--border)" opacity="0.35"/>
+        <pattern id="dhk-dot-grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.9" fill="rgba(0,0,0,0.07)"/>
         </pattern>
-        <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="rgba(0,0,0,0.08)"/>
+        <filter id="dhk-shadow">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="rgba(0,0,0,0.09)"/>
         </filter>
       </defs>
 
-      {/* Soft dot grid background */}
-      <rect x="40" y="40" width={width - 80} height={height - 60} fill="url(#dot-grid)" opacity="0.5"/>
+      {/* Background dot grid */}
+      <rect x="0" y="0" width={width} height={height} fill="url(#dhk-dot-grid)" opacity="0.7"/>
 
-      {/* Generation axis (top) */}
+      {/* Generation axis (depth columns) */}
       <g>
-        {Array.from({ length: totalGenerations }).map((_, d) => (
+        <line x1={40} y1={36} x2={width - 20} y2={36} stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
+        {Array.from({ length: totalGen }).map((_, d) => (
           <g key={d}>
-            <line x1={genX(d)} y1={32} x2={genX(d)} y2={height - 20}
-              stroke="var(--border-light)" strokeWidth="1"/>
-            <text x={genX(d)} y={20} textAnchor="start" className="t-cycle-label" dx="-4">
-              GEN&nbsp;{String(d).padStart(2, '0')}
+            <line
+              x1={genX(d)} y1={36}
+              x2={genX(d)} y2={height - 20}
+              stroke="rgba(0,0,0,0.04)" strokeWidth="1"/>
+            <text
+              x={genX(d)} y={24}
+              textAnchor="middle"
+              className="t-gen-label">
+              GEN {String(d).padStart(2,'0')}
             </text>
           </g>
         ))}
-        <line x1={40} y1={38} x2={width - 40} y2={38} stroke="var(--border)" strokeWidth="1"/>
       </g>
 
-      {/* Lineage edges (rectangular dendrogram) */}
+      {/* ---- Lineage edges (bend-at-parent, §9) ----
+          path: M px,py  V cy  H cx
+          Leave parent vertically, then turn right toward child.
+      */}
       <g>
         {Object.entries(parentOf).map(([child, parent]) => {
-          if (!positions[child] || !positions[parent]) return null;
           const p = positions[parent], c = positions[child];
-          // Find the parent-child edge type
+          if (!p || !c) return null;
           const edge = EDGES.find(e => e.from === parent && e.to === child) ||
                        EDGES.find(e => e.to === parent && e.from === child);
           const isMutation = edge && edge.type === 'mutation';
-
           const inChain = ancestry.has(child) && ancestry.has(parent);
-          const dimmed = ancestry.size > 0 && !inChain;
-          const stroke = inChain ? 'var(--accent)' :
-                         isMutation ? 'var(--accent-purple)' :
-                         'var(--border)';
+          const dimByAncestry = ancestry.size > 0 && !inChain;
+          const parentConcept = concepts.find(c => c.id === parent);
+          const dimByAgent = parentConcept && dimmedAgents.has(parentConcept.agent);
+          const dimmed = dimByAncestry || dimByAgent;
+
+          const stroke = inChain
+            ? 'var(--accent)'
+            : isMutation
+              ? 'var(--accent-purple)'
+              : 'rgba(0,0,0,0.14)';
+          const sw   = inChain ? 2 : 1.2;
           const dash = isMutation ? '4 4' : 'none';
-          const sw = inChain ? 2 : 1.2;
-          // Bend-at-parent dendrogram: vertical from parent down/up to child.y, then horizontal to child.x.
-          // This keeps the horizontal segment off to the right of parent, where labels won't get crossed.
-          const d = `M ${p.x},${p.y} V ${c.y} H ${c.x}`;
+
           return (
-            <path key={child}
-              d={d}
+            <path
+              key={child}
+              d={`M ${p.x},${p.y} V ${c.y} H ${c.x}`}
               stroke={stroke}
               strokeWidth={sw}
               strokeDasharray={dash}
               fill="none"
-              opacity={dimmed ? 0.25 : 1}
+              opacity={dimmed ? 0.18 : 1}
               style={{ transition: 'opacity 150ms' }}
             />
           );
         })}
       </g>
 
-      {/* Contradiction edges (curved overlays) */}
-      {showContradict && (
-        <g>
-          {EDGES.filter(e => e.type === 'contradict').map((e, i) => {
-            if (!positions[e.from] || !positions[e.to]) return null;
-            const a = positions[e.from], b = positions[e.to];
-            const mx = (a.x + b.x) / 2;
-            const my = (a.y + b.y) / 2;
-            const len = Math.hypot(b.x - a.x, b.y - a.y);
-            const offset = Math.min(40, len * 0.12);
-            const dx = -(b.y - a.y) / len * offset;
-            const dy =  (b.x - a.x) / len * offset;
-            return (
-              <g key={i}>
-                <path
-                  d={`M ${a.x},${a.y} Q ${mx + dx},${my + dy} ${b.x},${b.y}`}
-                  stroke="var(--accent-orange)"
-                  strokeWidth="1.2"
-                  strokeDasharray="2 3"
-                  fill="none"
-                  opacity="0.55"
-                />
-              </g>
-            );
-          })}
-        </g>
-      )}
-
-      {/* Nodes */}
+      {/* ---- Nodes ---- */}
       <g>
         {concepts.map(c => {
           const p = positions[c.id];
           if (!p) return null;
           const r = 4 + c.adoption * 5;
-          const isSel = c.id === selectedId;
+          const isSel   = c.id === selectedConceptId;
           const isHover = hover === c.id;
           const isFossil = c.state === 'deprecated' || c.state === 'archived';
-          const inChain = ancestry.has(c.id);
-          const dimmed = ancestry.size > 0 && !inChain;
-          const agentColor = AGENT_COLOR_HEX[c.agent];
-
-          // State styling
-          const stateTone = STATE_TONE[c.state];
+          const inChain  = ancestry.has(c.id);
+          const dimByAncestry = ancestry.size > 0 && !inChain;
+          const dimByAgent    = dimmedAgents.has(c.agent);
+          const dimmed   = dimByAncestry || dimByAgent;
+          const agentColor = AGENT_HEX[c.agent];
+          const stateTone  = STATE_TONE[c.state] || STATE_TONE.seed;
 
           return (
-            <g key={c.id}
+            <g
+              key={c.id}
               className="tree-node-hit"
-              opacity={dimmed ? 0.35 : 1}
+              opacity={dimmed ? 0.28 : 1}
               style={{ transition: 'opacity 150ms' }}
               onMouseEnter={() => setHover(c.id)}
               onMouseLeave={() => setHover(null)}
-              onClick={() => onSelect(c.id)}>
+              onClick={() => onSelectConcept(c.id === selectedConceptId ? null : c.id)}>
 
-              {/* Selection ring */}
+              {/* Selection / hover ring */}
               {(isSel || isHover) && (
                 <circle cx={p.x} cy={p.y} r={r + 7}
                   fill="none" stroke={agentColor}
-                  strokeWidth="1" opacity={isSel ? 0.5 : 0.3}/>
+                  strokeWidth="1.5" opacity={isSel ? 0.55 : 0.3}/>
               )}
 
-              {/* Hit area */}
-              <circle cx={p.x} cy={p.y} r={Math.max(r + 8, 12)} fill="transparent"/>
+              {/* Invisible hit target */}
+              <circle cx={p.x} cy={p.y} r={Math.max(r + 8, 13)} fill="transparent"/>
 
-              {/* Node */}
+              {/* Node body */}
               {isFossil ? (
                 <circle cx={p.x} cy={p.y} r={r}
-                  fill="var(--bg)" stroke="var(--text-dim)"
-                  strokeWidth="1" strokeDasharray="1.5 2"/>
+                  fill="var(--bg)" stroke="var(--text-mute)"
+                  strokeWidth="1.2" strokeDasharray="2 2"/>
               ) : (
                 <>
                   <circle cx={p.x} cy={p.y} r={r}
                     fill={agentColor}
-                    stroke="var(--bg2)" strokeWidth="1.5"
-                    filter="url(#soft-shadow)"/>
-                  {(c.state === 'dominant') && (
-                    <circle cx={p.x} cy={p.y} r={r + 2.5}
-                      fill="none" stroke={agentColor} strokeWidth="1" opacity="0.45"/>
+                    stroke="var(--bg)" strokeWidth="1.5"
+                    filter="url(#dhk-shadow)"/>
+                  {c.state === 'dominant' && (
+                    <circle cx={p.x} cy={p.y} r={r + 3}
+                      fill="none" stroke={agentColor} strokeWidth="1" opacity="0.4"/>
                   )}
-                  {(c.state === 'contested') && (
+                  {c.state === 'contested' && (
                     <circle cx={p.x} cy={p.y} r={r + 3.5}
-                      fill="none" stroke="var(--accent-orange)" strokeWidth="1"
-                      strokeDasharray="2 2" opacity="0.75"/>
+                      fill="none" stroke="var(--accent-orange)"
+                      strokeWidth="1" strokeDasharray="2 2" opacity="0.7"/>
                   )}
-                  {(c.state === 'resurrected') && (
-                    <circle cx={p.x} cy={p.y} r={r + 2.5}
-                      fill="none" stroke="var(--accent-blue)" strokeWidth="1.2"/>
+                  {c.state === 'resurrected' && (
+                    <circle cx={p.x} cy={p.y} r={r + 3}
+                      fill="none" stroke="var(--accent-cyan)" strokeWidth="1.2"/>
                   )}
                 </>
               )}
 
-              {/* Label */}
-              <text x={p.x + r + 9} y={p.y + 3}
-                className={`t-node-label ${isFossil ? 'dim' : ''}`}>
+              {/* Labels — halo via paint-order (§9) */}
+              <text
+                x={p.x + r + 9}
+                y={p.y + 3}
+                className={`t-node-label${isFossil ? ' dim' : ''}`}>
                 {c.name}
               </text>
-              <text x={p.x + r + 9} y={p.y + 16} className="t-node-id">
-                {c.id} · C{String(c.originCycle).padStart(2, '0')} · <tspan fill={stateTone.color}>{STATES[c.state].label.toUpperCase()}</tspan>
+              <text
+                x={p.x + r + 9}
+                y={p.y + 15}
+                className="t-node-id">
+                {c.id} · <tspan fill={stateTone.color}>{(STATES[c.state]?.label || c.state).toUpperCase()}</tspan>
               </text>
+
             </g>
           );
         })}
       </g>
+
+      {/* ---- Contradiction arcs (drawn last, on top) ----
+          Quadratic bezier curving above the tree.
+          Control point y = min(fromY, toY) - 60
+      */}
+      {showContradictions && (
+        <g>
+          {EDGES.filter(e => e.type === 'contradict').map((e, i) => {
+            const a = positions[e.from], b = positions[e.to];
+            if (!a || !b) return null;
+            const cx = (a.x + b.x) / 2;
+            const cy = Math.min(a.y, b.y) - 60;
+            return (
+              <path
+                key={i}
+                d={`M ${a.x},${a.y} Q ${cx},${cy} ${b.x},${b.y}`}
+                stroke="var(--accent-orange)"
+                strokeWidth="1.5"
+                strokeDasharray="3 4"
+                fill="none"
+                opacity="0.7"
+              />
+            );
+          })}
+        </g>
+      )}
+
     </svg>
   );
 }
 
-// ---------- Inspector ----------
+
+// ============================================================
+// Inspector panel
+// ============================================================
 function Inspector({ concept, lineage, layout }) {
   if (!concept) {
     return (
-      <aside className="inspector-col">
-        <div className="insp-card muted">
-          <div className="insp-h">No concept selected</div>
-          <div className="insp-desc">Click a node in the tree to inspect its lineage and rationale.</div>
+      <div className="insp-empty">
+        <div style={{ fontSize: 24, marginBottom: 8, opacity: 0.3 }}>⬡</div>
+        <div>Click a node to inspect</div>
+        <div style={{ marginTop: 8, fontSize: 11, color: 'var(--text-faint)' }}>
+          Esc to clear · ←/→ navigate cycles
         </div>
-      </aside>
+      </div>
     );
   }
-  const tone = STATE_TONE[concept.state];
+
+  const tone    = STATE_TONE[concept.state] || STATE_TONE.seed;
   const parentId = layout.parentOf[concept.id];
-  const parent = parentId ? CONCEPTS.find(c => c.id === parentId) : null;
+  const parent   = parentId ? CONCEPTS.find(c => c.id === parentId) : null;
   const children = layout.childrenOf[concept.id] || [];
 
   return (
-    <aside className="inspector-col">
-      <div className="insp-card">
+    <>
+      {/* Identity */}
+      <div className="insp-section">
         <div className="insp-h">Concept</div>
         <div className="insp-name">{concept.name}</div>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 14, flexWrap: 'wrap' }}>
+        <div className="insp-badges">
           <span className="insp-id">{concept.id}</span>
           <span className="state-pill" style={{ background: tone.bg, color: tone.color }}>
             <span className="sw" style={{ background: tone.color }}></span>
-            {STATES[concept.state].label}
+            {STATES[concept.state]?.label || concept.state}
           </span>
           <span className="agent-pill">
-            <span className="sw" style={{ background: AGENT_COLOR_HEX[concept.agent] }}></span>
-            {AGENTS[concept.agent].name}
+            <span className="sw" style={{ background: AGENT_HEX[concept.agent] }}></span>
+            {AGENTS[concept.agent]?.name || concept.agent}
           </span>
         </div>
         <p className="insp-desc">{concept.desc}</p>
       </div>
 
-      <div className="insp-card muted">
+      {/* Properties */}
+      <div className="insp-section">
         <div className="insp-h">Properties</div>
         <dl className="insp-kv">
           <dt>Origin</dt>
           <dd>Cycle {concept.originCycle}</dd>
+
           <dt>Adoption</dt>
           <dd>
             <span className="adoption-bar">
-              <span className="bar"><span className="fill" style={{ width: `${concept.adoption * 100}%`, background: tone.color }}></span></span>
+              <span className="bar">
+                <span className="fill" style={{ width: `${concept.adoption * 100}%`, background: tone.color }}></span>
+              </span>
               <span className="num">{Math.round(concept.adoption * 100)}%</span>
             </span>
           </dd>
+
           <dt>Parent</dt>
-          <dd>{parent ? <span><span className="insp-id">{parent.id}</span> · {parent.name}</span> : <span style={{ color: 'var(--text-dim)' }}>— root</span>}</dd>
+          <dd>
+            {parent
+              ? <span><span className="insp-id">{parent.id}</span> · {parent.name}</span>
+              : <span style={{ color: 'var(--text-mute)' }}>— root</span>
+            }
+          </dd>
+
           <dt>Children</dt>
-          <dd>{children.length === 0 ? <span style={{ color: 'var(--text-dim)' }}>— leaf</span> : (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-              {children.map(id => <span key={id} className="insp-id" style={{ background: 'var(--bg2)', padding: '2px 6px', borderRadius: 3 }}>{id}</span>)}
-            </div>
-          )}</dd>
+          <dd>
+            {children.length === 0
+              ? <span style={{ color: 'var(--text-mute)' }}>— leaf</span>
+              : (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {children.map(id => (
+                    <span key={id} className="insp-id"
+                      style={{ background: 'var(--bg2)', padding: '1px 5px', borderRadius: 3 }}>
+                      {id}
+                    </span>
+                  ))}
+                </div>
+              )
+            }
+          </dd>
         </dl>
       </div>
 
-      <div className="insp-card muted">
-        <div className="insp-h">Lineage · {lineage.length} event{lineage.length === 1 ? '' : 's'}</div>
+      {/* Lineage timeline */}
+      <div className="insp-section">
+        <div className="insp-h">Lineage · {lineage.length} event{lineage.length !== 1 ? 's' : ''}</div>
         <div className="lineage-list">
           {lineage.length === 0 && (
-            <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>No recorded events.</div>
+            <div style={{ color: 'var(--text-mute)', fontSize: 11 }}>No recorded events.</div>
           )}
           {lineage.map(step => (
             <div key={step.id} className="lineage-row">
               <div>
-                <div className="dot" style={{ borderColor: AGENT_COLOR_HEX[step.agent] }}></div>
-                <div className="c-tag">C{String(step.id).padStart(2, '0')}</div>
+                <div className="dot" style={{ borderColor: AGENT_HEX[step.agent] }}></div>
               </div>
               <div className="lineage-body">
-                <div className="lineage-evt">{step.evt} · {AGENTS[step.agent].name}</div>
+                <div className="lineage-cycle">C{String(step.id).padStart(2,'0')} · {step.at}</div>
+                <div className="lineage-evt">{step.evt} · {AGENTS[step.agent]?.name}</div>
                 <div className="lineage-title">{step.title}</div>
                 <div className="lineage-quote">"{step.rationale}"</div>
               </div>
@@ -586,7 +769,7 @@ function Inspector({ concept, lineage, layout }) {
           ))}
         </div>
       </div>
-    </aside>
+    </>
   );
 }
 
