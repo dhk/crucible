@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-# crucible
-Crucible is an agentic debate engine for recursive document refinement. Multiple AI reviewers challenge, defend, mutate, and evolve ideas through structured review cycles, preserving commits, rationale, concept lineage, dead ends, and resistance patterns as inspectable intellectual history.
-=======
 # Crucible
 
 > Give it to the Crucible.
 
-Crucible is a Git-native debate engine for improving design documents, strategy memos, architecture proposals, and other durable work products through structured agentic review cycles.
+Crucible is a Git-native debate engine that improves design documents, strategy memos, architecture proposals, and other durable work products through structured, agentic review cycles.
 
 The core idea: two or more agents pass a Markdown document back and forth, each reviewing from a deliberate stance, committing changes with rationale, and opening or updating pull requests that preserve the evolution of the work.
 
@@ -78,4 +74,3 @@ templates/               Cycle, metadata, and PR templates
 examples/                Example seed documents and generated outputs
 visualizations/          Generated graph/timeline artifacts
 ```
->>>>>>> e77f73a (Initial Crucible scaffold)
