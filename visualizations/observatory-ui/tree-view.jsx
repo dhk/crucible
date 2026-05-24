@@ -801,13 +801,12 @@ function Inspector({ concept, lineage, layout }) {
                 {step.commit && (
                   <div className="lineage-commit">
                     <span className="commit-label">commit</span>
-                    <a
+                    <span
                       className="commit-hash"
-                      href={`https://github.com/dhk/crucible/commit/${step.commit}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="View full diff on GitHub"
-                    >{step.commit}</a>
+                      title={step.commit}
+                      onClick={() => navigator.clipboard?.writeText(step.commit)}
+                      style={{ cursor: 'copy' }}
+                    >{step.commit}</span>
                   </div>
                 )}
               </div>
