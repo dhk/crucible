@@ -1,1 +1,4 @@
 cycle,concept_id,reason,status
+003,FPS-019,Testable criterion (competent practitioner alone with public docs) collapses for large complex systems — only meaningful where freedom-preserving design is already easiest.,confirmed
+003,FPS-024,AI-inspectability criteria structurally depend on vendor self-attestation; no external verification mechanism; can be satisfied by compliance documents that disclose nothing actionable.,confirmed
+003,FPS-005,Freedom/security distinguishing test is not operationalizable — same mechanism simultaneously serves both legitimate and illegitimate functions; user has no external verification path.,confirmed

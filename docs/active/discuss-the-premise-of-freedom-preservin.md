@@ -1,9 +1,9 @@
 ---
 document_id: discuss-the-premise-of-freedom-preservin
 issue: 12
-status: steelman
+status: adversarial
 created_by: human
-crucible_state: steelman
+crucible_state: adversarial
 fossil_export: true
 ---
 
@@ -93,6 +93,8 @@ This covers execution, data, configuration, automation, and modification. The pl
 
 **Priority rule**: Each layer's sovereignty applies within its domain; no layer may exercise its sovereignty in a way that eliminates a lower layer's rights *within that lower layer's domain*. An organization may not grant itself the right to prevent end users from inspecting or exporting their own data. An administrator may not prevent end users from exporting their own work.
 
+[island: enterprise IT and legal departments — compliance-structural resistance: GDPR, HIPAA, SOC2, and similar regulatory regimes legally *require* organizations to prevent users from exporting data in unauthorized ways, restrict execution environments, and maintain audit trails that override individual user control. The priority rule assumes a liberty-maximizing legal context that does not exist in regulated industries. No enforcement mechanism is proposed to resolve conflicts between this rule and binding legal obligations. In the domains where user data is most sensitive and freedom most consequential, the proposal is in direct conflict with law — and law wins.]
+
 This rule implies that **sovereignty is domain-specific, not strictly hierarchical**. Organizational control over deployment does not extend to end-user control over personal data and outputs. Enterprise deployment does not give organizations unlimited authority over end-user freedoms.
 
 Systems should therefore avoid:
@@ -133,6 +135,10 @@ An AI system satisfies inspectability-by-default when:
 3. **Decision boundaries are testable**: users can probe the system to understand its behavior in their domain.
 4. **Uncertainty is surfaced**: the system communicates confidence levels and known failure modes.
 
+[dead end: all four criteria as stated depend on vendor self-attestation with no independent verification mechanism. "Auditable training lineage" means the vendor documents what they claim to have used — there is no mechanism for external verification of that claim. "Traceable inference paths" at the level described reduces to post-hoc explanation, which this document already identifies as an insufficient substitute for genuine inspectability. Criteria 1–4 can be satisfied in full by a compliance document that discloses nothing actionable. Without third-party audit rights and standardized disclosure formats, this section specifies the appearance of transparency, not transparency itself.]
+
+[island: AI model vendors — IP and copyright liability resistance: genuine disclosure of training data lineage exposes vendors to copyright infringement claims and trade secret liability at scale. This is not a coordination failure or bad faith — it is a structural legal incentive that makes real compliance with criterion 1 commercially untenable. The vendors most likely to deploy consequential AI systems are the vendors with the most legal exposure from disclosing training data provenance. The criteria that would make AI systems most genuinely inspectable are precisely the criteria those vendors cannot meet without assuming prohibitive legal risk.]
+
 An AI system does **not** satisfy inspectability by providing post-hoc explanations that are statistically accurate but incorrect for any given case — a known failure mode of saliency-based explanation methods.
 
 ---
@@ -152,6 +158,8 @@ The architecture should therefore favor:
 
 **Testable criterion**: A freedom-preserving system should be modifiable by a competent practitioner working alone with publicly available documentation. If modification requires insider knowledge, undocumented toolchains, or coordination with the original authors, the system fails this test regardless of its license.
 
+[dead end: criterion collapses for large complex systems — Linux kernel, Android AOSP, any production-scale AI system. No individual practitioner working alone can fork and independently operate these systems. The criterion provides meaningful guidance only for small projects where freedom-preserving design is already easiest. It produces no guidance for the systems where practical freedom is hardest to secure and where this proposal's principles are most consequential. A test that is only applicable where it is least needed is not a test.]
+
 #### Positive Architectural Obligations
 
 A genuinely freedom-preserving system has positive obligations beyond mere permission:
@@ -161,6 +169,8 @@ A genuinely freedom-preserving system has positive obligations beyond mere permi
 - **Test infrastructure**: users should be able to verify that their modifications work correctly.
 
 These obligations apply to the system's builders — they are not optional enhancements but requirements for the system to be genuinely free under the capability framing.
+
+[island: volunteer-maintained and under-resourced projects — unfunded-obligation resistance: progressive disclosure, stable versioned interfaces, comprehensive documentation, and test infrastructure are expensive to produce and maintain continuously. Imposing these as hard requirements on communities of unpaid volunteers or under-resourced startups without a funding model does not produce freedom-preserving outcomes — it produces non-compliant projects that lose to well-funded alternatives that can absorb the cost. A framework that structurally favors well-resourced actors may concentrate the very power it was designed to check.]
 
 ---
 
@@ -245,7 +255,7 @@ A freedom-preserving governance model distinguishes:
 
 **Minimal governance structure**:
 
-1. **Standards as commons, not property**: Protocol and interface standards should be governed by multi-stakeholder bodies, not controlled by any single implementor. No single party should hold a veto over protocol evolution.
+1. **Standards as commons, not property**: Protocol and interface standards should be governed by multi-stakeholder bodies, not controlled by any single implementor. No single party should hold a veto over protocol evolution. [island: well-resourced corporate actors — governance-capture via funding dominance: W3C is dominated by browser vendors, IETF processes are steered by companies that fund full-time participant engineers, ITU is captured by nation-states with aligned industrial interests. Multi-stakeholder governance displaces the capture problem rather than solving it — governance structure and power balance are orthogonal properties. Parties with the most resources to participate in standards bodies tend to be the parties with the strongest interest in steering standards toward their existing implementations. "Multi-stakeholder" is a procedural property, not a power-balance guarantee.]
 2. **Exit rights as governance floor**: Any participant — individual or community — must retain the right to exit and continue independently. Governance structures that make exit impractical (by centralizing data, by making protocols undocumented, by concentrating infrastructure authority) are anti-patterns regardless of the governance body's intentions.
 3. **Transparent governance**: Governance decisions, conflicts of interest, and funding sources should be auditable by participants. Governance opacity is an inspectability failure.
 4. **Separation of stewardship and profit**: Entities that profit from the system should not be the sole stewards of the protocol or commons infrastructure it depends on.
@@ -287,6 +297,8 @@ Secure enclaves, TPMs, and verified boot chains restrict user modification to de
 
 *Provisional position*: A restriction is legitimate when it protects the user from external threats; it is illegitimate when it protects the vendor's control from the user. The distinguishing test: who does the restriction primarily protect — the user from threats, or the vendor from the user? Verified boot chains that protect against rootkits are legitimate; firmware locks that prevent loading user-modified software are tivoization regardless of the security framing used to justify them.
 
+[dead end: the distinguishing test is not operationalizable from outside the restriction. The same firmware lock simultaneously protects against rootkits (legitimate user protection) and prevents user-modified software (vendor control). These two effects are architecturally inseparable: a boot chain that permits user-modified software provides an attacker vector for unsigned code. Vendors can always assert a security justification — and often be correct simultaneously — while the user has no inspection mechanism to challenge the claim without the access the restriction prevents. The test requires the user to have already exercised the freedom they are being asked to prove they need.]
+
 **2. Formal Freedom vs. Practical Freedom**
 Addressed as the cross-cutting framework. *Provisional position*: practical freedom is the operative standard; formal freedom is necessary but not sufficient. Systems that only provide formal freedom are non-compliant with this proposal's intent.
 
@@ -294,13 +306,51 @@ Addressed as the cross-cutting framework. *Provisional position*: practical free
 Addressed under User Sovereignty §1. *Provisional position*: individual exit rights take priority; collective resilience is a design responsibility, not a constraint on exit.
 
 **4. Freedom vs. Economic Sustainability**
-*Unresolved*. Freedom-preserving systems often struggle economically because they cannot extract monopoly rents from lock-in. Candidate models: public subsidy (as with roads and public standards bodies), commons governance with shared infrastructure funding, hybrid dual-licensing (which risks the permissive-to-proprietary anti-pattern). No model has proven reliably sustainable at scale without compromise. This is not a reason to abandon freedom-preserving goals, but it is a structural challenge requiring explicit governance investment.
+*Unresolved — and the highest-severity structural failure mode in this proposal.* Freedom-preserving systems often struggle economically because they cannot extract monopoly rents from lock-in. Candidate models: public subsidy (as with roads and public standards bodies), commons governance with shared infrastructure funding, hybrid dual-licensing (which risks the permissive-to-proprietary anti-pattern). No model has proven reliably sustainable at scale without compromise.
+
+[dead end: the historical pattern here is not ambiguous — it is consistent. Red Hat was acquired by IBM. MySQL was absorbed into Oracle. Elasticsearch changed its license under commercial pressure. HashiCorp changed its license. Android AOSP became a vehicle for Google Play Services lock-in. The permissive-to-proprietary pipeline is not an edge case; it is the modal outcome for successful freedom-preserving projects under current market conditions. "Explicit governance investment" is named without identifying who provides it, in what form, or by what mechanism that investment is protected from capture by the same actors who benefit from the current regime. This is not a reason to abandon the proposal's goals — but treating it as one tension among many understates its severity. Every other principle in this document is downstream of whether the project survives economically. Economic capture is the extinction event; all other failure modes are contingent on it not occurring first.]
 
 **5. Positive vs. Negative Freedom**
 Addressed under Modifiability §3. *Provisional position*: system builders have positive architectural obligations to enable the exercise of freedoms, not just negative obligations to refrain from restricting them. This is an intentional extension beyond the GNU definition's negative-liberty register.
 
 **6. AI Systems and Freedom**
 Partially addressed under Inspectability §2. The deeper question — whether consequential AI decisions are ever meaningfully inspectable in the relevant sense — remains open. A user who can audit training lineage and test decision boundaries is in a meaningfully better position than one who cannot. But a probabilistic model trained on shared corpora exercises a form of influence that is not fully decomposable into inspectable parts. *Provisional position*: freedom-preserving AI systems must be auditable (lineage and training decisions documented), testable (behavior probeable by users), and interruptible (users can override, reject, or exit AI-driven workflows without losing capability). Full mechanistic transparency may not be achievable; auditability, testability, and interruptibility are achievable and are the operative standard.
+
+---
+
+## Failure Modes
+
+The following failure modes represent the highest-risk paths by which a sincere implementation of this proposal produces freedom-reducing outcomes despite correct intent. Each reflects a documented pattern in existing systems.
+
+### 1. Economic Gravity (Highest Severity)
+Freedom-preserving systems that achieve adoption become acquisition targets or license-change candidates. The permissive-to-proprietary pipeline is the modal outcome for successful free software projects under current market conditions. No governance structure proposed here has resisted it at scale.
+
+**Mechanism**: Success → adoption → commercial value → acquisition or license change → the freedoms users built on no longer exist. Every other principle in this document is downstream of whether the project survives economically.
+
+### 2. Compliance-Sovereignty Conflict
+In regulated industries (healthcare, finance, government), binding legal obligations require organizations to restrict user freedoms as defined here — to prevent unauthorized data export, to enforce audit controls that override individual user preferences, to restrict execution environments. The layered sovereignty model's priority rule assumes a liberty-maximizing legal context that does not exist in these domains.
+
+**Mechanism**: The proposal applies in unregulated contexts, ceding the domains where user data is most sensitive and freedom most consequential.
+
+### 3. Governance Capture
+Multi-stakeholder governance bodies are dominated by the actors with the most resources to participate, which are typically the actors with the strongest interest in steering standards toward their existing implementations. Governance structure and power balance are orthogonal properties.
+
+**Mechanism**: Well-funded actors fund full-time standards participants, dominate agenda-setting, and achieve de facto veto power while maintaining procedural multi-stakeholder legitimacy.
+
+### 4. Self-Attestation Without Verification (AI Systems)
+The AI-inspectability criteria are structurally dependent on vendor self-reporting. There is no mechanism by which an outside party can verify training lineage, inference traceability, or surfaced uncertainty without vendor cooperation. Criteria that depend entirely on self-attestation are compliance theater at scale.
+
+**Mechanism**: Vendors publish lineage documents that satisfy the formal criterion; the documents are unverifiable from outside; meaningful disclosure does not occur.
+
+### 5. Unfunded Obligations
+Positive architectural obligations — progressive disclosure, stable interfaces, documentation, test infrastructure — are expensive to maintain continuously. Imposing them as hard requirements on under-resourced projects selects for well-funded alternatives that can absorb the cost, potentially concentrating the power the framework was designed to check.
+
+**Mechanism**: Compliance cost selects for well-resourced actors; the framework validates the actors it was intended to constrain.
+
+### 6. Security as Cover
+The freedom/security boundary proposed here ("who does the restriction primarily protect?") is not operationalizable from outside the restriction. The same technical mechanism simultaneously protects users from attackers and protects vendors from users. Vendors can assert security justification; users have no verification path that does not depend on the access the restriction prevents.
+
+**Mechanism**: Tivoization-class restrictions are reframed as security measures; the proposal has no mechanism to distinguish the cases externally.
 
 ---
 
@@ -314,3 +364,4 @@ Partially addressed under Inspectability §2. The deeper question — whether co
 | 2026-05-24 | Establish positive architectural obligations as first-class commitment | Extends the proposal beyond the GNU negative-liberty register to require active enablement, not just permission |
 | 2026-05-24 | Provide provisional positions on five of six tensions | Steelman pass should commit where evidence supports; only genuine open questions remain open |
 | 2026-05-24 | Articulate AI-inspectability criteria | Hidden AI orchestration is named as an anti-pattern without criteria for what makes AI orchestration non-hidden; auditability + testability + interruptibility are the operative standard |
+| 2026-05-24 | Adversarial pass: annotate failure modes and resistant populations | Six structural failure modes identified; four dead ends flagged inline; three island populations flagged; Failure Modes section added; economic sustainability elevated to highest-severity unresolved tension |
