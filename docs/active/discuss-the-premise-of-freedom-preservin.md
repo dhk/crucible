@@ -3,7 +3,7 @@ document_id: discuss-the-premise-of-freedom-preservin
 issue: 12
 status: strawman
 created_by: human
-crucible_state: adversarial
+crucible_state: strawman
 fossil_export: true
 ---
 
@@ -35,13 +35,15 @@ This is a proposal for building systems that preserve those freedoms **operation
 
 ### Alternative Framings
 
-The premise "software should serve its users, not bind them" is one framing. Five alternative framings sharpen the proposal's commitments:
+The premise "software should serve its users, not bind them" is one framing. Seven alternative framings sharpen the proposal's commitments:
 
 - **Instrumentalist framing**: Software is a tool. Tools don't have politics. Freedom is a property of the social arrangements *around* software, not the software itself. On this view, "freedom-preserving software" is a category error — we should be designing freedom-preserving *institutions*.
 - **Commons framing**: Software is infrastructure. Infrastructure should be governed as a commons, not owned by individual users or vendors. Freedom here means participatory governance, not individual control. This shifts the locus from user rights to community governance.
 - **Capability framing**: Following Sen/Nussbaum's capability approach — a system is free when users have the *real capacity* to exercise their rights, not just formal permission. Capability requires skills, access, documentation, and community support — not just open code.
 - **Anti-domination framing**: Freedom means absence of domination by *any* party — vendor, state, or even a community majority. Distinct from absence of constraint; a benevolent gatekeeper still dominates.
 - **Temporal framing**: Freedom is not a property of a system at a point in time but of its *trajectory*. A system that is free today but structurally trending toward lock-in — through accumulating dependencies, eroding documentation, concentrating governance, or expanding network effects — is not a free system in any meaningful sense. On this framing, freedom-preservation is an ongoing maintenance activity, not a design-time achievement. A system can be certified as free at release and become unfree within two years without any deliberate decision by any actor. This framing implies that freedom assessments must be periodic and dynamic, not one-time. See §Freedom Decay and Periodic Assessment for the concrete mechanism this implies.
+- **Exit-option framing** [speculative]: Freedom is not the active exercise of rights but the *credible availability* of exit. On this view, a system is free when leaving is genuinely possible — even if most users never leave. The mere existence of a viable exit option disciplines platform behavior; the *threat* of exit constrains extraction. This framing is structurally distinct from the capability framing: a user need not have the skills to fork or inspect in order to benefit from exit-option freedom, as long as *someone* can exit and alternatives exist. The design target is maintaining exit credibility at the ecosystem level, not guaranteeing individual capacity at the user level. This framing implies a different success criterion: not "can every user exit?" but "does the exit option remain credible enough to constrain platform behavior?" The [exit ecosystem] concept (§Right To Fork) operationalizes this framing architecturally.
+- **Active-governance framing** [speculative]: Freedom is not individual rights or individual capacity but *collective shaping power* — the ability of affected communities to meaningfully influence the direction of systems that govern them. On this view, inspection and modification are instrumental: they matter because they enable participation in governance, not because they are valuable in themselves. A system with open source code but no governance participation channel is less free under this framing than a system with a robust governance mechanism even if the underlying code is proprietary. The active-governance framing implies an underexplored design requirement: systems should have legible governance pathways, not just legible source. The user-cooperative model (§Governance Model) is the institutional form this framing implies.
 
 ### Synthesis
 
@@ -114,6 +116,29 @@ Three interpretations of voluntary delegation delimit the design space:
 [dead end: circular operationalization — the empirical distinguishing test requires conditions (zero exit costs, genuine alternatives) that are precisely the outcomes this proposal is designed to create, not conditions that currently exist. In status-quo markets — where the framework would be applied — exit costs are high and alternatives are absent by definition; interpretation 3 is therefore unfalsifiable in the cases where it is most operative. The test cannot distinguish structural coercion from genuine preference in current markets because it requires observing user behavior under counterfactual conditions. The framing is analytically coherent but operationally inert as a diagnostic tool; it describes a design goal, not a present-tense measurement. A proposal that adopts an operationally untestable assumption as its central framing has no mechanism to detect when that assumption is wrong.]
 
 **Design implication of interpretation 3**: The system's obligation is not to prevent users from choosing freedom-reducing arrangements, but to ensure that genuine alternatives exist. This shifts the design target from individual consent to collective availability — the framework succeeds when users who want sovereignty can exercise it without prohibitive exit costs, not when all users are forced into sovereign configurations. A freedom-preserving ecosystem is one where structural coercion via network effects has been neutralized enough that preference genuinely varies.
+
+**Graduated delegation** [speculative]: The three-interpretation model treats delegation as binary — users either delegate a freedom or retain it. But the design space includes finer-grained structures: users who delegate execution (run code on a remote server) need not simultaneously delegate inspection (source access) or exit (data portability). Freedom-preserving architectures can separate these concerns, making freedoms independently exercisable rather than bundled. A user without the resources to self-host can still retain inspection rights and export rights; a user who delegates curation (algorithmic feeds) can still retain modification rights (feed control). Graduated delegation suggests an architectural target: **composable sovereignty** — individual freedoms are separately exercisable, not jointly enabled or disabled by a single architectural choice.
+
+**Composable sovereignty: a decomposition matrix** [speculative]: The five GNU freedoms (run, inspect, modify, redistribute, share improvements) map onto architectural decisions differently. Not all delegations imply all others:
+
+| Freedom | Delegation mechanism | Independent from |
+|---|---|---|
+| Run (execution) | Remote computation, SaaS | Inspect, Modify, Redistribute |
+| Inspect (source access) | Closed weights, obfuscation | Run, Redistribute |
+| Modify (local adaptation) | Locked builds, no plugin surface | Run, Inspect |
+| Redistribute (fork/share) | License restriction | Run, Inspect, Modify |
+| Share improvements | Proprietary-only contribution | Redistribute |
+
+A genuinely composable architecture allows users to delegate execution without surrendering inspection — for example, a remote inference API that provides source access and auditable training lineage. The architectural obligation is to identify which delegation decisions force bundled freedom-loss and to unbundle them where technically feasible. Where bundling is unavoidable, it must be documented as a conscious trade-off, not an invisible architectural default.
+
+**Proxy indicators for structural coercion** [speculative]: The circular-operationalization dead end (FPS-034) notes that the primary distinguishing test — do users continue to choose freedom-reducing arrangements when exit costs approach zero? — requires counterfactual conditions unavailable in current markets. Proxy indicators that approximate the test without requiring those conditions:
+
+- Whether functionally equivalent alternatives exist at any cost level (presence/absence proxy for "genuine alternatives exist")
+- Whether exit costs are rising or falling over time (trend proxy for structural trajectory)
+- Whether users who have exited report capability degradation (outcome proxy for whether alternatives are genuine)
+- Whether the platform's market share is concentrated and growing or distributed and stable (structural proxy for network-effect lock-in)
+
+These proxies measure correlates of structural coercion rather than the condition directly. They are falsifiable in current markets and can be updated periodically. A platform that passes all four in the direction of genuine preference diversity is less likely to represent structural coercion; one that fails three or more is more likely. The proxies do not resolve the conceptual problem raised by FPS-034 but they provide operational traction in current conditions.
 
 Systems should therefore avoid:
 - mandatory cloud dependency,
@@ -219,6 +244,8 @@ Forkability is treated as resilience infrastructure — the sustained ability to
 
 **Architectural implication**: Freedom-preserving systems should design their core value to be protocol-level, not concentration-level. A federated system whose value lives in the protocol survives fragmentation; one whose value lives in the dominant instance's network does not. This is a design requirement, not merely a governance aspiration.
 
+**Exit ecosystem as prerequisite** [speculative]: The right to fork creates the *possibility* of alternatives; it does not create alternatives. An individual user's exit right is meaningful only when there is somewhere to exit to — a viable ecosystem of alternatives that provides comparable capability at non-prohibitive cost. A freedom-preserving design must consider not just whether users *can* exit but whether the exit option remains *credible*: whether alternatives exist, are maintained, and can absorb new users without degrading. An exit ecosystem has three components: (1) *availability* — alternative implementations exist; (2) *viability* — alternatives can serve a meaningful fraction of current users; (3) *discoverability* — users can find and evaluate alternatives without expert intermediaries. A system whose only fork died three years ago for lack of contributors, or whose fork requires a level of expertise that excludes most users, has formal exit rights but no credible exit ecosystem. The exit-option framing (§Theoretical Grounding) implies that maintaining this ecosystem is a shared obligation of freedom-preserving communities — not merely the individual obligation of the user who wishes to leave.
+
 ---
 
 ### 5. Shared Improvement Loop
@@ -266,6 +293,7 @@ Obligations fall into two tiers:
 - Protocols over proprietary integrations
 - Exportability at every layer
 - **Minimal footprint** [speculative]: systems that require the least possible infrastructure to run preserve freedom better than feature-equivalent systems with heavy infrastructure dependencies. Each required infrastructure component is a potential freedom-reducing dependency. A system that runs on a single machine with no external services has a radically smaller attack surface for freedom erosion than one that requires cloud services, managed databases, certificate authorities, and CDN delivery.
+- **Freedom budget** [speculative]: each architectural decision either spends or saves from an implicit freedom budget — the total capacity for freedom that the system's design permits. External service dependencies, proprietary formats, opaque build processes, and API lock-ins are costs; local-first design, open formats, replaceable subsystems, and commons-governed dependencies are savings. Making the freedom budget explicit — as a tracked design artifact rather than an invisible consequence of individual decisions — allows architects to make cumulative trade-offs consciously. A system whose individual decisions each seem minor may have spent its freedom budget without anyone noticing. A freedom budget accounting requires: (1) enumerating every dependency and its governance status (costs the infrastructure footprint analysis already provides); (2) assigning a coarse freedom-cost rating to each (high/medium/low chokepoint potential); (3) tracking the total and alerting when the budget degrades across releases. This is related to the infrastructure dependency footprint documentation requirement but frames it as a running account rather than a point-in-time snapshot.
 
 ### The Infrastructure Dependency Stack
 
@@ -286,6 +314,10 @@ This is not an argument that application-layer freedom is worthless — it is an
 **Design implication**: Freedom-preserving systems must document their infrastructure dependency footprint — an enumeration of every external dependency at each layer above, with the governance status of each dependency (commercially controlled, commons-governed, or self-hostable). Systems should prefer dependencies that are themselves governed as commons (e.g., IETF-standardized protocols, distributed certificate transparency systems, open hardware designs) over commercially controlled dependencies, even when the commercial dependency is currently permissive. The preference is not absolute — a commercially-controlled dependency may be the only viable option at a given layer — but it must be a conscious, documented choice, not an invisible default.
 
 **Connection to freedom-decay**: Infrastructure capture is a primary accelerant of freedom-decay. A system that documents its infrastructure footprint at t=0 and reassesses it periodically will detect when initially permissive commercial dependencies have become load-bearing lock-ins before those lock-ins become irremovable. The infrastructure dependency footprint is therefore both a design artifact and a periodic assessment input (see §Freedom Decay and Periodic Assessment).
+
+**Freedom-inheritance** [speculative]: The infrastructure dependency stack implies a compositional property: a system's practical freedom ceiling is determined by its most-captured dependency at any layer. A freedom-preserving application built atop a commercially-controlled CDN has a practical freedom ceiling lower than its application-layer design implies — the CDN provider can restrict access regardless of application code. Stated as a principle: *a system's practical freedom is at most equal to the practical freedom of its least-free dependency, regardless of the freedom properties of other components*.
+
+This principle has an architectural implication beyond the documentation requirement already specified: when analyzing the infrastructure footprint, each dependency should be assessed not only for governance status but for *chokepoint potential* — whether the dependency holder could restrict system access in ways not anticipated by the application design. A dependency with low chokepoint potential (a widely-implemented IETF protocol) may be more freedom-preserving than a theoretically self-hostable dependency (running one's own TLS certificate authority) that is practically never self-hosted because the cost is prohibitive. The goal is not theoretical self-hostability but practical non-capture.
 
 ### Anti-Patterns
 
@@ -327,6 +359,15 @@ A freedom-preserving governance model distinguishes:
 Contributors may guide standards, but users retain the right to adapt, fork, and redistribute the system.
 
 Community continuity is prioritized over institutional permanence.
+
+**Alternative governance model: user cooperative** [speculative]: The minimal governance structure above addresses how standards are governed, but leaves open how *platforms* are governed. Multi-stakeholder standards bodies are procedurally inclusive but not ownership-inclusive — well-resourced actors dominate regardless of governance structure. An underexplored alternative is the **platform cooperative** model: users collectively own and govern the platform through cooperative ownership mechanisms (democratic voting rights, profit sharing, board representation). This is distinct from:
+- Multi-stakeholder standards bodies (which include non-user stakeholders and separate governance from ownership)
+- Individual sovereignty (which creates individual rights without collective voice)
+- Commons governance (which addresses shared infrastructure, not platform operation)
+
+Platform cooperatives have an empirical track record (credit unions, worker-owned firms, agricultural cooperatives) that provides a design baseline distinct from open-source governance experiments. The governance-capture failure mode (§Failure Modes #3) is structurally different in a cooperative: governance power is proportional to user membership, not to resources spent on standards participation. The tradeoffs are real — cooperative governance is slower, requires active participation infrastructure, and doesn't scale easily — but it represents a distinct failure mode profile from multi-stakeholder bodies, not a strictly worse or better alternative.
+
+[speculative extension: **federated cooperative** — rather than a single user cooperative operating a platform, a network of interoperable cooperatives operating compatible implementations of a shared protocol. This combines the exit-ecosystem requirement (viable alternatives) with cooperative ownership (user governance) at each node. Each node is locally governed; the protocol is commonly governed. This is the institutional form that the active-governance framing implies at scale.]
 
 ---
 
@@ -430,6 +471,35 @@ Freedom-preserving systems should conduct **periodic freedom assessments** — s
 
 [dead end: assessment mechanism as unfunded obligation at the meta-level — the periodic assessment mechanism has no governance charter, no funding model, no enforcement authority, and no institutional home. It is an obligation imposed on the community without a corresponding resource commitment. This is the unfunded-obligation anti-pattern (FPS-027) applied recursively: the mechanism designed to detect freedom-decay is itself subject to freedom-decay through the same disengagement and resource-attrition it was built to monitor. An assessment mechanism that decays is indistinguishable from no assessment mechanism; a non-binding assessment mechanism is indistinguishable from a compliance document.]
 
+**Automated freedom-decay detection** [speculative]: If human assessors are structurally unlikely to materialize or persist (see island and dead end above), an alternative design direction is to embed machine-measurable freedom-decay indicators in the system's standard release infrastructure — CI/CD pipelines, package metadata, and repository analytics:
+
+- *Documentation staleness ratio*: lines of code changed vs. documentation lines changed, computed per release; a declining ratio is an early decay indicator
+- *Contributor concentration*: authorship Gini coefficient computed from git log, published alongside each release
+- *Dependency governance status*: automated SBOM-style audit of each dependency's governance classification (commercially controlled vs. commons-governed), flagging newly-commercial dependencies on each update
+- *Build reproducibility*: whether a clean build from only public documentation and public dependencies succeeds in an isolated environment, tested on each release
+
+These indicators do not require a dedicated assessor body — they require that maintainers commit to computing and publishing them. The structural limitation is the same as for human assessors: maintainers under resource pressure are least likely to invest in decay monitoring. However, if these metrics can be integrated with existing compliance infrastructure (SBOM generation is an emerging norm for supply-chain security; reproducible build requirements are expanding in several regulatory contexts), the marginal cost approaches zero. The key design question is whether freedom-decay indicators can ride alongside compliance indicators already mandated by other frameworks — if so, the meta-governance-gap may be partially closeable through incidental regulatory alignment rather than requiring dedicated governance.
+
+### Regulatory Alignment as Bootstrap Strategy [speculative]
+
+The compliance-sovereignty conflict (FPS-026, §Failure Modes #2) frames regulation as adversarial to user freedom — and for many regulatory requirements, it is. But several emerging regulatory frameworks independently converge on conditions that this proposal endorses, creating opportunities for **regulatory alignment**: situations where compliance with independent regulatory requirements incidentally produces freedom-preserving outcomes, without requiring freedom-preservation advocates to be the primary political actor.
+
+**Convergent regulatory requirements**:
+
+| Regulatory framework | Requirement | Freedom-preserving analog |
+|---|---|---|
+| GDPR Article 20 (EU) | Data portability: users can export their data in a machine-readable format | Exit without loss (reversibility criterion 2) |
+| EU Cyber Resilience Act / US EO 14028 | Software Bill of Materials (SBOM) for critical software | Infrastructure dependency footprint documentation |
+| Right-to-Repair legislation (EU, US states) | Hardware vendors must provide repair documentation and diagnostic tools | Modifiability-first-class at the hardware layer |
+| NIS2 / DORA (EU) | Dependency risk management; supply chain transparency | Freedom-decay monitoring; dependency governance status |
+| Digital Markets Act (EU) | Interoperability mandates for gatekeepers | Protocol-level value; exit ecosystem viability |
+
+These are not identical to the freedom-preservation requirements proposed here — the regulatory framings have narrower scope, different enforcement mechanisms, and different political origins. But the overlap is non-trivial: a system that satisfies GDPR Article 20 has partially satisfied the reversibility and data-sovereignty requirements in this proposal, whether or not the system's designers intended freedom-preservation.
+
+**Design implication**: Freedom-preserving systems should identify which of their requirements are incidentally satisfied by regulatory compliance in their target jurisdictions, and structure compliance documentation to serve double duty — satisfying regulatory requirements while also generating the freedom-assessment inputs specified in §Periodic Freedom Assessment. The SBOM generated for supply-chain security compliance is also an infrastructure dependency footprint for freedom-decay monitoring. The data portability mechanism implemented for GDPR is also the exit-without-loss mechanism for reversibility. This doubles the value of a single compliance investment without requiring additional political advocacy.
+
+**Limit of the strategy**: Regulatory alignment is incidental and jurisdiction-specific. GDPR applies in the EU; right-to-repair legislation varies by jurisdiction; many of the converging requirements are contested and may be weakened. The strategy does not substitute for dedicated freedom-preservation governance — it supplements it by reducing the marginal cost of some assessments in some jurisdictions. The meta-governance-gap (FPS-033) is not closed by incidental regulatory alignment; it is narrowed in favorable regulatory environments.
+
 ---
 
 ## Reversibility: A Sub-Principle of User Sovereignty
@@ -453,6 +523,12 @@ Reversibility is an *individual*, *temporal* mechanism: can a *single user* undo
 3. **No irreversible defaults**: System defaults do not put users into configurations that cannot be undone without contacting the vendor or losing data.
 
 [dead end: no-irreversible-defaults conflicts with security-by-design — modern security practices are built on intentionally irreversible defaults: cryptographic key generation, passphrase hashing, certificate enrollment, secure boot state, and database schema migrations are one-way state transitions by design. The irreversibility is the security mechanism. Criterion 3 either (a) requires an exception for security-related operations through an exception whose scope is left to vendor discretion, or (b) applies uniformly and actively degrades security posture by demanding reversible cryptographic operations. The freedom/security tension explicitly unresolved in §Unresolved Tensions is reproduced without resolution inside §Reversibility. Criterion 3 as stated cannot be satisfied by a security-conscious system without a scoping exception that the proposal does not provide.]
+
+**Alternative framing — legible defaults** [speculative]: Rather than requiring that all defaults be reversible (criterion 3 as stated), a weaker but potentially defensible criterion is that the *reversibility status* of every default must be made explicit to the user before they encounter it. "This operation is irreversible" is a freedom-preserving disclosure even when the irreversibility itself is technically necessary. Legible-defaults separates two distinct obligations:
+- **Disclosure obligation**: the system must communicate whether an action or default is reversible, and at what cost, at the point of encounter — not in documentation.
+- **Reversibility obligation**: the action or default must actually be reversible.
+
+Criterion 3 as stated bundles both; legible-defaults requires only the disclosure obligation, leaving the reversibility obligation to criterion 1 and criterion 2 for cases where reversal is feasible. Under legible-defaults, a system that makes a cryptographic key generation irreversible satisfies the criterion by informing the user clearly that this key cannot be regenerated — rather than by making it reversible (which would undermine security). This reframing avoids the freedom/security contradiction at the cost of weakening the anti-domination protection: a system in which most defaults are legibly irreversible still concentrates authority in system design, but at least does so with user awareness. Whether user awareness is sufficient, or whether it merely converts coercion into informed coercion, is a genuine open question.
 
 4. **Degradation transparency**: Where irreversible actions are technically unavoidable (e.g., deletion), the system makes their irreversibility explicit at the point of action, not in documentation.
 
@@ -523,3 +599,4 @@ Testable reversibility criterion 3 ("no irreversible defaults") is structurally 
 | 2026-05-24 | Strawman pass: expand solution space with new framings and underdeveloped concepts | Added temporal framing as fifth alternative; voluntary delegation as distinct sovereignty mechanism; infrastructure dependency stack section; contributor obligations to shared improvement loop; freedom-across-time as seventh unresolved tension; minimal footprint to preferred characteristics |
 | 2026-05-24 | Steelman pass: promote emergent concepts and resolve dead ends | (1) Promoted temporal framing from [speculative]; (2) Added freedom-decay section with concrete indicators and periodic assessment mechanism; (3) Added Reversibility as sub-principle of User Sovereignty with testable criteria; (4) Committed to structural coercion framing for voluntary delegation with explicit design implication; (5) Distinguished hard/soft contributor obligations with rationale for the distinction; (6) Promoted infrastructure dependency stack, removed [speculative], added documentation requirement and freedom-decay connection; (7) Replaced modifiability dead end with tiered criterion (solo/small-team/large-team); (8) Replaced security/freedom dead end with evidence standard (threat model + narrow scope + no coincident lock-in); (9) Consolidated economic sustainability duplicate — tension §4 now points to Failure Modes §1; (10) Updated crucible_state to steelman |
 | 2026-05-24 | Adversarial pass (cycle 006): annotate new dead ends, islands, and failure modes | (1) Flagged voluntary delegation empirical test as circular operationalization — the distinguishing test requires conditions that are the proposal's design goal, not current conditions; (2) Flagged non-weaponization as misclassified hard obligation — intent-determination defeats enforceability, creates fork-suppression instrument; (3) Added tier self-assignment dead end to tiered modifiability criterion — tiers are vendor-claimed with no external verification; (4) Flagged reversibility criterion 3 as conflicting with security-by-design practices — irreversible defaults are a security mechanism; (5) Flagged assessment governance as vacuous under pressure — clause describes healthy community, provides no mechanism when community is not healthy; added meta-governance-gap dead end; (6) Added Failure Modes 7–9 (Assessment Mechanism Decay, Non-Weaponization Unenforceability, Reversibility/Security Contradiction); (7) Added concepts FPS-033 (meta-governance-gap) and FPS-034 (circular-operationalization); (8) Updated crucible_state to adversarial |
+| 2026-05-24 | Strawman pass (cycle 007): expand solution space with alternative framings and underdeveloped concepts | (1) Added exit-option and active-governance framings as sixth and seventh alternatives; (2) Expanded graduated delegation into composable sovereignty with a decomposition matrix; (3) Added exit-ecosystem concept to Right to Fork — individual exit requires viable destination ecosystem; (4) Added user-cooperative governance model as alternative to multi-stakeholder standards bodies; (5) Added federated cooperative as speculative institutional extension; (6) Added freedom-budget to preferred characteristics; (7) Added legible-defaults as alternative resolution to reversibility criterion 3 dead end; (8) Added regulatory alignment subsection in Freedom Decay — convergent regulatory requirements as bootstrap strategy; (9) Added concepts FPS-035 (exit-ecosystem), FPS-036 (legible-defaults), FPS-037 (user-cooperative-governance), FPS-038 (freedom-budget), FPS-039 (regulatory-alignment) |
