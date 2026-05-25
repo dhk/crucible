@@ -1,0 +1,79 @@
+cycle: "008"
+mode: steelman
+agent: steelman
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-040
+    name: composable-sovereignty
+    description: >
+      The principle that the five GNU freedoms (run, inspect, modify, redistribute, share)
+      are separable architectural concerns that can be independently delegated or exercised.
+      Operationalized through the decomposition matrix already in the document; named as a
+      distinct concept to enable tracking across future passes. Design requirement: each
+      architectural decision must be assessed to determine which freedoms it forecloses and
+      whether that foreclosure is technically necessary.
+
+concepts_modified:
+  - id: FPS-031
+    change: >
+      Criterion 3 replaced with legible-defaults criterion. "No irreversible defaults"
+      removed and replaced with: disclosure obligation (hard — reversibility status
+      communicated at point of encounter) plus reversibility obligation (where feasible).
+      Removes the conflict with security-by-design practices. Partially resolves Failure Mode 9.
+  - id: FPS-032
+    change: >
+      Non-weaponization reclassified from hard obligation to soft norm. Attribution is now
+      the sole hard obligation. Rationale updated: non-weaponization requires intent-determination
+      that no license mechanism can adjudicate. Closes Failure Mode 8.
+  - id: FPS-035
+    change: >
+      Promoted from emergent to active. [speculative] tag removed from §Right To Fork.
+      Three-component definition (availability, viability, discoverability) confirmed as
+      testable and integrated as a design requirement.
+  - id: FPS-036
+    change: >
+      Promoted from emergent to active. Now the operative form of reversibility criterion 3
+      — replaces "no irreversible defaults" formulation. Separates disclosure obligation
+      (hard) from reversibility obligation (where feasible).
+  - id: FPS-037
+    change: >
+      Promoted from emergent to active. [speculative] tag removed from the main user-cooperative
+      section. Federated cooperative extension retains [speculative extension] tag.
+  - id: FPS-039
+    change: >
+      Promoted from emergent to active. Regulatory alignment section header no longer marked
+      [speculative]. Convergent regulatory table confirmed as having sufficient empirical backing.
+
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified: []
+walls_identified: []
+
+stance:
+  supports:
+    - FPS-040 names what was already architecturally implied by the decomposition matrix;
+      composable sovereignty enables partial practical freedom even under delegation
+    - Legible-defaults is a more achievable and internally consistent criterion than
+      no-irreversible-defaults for systems that must also satisfy security requirements
+    - Non-weaponization reclassification corrects a clear logical error identified in cycle 006;
+      the hard obligation framing was a fork-suppression instrument, not a commons-protection mechanism
+  challenges:
+    - Legible-defaults converts a strong anti-domination protection into an awareness mechanism;
+      whether informed coercion is meaningfully better than uninformed coercion remains open
+    - FPS-040 independence claims in the decomposition matrix may not hold for all freedom pairs;
+      some combinations may be structurally bundled in ways the matrix does not capture
+  neutral:
+    - FPS-038 (freedom-budget) retained in emergent/speculative — insufficient implementation
+      detail to promote; needs concrete tooling specification or reclassification as a meta-principle
+
+rationale:
+  - Promoting speculative concepts where the underlying argument is complete reduces document
+    noise — concepts tagged [speculative] when they are operative dilute the signal of the tag
+    for concepts that genuinely require more development
+  - Structural corrections (Failure Modes 8 and 9) are a steelman obligation; leaving clear
+    logical errors in place would fail the pass's core mission of strengthening the document
+
+next_recommended_mode: adversarial
+confidence: 0.82
