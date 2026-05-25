@@ -1,0 +1,76 @@
+cycle: "004"
+mode: strawman
+agent: strawman
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-028
+    name: freedom-decay
+    description: >
+      The gradual erosion of practical freedom through processes that require no deliberate decision —
+      stale documentation, accumulating network effects, contributor attrition, expanding external
+      service dependencies, and growing codebase complexity. A system designed to be free at release
+      can become unfree within years without any actor choosing that outcome.
+  - id: FPS-029
+    name: infrastructure-dependency-stack
+    description: >
+      [speculative] The layered infrastructure below the application layer (hardware, network,
+      platform, infrastructure services) whose freedom properties are inherited by applications
+      built on top of them. A freedom-preserving application running on a captured infrastructure
+      layer inherits the capture.
+  - id: FPS-030
+    name: voluntary-delegation
+    description: >
+      The mechanism by which users actively choose to surrender freedoms in exchange for convenience,
+      reliability, or social participation — distinct from coercive lock-in. Raises the question of
+      whether freedom-preserving design should constrain user choices or ensure genuine choice is
+      available.
+  - id: FPS-031
+    name: reversibility
+    description: >
+      [speculative] The property of systems that allows users to undo state changes, exit configurations,
+      and restore prior capability without data loss or capability degradation. Distinct from forkability
+      (community continuation) and data portability (export rights); addresses the temporal dimension
+      of individual user freedom.
+  - id: FPS-032
+    name: contributor-obligations
+    description: >
+      [speculative] The reciprocal duties that users who benefit from a freedom-preserving commons
+      have toward sustaining it — upkeep contribution, attribution preservation, non-weaponization
+      of exit rights. The missing counterpart to the rights-focused framing that may be required
+      to prevent free-rider depletion of commons.
+
+concepts_modified:
+  - id: FPS-004
+    change: >
+      Implicitly extended by the temporal framing addition: practical freedom is now framed as
+      a property that must be maintained over time, not just achieved at design time.
+
+concepts_removed: []
+
+concepts_resurrected: []
+
+dead_ends_identified: []
+walls_identified: []
+
+stance:
+  supports:
+    - FPS-028 supports the adversarial pass's economic-gravity failure mode — names the mechanism
+      by which freedom erodes without deliberate capture.
+    - FPS-030 opens a genuine alternative to the proposal's implicit structural-coercion framing.
+  challenges:
+    - FPS-029 challenges the proposal's scope boundary — the infrastructure dependency stack
+      is outside current scope but represents a ceiling on what application design can achieve.
+    - FPS-032 challenges the one-sided rights framing — obligations may be necessary for commons
+      sustainability.
+  neutral:
+    - FPS-031 names a candidate principle that may or may not deserve first-class treatment.
+
+rationale:
+  - The adversarial pass annotated structural failures; the strawman pass branches into adjacent
+    design space to find framings that might survive those failures.
+  - The temporal framing is the most significant addition — it changes what "freedom-preserving"
+    means from a static certification to an ongoing maintenance activity.
+
+next_recommended_mode: steelman
+confidence: 0.78

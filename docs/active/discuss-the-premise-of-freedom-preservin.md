@@ -1,9 +1,9 @@
 ---
 document_id: discuss-the-premise-of-freedom-preservin
 issue: 12
-status: adversarial
+status: strawman
 created_by: human
-crucible_state: adversarial
+crucible_state: strawman
 fossil_export: true
 ---
 
@@ -35,12 +35,13 @@ This is a proposal for building systems that preserve those freedoms **operation
 
 ### Alternative Framings
 
-The premise "software should serve its users, not bind them" is one framing. Four alternative framings sharpen the proposal's commitments:
+The premise "software should serve its users, not bind them" is one framing. Five alternative framings sharpen the proposal's commitments:
 
 - **Instrumentalist framing**: Software is a tool. Tools don't have politics. Freedom is a property of the social arrangements *around* software, not the software itself. On this view, "freedom-preserving software" is a category error — we should be designing freedom-preserving *institutions*.
 - **Commons framing**: Software is infrastructure. Infrastructure should be governed as a commons, not owned by individual users or vendors. Freedom here means participatory governance, not individual control. This shifts the locus from user rights to community governance.
 - **Capability framing**: Following Sen/Nussbaum's capability approach — a system is free when users have the *real capacity* to exercise their rights, not just formal permission. Capability requires skills, access, documentation, and community support — not just open code.
 - **Anti-domination framing**: Freedom means absence of domination by *any* party — vendor, state, or even a community majority. Distinct from absence of constraint; a benevolent gatekeeper still dominates.
+- **Temporal framing** [speculative]: Freedom is not a property of a system at a point in time but of its *trajectory*. A system that is free today but structurally trending toward lock-in — through accumulating dependencies, eroding documentation, concentrating governance, or expanding network effects — is not a free system in any meaningful sense. On this framing, freedom-preservation is an ongoing maintenance activity, not a design-time achievement. A system can be certified as free at release and become unfree within two years without any deliberate decision by any actor. This framing implies that freedom assessments must be periodic and dynamic, not one-time.
 
 ### Synthesis
 
@@ -96,6 +97,19 @@ This covers execution, data, configuration, automation, and modification. The pl
 [island: enterprise IT and legal departments — compliance-structural resistance: GDPR, HIPAA, SOC2, and similar regulatory regimes legally *require* organizations to prevent users from exporting data in unauthorized ways, restrict execution environments, and maintain audit trails that override individual user control. The priority rule assumes a liberty-maximizing legal context that does not exist in regulated industries. No enforcement mechanism is proposed to resolve conflicts between this rule and binding legal obligations. In the domains where user data is most sensitive and freedom most consequential, the proposal is in direct conflict with law — and law wins.]
 
 This rule implies that **sovereignty is domain-specific, not strictly hierarchical**. Organizational control over deployment does not extend to end-user control over personal data and outputs. Enterprise deployment does not give organizations unlimited authority over end-user freedoms.
+
+#### Voluntary Delegation: A Distinct Mechanism
+
+The proposal's sovereignty model treats freedom loss primarily as coercive — imposed by vendors, platforms, or organizations against user interests. But a significant and underdeveloped category is **voluntary delegation**: users who actively choose to surrender freedoms in exchange for convenience, reliability, or social participation.
+
+App stores, managed cloud services, algorithm-curated feeds, and SaaS platforms frequently offer terms that would, under this proposal's framework, constitute sovereignty violations — and users accept them in large numbers, often knowingly. This is not coercion; it is preference.
+
+[speculative] Three interpretations of voluntary delegation deserve development:
+1. **False consciousness**: Users consent to freedom-reducing arrangements because they don't understand the long-term implications; the framework is justified in constraining their choices for their own benefit.
+2. **Legitimate preference**: Users have genuinely different preference orderings — some value convenience over sovereignty; a framework that refuses this is paternalistic. Sovereignty should be an *available* option, not a mandatory architecture.
+3. **Structural coercion**: Network effects make "voluntary" choice illusory — rejecting a platform may mean social or professional exclusion; the choice is formally free but substantively coerced by the cost of exit.
+
+These interpretations produce very different design implications. Interpretation 1 supports hard architectural requirements. Interpretation 2 supports opt-in sovereignty tiers. Interpretation 3 reframes the target: not individual consent but collective alternatives that make genuine choice possible. The proposal's current framing implicitly adopts interpretation 3 without defending it.
 
 Systems should therefore avoid:
 - mandatory cloud dependency,
@@ -208,6 +222,15 @@ Knowledge generated inside the system should be recoverable and reusable by othe
 
 **Dependency on practical freedom**: The shared improvement loop functions only if modifiability is first-class. Formal permission to remix is insufficient if the complexity moat prevents contributors from understanding what they are remixing. Investment in the improvement loop requires prior investment in lowering the activation energy of contribution.
 
+**Missing dimension: contributor obligations** [speculative]: The proposal's rights-focused framing has no counterpart obligations. Users of a freedom-preserving commons benefit from the labor of contributors; the commons requires maintenance to remain operational. A framework that articulates extensive rights without addressing corresponding responsibilities produces the free-rider structure that historically depletes commons without governance.
+
+Candidate obligations worth developing:
+- **Upkeep obligation**: Users who derive significant benefit from a commons contribute to its maintenance (financial, documentation, code, or governance labor).
+- **Attribution obligation**: Modifications and redistributions preserve attribution chains so the improvement loop remains traceable.
+- **Non-weaponization obligation**: Users who exercise exit rights do not actively degrade the commons they leave (e.g., by forking specifically to fragment rather than to continue independently).
+
+These are not currently requirements under this proposal. Whether they should be — and whether imposing them is compatible with the anti-domination framing — is an open question.
+
 ---
 
 ## Architectural Implications
@@ -222,6 +245,25 @@ Knowledge generated inside the system should be recoverable and reusable by othe
 - Composable tools over monoliths
 - Protocols over proprietary integrations
 - Exportability at every layer
+- **Minimal footprint** [speculative]: systems that require the least possible infrastructure to run preserve freedom better than feature-equivalent systems with heavy infrastructure dependencies. Each required infrastructure component is a potential freedom-reducing dependency. A system that runs on a single machine with no external services has a radically smaller attack surface for freedom erosion than one that requires cloud services, managed databases, certificate authorities, and CDN delivery.
+
+### The Infrastructure Dependency Stack [speculative]
+
+The principles above address application-layer freedom. But freedom-preserving applications sit atop an infrastructure stack whose lower layers are not addressed by application design choices:
+
+| Layer | Examples | Freedom risk |
+|---|---|---|
+| Hardware | CPUs with firmware blobs, vendor-locked bootloaders | Tivoization at the physical layer |
+| Network | BGP routing, DNS resolution, TLS certificate authorities | Centralized choke points that can block or intercept |
+| Platform | App stores, operating system gatekeeping | Vendor veto over software distribution |
+| Infrastructure services | CDNs, cloud storage, managed databases | Operational dependency on centralized providers |
+| Application | The systems this proposal directly addresses | Complexity moat, cloudization, API capture |
+
+A freedom-preserving application built on a captured infrastructure layer inherits the capture. A user who can freely inspect, modify, and fork application code but cannot run it without Google's certificate authority infrastructure or Apple's distribution mechanisms has a constrained form of freedom.
+
+This is not an argument that application-layer freedom is worthless — it is an argument that the proposal's scope should either acknowledge the infrastructure dependency ceiling explicitly, or extend its principles down the stack.
+
+**Candidate implication**: Freedom-preserving systems should prefer infrastructure dependencies that are themselves governed as commons (e.g., IETF-standardized protocols, distributed certificate transparency systems, open hardware designs) over infrastructure dependencies that are commercially controlled — even when the commercial dependency is currently permissive.
 
 ### Anti-Patterns
 
@@ -316,6 +358,21 @@ Addressed under Modifiability §3. *Provisional position*: system builders have 
 **6. AI Systems and Freedom**
 Partially addressed under Inspectability §2. The deeper question — whether consequential AI decisions are ever meaningfully inspectable in the relevant sense — remains open. A user who can audit training lineage and test decision boundaries is in a meaningfully better position than one who cannot. But a probabilistic model trained on shared corpora exercises a form of influence that is not fully decomposable into inspectable parts. *Provisional position*: freedom-preserving AI systems must be auditable (lineage and training decisions documented), testable (behavior probeable by users), and interruptible (users can override, reject, or exit AI-driven workflows without losing capability). Full mechanistic transparency may not be achievable; auditability, testability, and interruptibility are achievable and are the operative standard.
 
+**7. Freedom Across Time** [speculative — underdeveloped]
+The temporal dimension is almost entirely absent from this proposal. Current framing treats freedom as a static property that a system either has or lacks at a given point. The temporal framing (see §Theoretical Grounding) surfaces a distinct problem: **freedom decay** — the gradual erosion of practical freedom through processes that require no deliberate decision:
+
+- Documentation becomes stale; modification activation energy rises.
+- Network effects accumulate; alternatives become less viable.
+- Contributors leave; governance knowledge concentrates.
+- Dependencies on external services become load-bearing.
+- The complexity of the codebase outgrows any individual's comprehension.
+
+These processes operate independently of the original architecture. A system designed to maximize freedom at t=0 will not maintain that freedom at t=n without active investment in freedom maintenance.
+
+*Open question*: Should freedom-preserving systems have **periodic freedom assessments** — structured reviews of whether the system's practical freedoms remain exercisable? If so, what triggers intervention, and by whom? Is there a concept of a "freedom half-life" for projects with declining contributor pools?
+
+*Second open question*: Is **reversibility** a distinct design principle that deserves first-class treatment — the ability to undo state changes, exit configurations, and restore prior capability without data loss? This is related to but distinct from forkability (community continuation) and exit rights (data portability).
+
 ---
 
 ## Failure Modes
@@ -365,3 +422,4 @@ The freedom/security boundary proposed here ("who does the restriction primarily
 | 2026-05-24 | Provide provisional positions on five of six tensions | Steelman pass should commit where evidence supports; only genuine open questions remain open |
 | 2026-05-24 | Articulate AI-inspectability criteria | Hidden AI orchestration is named as an anti-pattern without criteria for what makes AI orchestration non-hidden; auditability + testability + interruptibility are the operative standard |
 | 2026-05-24 | Adversarial pass: annotate failure modes and resistant populations | Six structural failure modes identified; four dead ends flagged inline; three island populations flagged; Failure Modes section added; economic sustainability elevated to highest-severity unresolved tension |
+| 2026-05-24 | Strawman pass: expand solution space with new framings and underdeveloped concepts | Added temporal framing as fifth alternative; voluntary delegation as distinct sovereignty mechanism; infrastructure dependency stack section; contributor obligations to shared improvement loop; freedom-across-time as seventh unresolved tension; minimal footprint to preferred characteristics |
