@@ -10,6 +10,9 @@ ISSUE ?=
 # Start a new debate from a GitHub issue.
 # Usage: make new-debate ISSUE=<url-or-number>
 new-debate:
+ifndef ISSUE
+	$(error Usage: make new-debate ISSUE=<url-or-number>)
+endif
 	$(PYTHON) scripts/new_debate.py --issue $(ISSUE)
 
 # Run one agent pass (one cycle). Invokes Claude with the role file as context.

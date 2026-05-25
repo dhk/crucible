@@ -100,8 +100,13 @@ def main() -> None:
         description="Initialise a new Crucible debate from a GitHub issue."
     )
     parser.add_argument(
+        "issue_pos",
+        nargs="?",
+        metavar="URL_OR_NUMBER",
+        help="GitHub issue URL or number (positional shorthand)",
+    )
+    parser.add_argument(
         "--issue",
-        required=True,
         metavar="URL_OR_NUMBER",
         help="GitHub issue URL or number (e.g. 42 or https://github.com/owner/repo/issues/42)",
     )
@@ -111,6 +116,12 @@ def main() -> None:
         help="Destination doc path (default: docs/active/<slug>.md)",
     )
     args = parser.parse_args()
+
+    # Accept positional or --issue, prefer --issue if both given
+    if not args.issue and not args.issue_pos:
+        parser.error("an issue URL or number is required (pass it as ISSUE=<url> or positionally)")
+    if not args.issue:
+        args.issue = args.issue_pos
 
     # 1. Fetch issue metadata
     issue = fetch_issue(args.issue)
