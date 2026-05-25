@@ -13,3 +13,13 @@ FPS-015,FPS-017,contradict,001,Fork fragmentation is the downside of the right-t
 FPS-020,FPS-017,support,001,Forkability-as-resilience is the architectural operationalization of the right-to-fork principle.
 FPS-019,FPS-004,support,001,Modifiability-first-class architecture directly enables practical freedom by lowering the technical barrier to modification.
 FPS-018,FPS-019,support,001,Shared improvement loop depends on modifiability being first-class — without practical modifiability, improvements cannot be contributed or built upon.
+FPS-021,FPS-001,support,002,Layered-sovereignty provides a principled resolution of the user-sovereignty ambiguity — domain-specific rights replace monolithic "user" framing.
+FPS-021,FPS-002,support,002,Layered-sovereignty incorporates collective sovereignty at the governance tier — organizational and community rights are addressed within the model.
+FPS-022,FPS-004,support,002,Freedom-activation-energy is the mechanism that determines practical-freedom thresholds — reducing it is the design target for genuinely free systems.
+FPS-022,FPS-003,contradict,002,High activation energy is the mechanism through which formal freedom fails to produce practical freedom; a system can have zero activation-energy barriers while providing formal freedom.
+FPS-023,FPS-013,support,002,Positive-architectural-obligation is the design operationalization of positive-freedom — converts the philosophical claim into concrete builder responsibilities.
+FPS-023,FPS-019,support,002,Positive-architectural-obligation extends modifiability-first-class with explicit positive duties on builders beyond modular architecture.
+FPS-024,FPS-016,support,002,AI-inspectability defines concrete criteria for inspectability-by-default applied to AI systems — operationalizes the principle for a domain where it was previously underdefined.
+FPS-012,FPS-018,contradict,002,Complexity moat prevents shared-improvement-loop by making systems too opaque for contributors to understand what they are remixing or improving.
+FPS-006,FPS-012,support,002,Cloudization is a structural form of complexity moat — the computation is architecturally hidden in remote infrastructure, preventing inspection or modification regardless of license.
+FPS-022,FPS-012,support,002,Complexity moat is the primary mechanism that raises freedom-activation-energy beyond exercisable thresholds; they are cause (moat) and effect (activation-energy) of the same pattern.

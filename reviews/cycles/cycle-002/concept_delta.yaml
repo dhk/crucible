@@ -1,0 +1,124 @@
+cycle: "002"
+mode: steelman
+agent: steelman
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-021
+    name: layered-sovereignty
+    description: >
+      A governance model that resolves multi-party sovereignty by assigning
+      domain-specific rights to end users, administrators, and organizations,
+      with a priority rule that no layer may eliminate a lower layer's rights
+      within that lower layer's domain. Sovereignty is domain-specific,
+      not strictly hierarchical.
+  - id: FPS-022
+    name: freedom-activation-energy
+    description: >
+      The threshold of skill, effort, tooling, and knowledge required before
+      a formally-permitted freedom becomes practically exercisable. Reducing
+      activation energy is a positive design obligation for freedom-preserving
+      systems; high activation energy is the mechanism through which formal
+      freedom fails to produce practical freedom.
+  - id: FPS-023
+    name: positive-architectural-obligation
+    description: >
+      The obligation on system builders to actively enable the exercise of
+      freedoms through architecture — progressive disclosure, sufficient
+      documentation, stable interfaces, test infrastructure — beyond merely
+      refraining from restricting them. An intentional extension beyond the
+      GNU definition's negative-liberty register.
+  - id: FPS-024
+    name: AI-inspectability
+    description: >
+      The specific conditions under which AI-powered systems satisfy
+      inspectability-by-default: (1) auditable training lineage, (2) traceable
+      inference paths, (3) testable decision boundaries, (4) surfaced
+      uncertainty. Distinguishes from post-hoc saliency explanations which
+      satisfy the appearance but not the substance of inspectability.
+
+concepts_modified:
+  - id: FPS-001
+    change: status updated to active; last_seen_cycle updated to 002; resolved via layered sovereignty model
+  - id: FPS-002
+    change: status updated to active; last_seen_cycle updated to 002; incorporated into layered sovereignty model at governance tier
+  - id: FPS-003
+    change: status updated to active; last_seen_cycle updated to 002; elevated to document-wide cross-cutting framework
+  - id: FPS-004
+    change: status updated to active; last_seen_cycle updated to 002; promoted to operative standard (not just necessary condition)
+  - id: FPS-005
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-006
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-007
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-008
+    change: status updated to active; last_seen_cycle updated to 002; incorporated into governance model structure
+  - id: FPS-009
+    change: status updated to active; last_seen_cycle updated to 002; addressed in layered sovereignty end-user domain definition
+  - id: FPS-010
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-011
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-012
+    change: status updated to active; last_seen_cycle updated to 002; elevated to document-wide anti-pattern framework; generalized beyond modifiability
+  - id: FPS-013
+    change: status updated to active; last_seen_cycle updated to 002; speculative tag removed; operationalized as positive-architectural-obligation
+  - id: FPS-014
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-015
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-016
+    change: status updated to active; last_seen_cycle updated to 002; extended with AI-inspectability criteria
+  - id: FPS-017
+    change: status updated to active; last_seen_cycle updated to 002
+  - id: FPS-018
+    change: status updated to active; last_seen_cycle updated to 002; dependency on practical modifiability made explicit
+  - id: FPS-019
+    change: status updated to active; last_seen_cycle updated to 002; extended with testable criterion and positive obligations
+  - id: FPS-020
+    change: status updated to active; last_seen_cycle updated to 002; architectural implication added (protocol-level vs. concentration-level value)
+
+concepts_removed: []
+
+concepts_resurrected: []
+
+dead_ends_identified: []
+
+walls_identified:
+  - id: economic-sustainability
+    description: >
+      Freedom vs. economic sustainability remains genuinely unresolved.
+      No existing governance model (public subsidy, commons, dual-licensing)
+      has proven reliably sustainable at scale without freedom compromise.
+      The steelman pass documents this as an open structural challenge
+      rather than providing a provisional position.
+
+stance:
+  supports:
+    - FPS-004 as operative standard (not merely necessary condition)
+    - layered-sovereignty over monolithic user framing
+    - positive-architectural-obligation as first-class requirement
+    - AI-inspectability criteria (auditability + testability + interruptibility)
+  challenges:
+    - pure GNU negative-liberty framing (extended to positive obligations)
+    - treating "who is the user" as unanswerable
+  neutral:
+    - composability-paradox (preserved as speculative)
+    - economic sustainability tension (remains open)
+
+rationale:
+  - The formal/practical freedom distinction is the central mechanism through
+    which freedom-reducing systems evade critique; elevating it to a framework
+    gives it structural force across all principles.
+  - Layered sovereignty resolves the multi-party question without privileging
+    organizational control over end-user rights.
+  - Positive architectural obligations extend the proposal beyond permission
+    to enablement; this is a defensible and necessary extension given the
+    capability framing adopted.
+  - AI-inspectability criteria address the most contemporarily relevant gap;
+    the auditability/testability/interruptibility standard is achievable where
+    full mechanistic transparency is not.
+
+next_recommended_mode: adversarial
+confidence: 0.82

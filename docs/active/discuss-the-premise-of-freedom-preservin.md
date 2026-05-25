@@ -1,262 +1,316 @@
 ---
 document_id: discuss-the-premise-of-freedom-preservin
 issue: 12
-status: seed
+status: steelman
 created_by: human
-crucible_state: seed
+crucible_state: steelman
 fossil_export: true
 ---
 
-# Discuss the Premise of Freedom-Preserving Software Systems
+# Design Proposal: Freedom-Preserving Software Systems
 
-starting with https://www.gnu.org/philosophy/free-sw.en.html
+*Reference: [GNU Free Software Definition](https://www.gnu.org/philosophy/free-sw.en.html)*
 
-Here's the doc: 
+Inspired by the GNU Free Software Definition, this proposal defines a system architecture and governance model where user freedom—not platform control—is the primary design constraint.
+
 ---
-Design Proposal: Freedom-Preserving Software Systems
 
-Inspired by the GNU Free Software Definition, this proposal defines a system architecture and governance model where user freedom—not platform control—is the primary design constraint.  ￼
+## Premise
 
-Premise
+**Software should serve its users, not bind them.**
 
-Software should serve its users, not bind them.
+A system is considered "free" when users retain the practical ability to:
 
-A system is considered “free” when users retain the practical ability to:
+- run it for any purpose,
+- inspect how it works,
+- modify it,
+- redistribute it,
+- and share improvements with others.
 
-* run it for any purpose,
-* inspect how it works,
-* modify it,
-* redistribute it,
-* and share improvements with others.  ￼
+This is a proposal for building systems that preserve those freedoms **operationally, not merely legally**. The distinction matters: legal freedom (permission) without operational freedom (capacity) produces the appearance of liberation while preserving the substance of control.
 
-This is a proposal for building systems that preserve those freedoms operationally, not merely legally.
+---
 
-⸻
+## Theoretical Grounding
 
-## Alternative Framings of the Premise [strawman]
+### Alternative Framings
 
-The premise "software should serve its users, not bind them" is one framing. Alternatives worth considering before committing to the architecture:
+The premise "software should serve its users, not bind them" is one framing. Four alternative framings sharpen the proposal's commitments:
 
 - **Instrumentalist framing**: Software is a tool. Tools don't have politics. Freedom is a property of the social arrangements *around* software, not the software itself. On this view, "freedom-preserving software" is a category error — we should be designing freedom-preserving *institutions*.
 - **Commons framing**: Software is infrastructure. Infrastructure should be governed as a commons, not owned by individual users or vendors. Freedom here means participatory governance, not individual control. This shifts the locus from user rights to community governance.
-- **Capability framing** [speculative]: Following Sen/Nussbaum's capability approach — a system is free when users have the *real capacity* to exercise their rights, not just formal permission. Capability requires skills, access, documentation, and community support — not just open code.
+- **Capability framing**: Following Sen/Nussbaum's capability approach — a system is free when users have the *real capacity* to exercise their rights, not just formal permission. Capability requires skills, access, documentation, and community support — not just open code.
 - **Anti-domination framing**: Freedom means absence of domination by *any* party — vendor, state, or even a community majority. Distinct from absence of constraint; a benevolent gatekeeper still dominates.
 
-These framings are not mutually exclusive, but they imply different architectural priorities. The current proposal leans instrumentalist-to-capability; the commons and anti-domination framings are underdeveloped.
+### Synthesis
 
-⸻
+This proposal synthesizes the **capability framing** and the **anti-domination framing** as its operative lenses:
 
-Core Design Principles
+- From capability: freedom requires active investment in lowering the barriers to exercise. Formal permission is necessary but not sufficient. A genuinely free system makes its freedoms *accessible*, not merely *available*.
+- From anti-domination: freedom is not just about what users are permitted to do, but about whether any party holds irreversible, asymmetric power over their computational environment. This applies to vendors, states, and even benevolent open-source stewards who centralize de facto authority.
 
-1. User Sovereignty
+The instrumentalist framing is partially correct: institutional design matters. But software architecture itself shapes what institutions can exist and what users can do. The commons framing is incorporated into the governance model (§ Governance).
 
-The user must remain the ultimate authority over:
+---
 
-* execution,
-* data,
-* configuration,
-* automation,
-* and modification.
+## Cross-Cutting Framework: Formal vs. Practical Freedom
 
-The platform may assist, but must not impose irreversible control.
+The central theoretical commitment runs through every principle in this proposal:
 
-Systems should avoid:
+**Formal freedom** is legal and technical permission: open license, accessible source, documented APIs.
 
-* mandatory cloud dependency,
-* opaque decision-making,
-* vendor lock-in,
-* artificial API restrictions,
-* or execution constraints unrelated to security.
+**Practical freedom** is the exercisable capacity to act on that permission given real-world constraints of skill, time, tooling, documentation, and community support.
 
-**Concept split [strawman]:** "User Sovereignty" conflates two distinct and sometimes conflicting ideas:
+A system can maximize formal freedom while destroying practical freedom through:
+- architectural complexity that defeats comprehension,
+- missing documentation that makes modification guesswork,
+- hostile build environments that make reproduction expensive,
+- and network effects that make exit costly even when technically possible.
 
-- **Individual sovereignty**: One user's right to control their own instance, data, and configuration.
-- **Collective sovereignty**: A community's right to govern the shared commons — the protocols, defaults, and infrastructure that make individual sovereignty meaningful.
+This is the **complexity moat** anti-pattern in its general form: freedom made nominally available but practically inaccessible, through deliberate design or emergent neglect.
 
-These can conflict: an individual's right to fork might fragment a community commons that others depend on. The current proposal prioritizes individual sovereignty without resolving this tension.
+**The operative test for this proposal is not "is this permitted?" but "can this actually be done by the users this system serves?"**
 
-**Open question [strawman]:** *Who is "the user"?* In organizational or enterprise software, three parties coexist with different sovereignty claims: the purchasing organization, the IT administrator, and the end user. The proposal treats "user" as monolithic. Which party's sovereignty governs when they conflict?
+---
 
-⸻
+## Core Design Principles
 
-2. Inspectability By Default
+### 1. User Sovereignty
 
-All meaningful system behavior should be understandable.
+**The user must remain the ultimate authority over their computational environment.**
+
+This covers execution, data, configuration, automation, and modification. The platform may assist, but must not impose irreversible control.
+
+#### Layered Sovereignty Model
+
+"The user" is not monolithic. In organizational and enterprise contexts, three parties coexist with different sovereignty claims:
+
+| Layer | Party | Primary Domain |
+|---|---|---|
+| End user | The person using the system | Execution, personal data, UI/UX customization |
+| Administrator | The person configuring the deployment | Deployment, access control, system defaults |
+| Organization | The entity that owns the deployment | Licensing, data governance, legal compliance |
+
+**Priority rule**: Each layer's sovereignty applies within its domain; no layer may exercise its sovereignty in a way that eliminates a lower layer's rights *within that lower layer's domain*. An organization may not grant itself the right to prevent end users from inspecting or exporting their own data. An administrator may not prevent end users from exporting their own work.
+
+This rule implies that **sovereignty is domain-specific, not strictly hierarchical**. Organizational control over deployment does not extend to end-user control over personal data and outputs. Enterprise deployment does not give organizations unlimited authority over end-user freedoms.
+
+Systems should therefore avoid:
+- mandatory cloud dependency,
+- opaque decision-making,
+- vendor lock-in,
+- artificial API restrictions,
+- and execution constraints unrelated to security.
+
+#### Tension: Individual Sovereignty vs. Collective Commons
+
+A community's right to govern its shared commons (collective sovereignty) may conflict with an individual's right to fork. Both are legitimate; neither nullifies the other.
+
+**Provisional position**: Individual exit rights take priority over collective stability. Fork fragmentation is a real cost, but the response is investment in commons resilience — governance structures, federated protocols, and network-independent value — not restriction of individual exit. Designing communities to survive fragmentation is preferable to preventing the exit that might cause it.
+
+---
+
+### 2. Inspectability By Default
+
+**All meaningful system behavior should be understandable by the people it affects.**
 
 This implies:
-
-* readable source or declarative configuration,
-* observable workflows,
-* transparent automation,
-* explainable state transitions,
-* and durable logs of decisions and actions.
+- readable source or declarative configuration,
+- observable workflows,
+- transparent automation,
+- explainable state transitions,
+- and durable logs of decisions and actions.
 
 Obfuscation, hidden orchestration, and non-auditable automation are treated as architectural failures, not implementation details.
 
-⸻
+#### Inspectability in AI Systems
 
-3. Modifiability As A First-Class Capability
+AI systems introduce a specific inspectability challenge: a system may be formally open (weights published, inference code readable) while being practically opaque (causal reasoning in large models is not human-comprehensible at the individual case level).
 
-Users must be able to adapt systems to their own needs.
+An AI system satisfies inspectability-by-default when:
+1. **Training lineage is auditable**: data sources, filtering decisions, and fine-tuning history are documented and queryable.
+2. **Inference paths are traceable**: users can understand what inputs produced what outputs, even if not the internal mechanics.
+3. **Decision boundaries are testable**: users can probe the system to understand its behavior in their domain.
+4. **Uncertainty is surfaced**: the system communicates confidence levels and known failure modes.
+
+An AI system does **not** satisfy inspectability by providing post-hoc explanations that are statistically accurate but incorrect for any given case — a known failure mode of saliency-based explanation methods.
+
+---
+
+### 3. Modifiability As A First-Class Capability
+
+**Users must be able to adapt systems to their own needs.**
+
+This applies the formal/practical framework directly: a system is genuinely modifiable when users can *actually modify it*, not merely when they are legally permitted to.
 
 The architecture should therefore favor:
+- modular components,
+- declarative interfaces,
+- portable data formats,
+- replaceable subsystems,
+- and local extensibility.
 
-* modular components,
-* declarative interfaces,
-* portable data formats,
-* replaceable subsystems,
-* and local extensibility.
+**Testable criterion**: A freedom-preserving system should be modifiable by a competent practitioner working alone with publicly available documentation. If modification requires insider knowledge, undocumented toolchains, or coordination with the original authors, the system fails this test regardless of its license.
 
-A system that technically exposes source code but practically prevents modification violates the spirit of freedom.  ￼
+#### Positive Architectural Obligations
 
-**Concept split [strawman]:** Modifiability exists on two levels that should be distinguished:
+A genuinely freedom-preserving system has positive obligations beyond mere permission:
+- **Progressive disclosure**: simple operations remain simple; complex operations are possible without requiring full internals knowledge.
+- **Documentation sufficient for modification**: users should not need author access to modify the system.
+- **Stable, versioned interfaces**: modifications should be durable across releases, not broken by internal refactors.
+- **Test infrastructure**: users should be able to verify that their modifications work correctly.
 
-- **Formal freedom**: Legal and technical permission to modify — open license, accessible source.
-- **Practical freedom**: The actual capacity to modify given the user's resources, skills, available time, and the system's architecture.
+These obligations apply to the system's builders — they are not optional enhancements but requirements for the system to be genuinely free under the capability framing.
 
-A system can maximize formal freedom while minimizing practical freedom via: architectural complexity, missing documentation, hostile build environments, or toolchain opacity. The **complexity moat** anti-pattern names this: open-source code made practically unmodifiable through deliberate or emergent architectural complexity.
+---
 
-[speculative] A genuinely freedom-preserving system may have obligations beyond permission: documentation, simplified interfaces, progressive disclosure of internals, and community structures that lower the activation energy for modification.
+### 4. Right To Fork
 
-⸻
-
-4. Right To Fork
-
-Communities must be able to continue a system independently of its original creator.
+**Communities must be able to continue a system independently of its original creator.**
 
 This requires:
+- portable infrastructure,
+- reproducible environments,
+- documented protocols,
+- exportable data,
+- and governance structures that do not centralize irreversible authority.
 
-* portable infrastructure,
-* reproducible environments,
-* documented protocols,
-* exportable data,
-* and governance structures that do not centralize irreversible authority.
+Forkability is treated as resilience infrastructure — the sustained ability to continue without the original vendor is the ultimate test of a community's freedom.
 
-Forkability is treated as resilience infrastructure.
+**Fork fragmentation is a real and underappreciated cost.** In network-dependent systems, fragmentation can destroy the commons that made the system valuable. A federated protocol where 90% of users concentrate on one instance creates *de facto* centralization with *de jure* freedom. The right to fork is necessary but not sufficient for resilience.
 
-**Tension [strawman]:** The right to fork carries an underexplored cost: **fork fragmentation**. In network-dependent systems, fragmentation can destroy the commons that made the system valuable. A federated protocol where the right to run your own instance is protected but 90% of users concentrate on one instance creates *de facto* centralization with *de jure* freedom. The right to fork may be necessary but not sufficient for genuine resilience.
+**Architectural implication**: Freedom-preserving systems should design their core value to be protocol-level, not concentration-level. A federated system whose value lives in the protocol survives fragmentation; one whose value lives in the dominant instance's network does not. This is a design requirement, not merely a governance aspiration.
 
-⸻
+---
 
-5. Shared Improvement Loop
+### 5. Shared Improvement Loop
 
-Improvements should compound socially.
+**Improvements should compound socially.**
 
 The system should encourage:
-
-* contribution,
-* redistribution,
-* remixing,
-* peer review,
-* and publication of derived work.
+- contribution,
+- redistribution,
+- remixing,
+- peer review,
+- and publication of derived work.
 
 Knowledge generated inside the system should be recoverable and reusable by others.
 
-⸻
+**Dependency on practical freedom**: The shared improvement loop functions only if modifiability is first-class. Formal permission to remix is insufficient if the complexity moat prevents contributors from understanding what they are remixing. Investment in the improvement loop requires prior investment in lowering the activation energy of contribution.
 
-Architectural Implications
+---
 
-Preferred System Characteristics
+## Architectural Implications
 
-* Local-first where possible
-* Plain-text or open formats
-* Git-compatible workflows
-* Deterministic interfaces
-* Human-readable configuration
-* Composable tools over monoliths
-* Protocols over proprietary integrations
-* Exportability at every layer
+### Preferred System Characteristics
 
-⸻
+- Local-first where possible
+- Plain-text or open formats
+- Git-compatible workflows
+- Deterministic interfaces
+- Human-readable configuration
+- Composable tools over monoliths
+- Protocols over proprietary integrations
+- Exportability at every layer
 
-Anti-Patterns
+### Anti-Patterns
 
-The following are considered freedom-reducing patterns:
+**Core anti-patterns** (direct violations of the five principles above):
+- Hidden AI orchestration
+- Non-exportable memory systems
+- SaaS-only execution
+- Locked deployment targets
+- Remote kill switches
+- License restrictions on modification
+- Obfuscated source
+- **Tivoization**: hardware using free software but preventing user-modified versions via firmware verification
 
-* Hidden AI orchestration
-* Non-exportable memory systems
-* SaaS-only execution
-* Locked deployment targets
-* Remote kill switches
-* License restrictions on modification
-* Obfuscated source
-* “Secure” systems that reject user modifications (“tivoization”)
+**Ecosystem anti-patterns** (freedom-reducing at the system or community level, even when individual components appear free):
+- **Cloudization**: Hardware runs locally, meaningful computation runs remotely. Passes a "local-first" audit technically while violating its spirit. Cloud-era mutation of tivoization.
+- **Network capture**: Technically free code on a platform where network effects make alternatives impractical. The system is free; the ecosystem isn't.
+- **Training data extraction**: Free-to-use systems that harvest user behavior or content to train proprietary models, extracting cognitive labor without reciprocation or user consent.
+- **Permissive-to-proprietary pipeline**: Permissive licenses that enable large actors to absorb free systems into proprietary products without reciprocation. Legal but freedom-reducing at the ecosystem level.
+- **Complexity moat**: Open-source code made practically unmodifiable through deliberate or emergent architectural complexity, missing documentation, or hostile build environments.
+- **API capture**: Services that expose open APIs but centralize meaningful computation, making the API a dependency rather than an interface to replaceable infrastructure.
+- **Composability paradox** [speculative]: Composable tools that create emergent opacity and lock-in when their composition becomes complex enough to be practically opaque — freedom at the component level, lock-in at the system level.
 
-**Additional anti-patterns [strawman]:**
+---
 
-* **Cloudization** [speculative]: Hardware runs locally, meaningful computation runs remotely. Passes a “local-first” audit technically while violating its spirit. A cloud-era mutation of tivoization.
-* **Network capture**: Technically free code on a platform where network effects make alternatives impractical. The system is free; the ecosystem isn't.
-* **Training data extraction**: Free-to-use systems that harvest user behavior or content to train proprietary models, extracting cognitive labor without reciprocation or user consent.
-* **Permissive-to-proprietary pipeline**: Permissive licenses that enable large actors to absorb free systems into proprietary products without reciprocation. Legal but freedom-reducing at the ecosystem level.
-* **Complexity moat**: Open source code made practically unmodifiable through deliberate or emergent architectural complexity, missing documentation, or hostile build environments.
-* **API capture**: Services that expose open APIs but centralize meaningful computation, making the API a dependency rather than an interface to replaceable infrastructure.
-* **Composability paradox** [speculative]: Composable tools that create emergent opacity and lock-in when their composition becomes complex enough to be practically opaque — freedom at the component level, lock-in at the system level.
+## Governance Model
 
-⸻
+A freedom-preserving governance model distinguishes:
+- stewardship from ownership,
+- coordination from control,
+- and guidance from restriction.
 
-Governance Model
+**Minimal governance structure**:
 
-The project should distinguish:
-
-* stewardship from ownership,
-* coordination from control,
-* and guidance from restriction.
+1. **Standards as commons, not property**: Protocol and interface standards should be governed by multi-stakeholder bodies, not controlled by any single implementor. No single party should hold a veto over protocol evolution.
+2. **Exit rights as governance floor**: Any participant — individual or community — must retain the right to exit and continue independently. Governance structures that make exit impractical (by centralizing data, by making protocols undocumented, by concentrating infrastructure authority) are anti-patterns regardless of the governance body's intentions.
+3. **Transparent governance**: Governance decisions, conflicts of interest, and funding sources should be auditable by participants. Governance opacity is an inspectability failure.
+4. **Separation of stewardship and profit**: Entities that profit from the system should not be the sole stewards of the protocol or commons infrastructure it depends on.
 
 Contributors may guide standards, but users retain the right to adapt, fork, and redistribute the system.
 
 Community continuity is prioritized over institutional permanence.
 
-⸻
+---
 
-Success Criteria
+## Success Criteria
 
 A freedom-preserving system succeeds when:
+- users can leave without losing capability,
+- communities can continue without the original vendor,
+- workflows remain inspectable by the people they affect,
+- improvements remain shareable and compoundable,
+- and no single party holds irreversible authority over the system or its users.
 
-* users can leave without losing capability,
-* communities can continue without the original vendor,
-* workflows remain inspectable,
-* and improvements remain shareable.
+**Testable criteria**:
+- A competent practitioner can fork and independently operate the system using only public documentation.
+- A user can export all data they have generated in a portable, documented format.
+- A user can audit what the system did and why in any given interaction.
+- The system continues to function if the original vendor ceases operations.
+- A first-time contributor can make a meaningful modification without contacting the original authors.
 
 The goal is not merely open access to code.
 
-The goal is durable computational self-determination.
+The goal is **durable computational self-determination** — the sustained capacity of individuals and communities to direct their own computational environments, independent of any vendor, platform, or institutional intermediary.
 
-⸻
+---
 
-## Open Tensions [strawman]
+## Unresolved Tensions
 
-The following tensions are unresolved in the current proposal. They are surfaced here for the next pass rather than collapsed prematurely.
+The following tensions are partially addressed in the principles above. Provisional positions are given where the evidence supports them; genuinely open questions remain open.
 
 **1. Freedom vs. Security**
-Secure enclaves, TPMs, and verified boot chains restrict user modification to defend against malicious software. The document flags "tivoization" but doesn't define where legitimate security constraints end. A principled answer is needed.
+Secure enclaves, TPMs, and verified boot chains restrict user modification to defend against malicious software. The proposal identifies tivoization as an anti-pattern but needs a principled boundary.
+
+*Provisional position*: A restriction is legitimate when it protects the user from external threats; it is illegitimate when it protects the vendor's control from the user. The distinguishing test: who does the restriction primarily protect — the user from threats, or the vendor from the user? Verified boot chains that protect against rootkits are legitimate; firmware locks that prevent loading user-modified software are tivoization regardless of the security framing used to justify them.
 
 **2. Formal Freedom vs. Practical Freedom**
-Formal permission to modify/fork/inspect is necessary but not sufficient. Practical freedom requires skills, tooling, documentation, and accessible community structures. Does this proposal have obligations beyond permitting? Is the goal to enable *all* users or technically capable ones?
+Addressed as the cross-cutting framework. *Provisional position*: practical freedom is the operative standard; formal freedom is necessary but not sufficient. Systems that only provide formal freedom are non-compliant with this proposal's intent.
 
 **3. Individual Sovereignty vs. Collective Commons**
-The right to fork can fragment communities that depend on network effects. Individual exit rights and collective infrastructure sustainability can conflict. Which takes priority, and under what conditions?
+Addressed under User Sovereignty §1. *Provisional position*: individual exit rights take priority; collective resilience is a design responsibility, not a constraint on exit.
 
 **4. Freedom vs. Economic Sustainability**
-Freedom-preserving systems often struggle economically. The proposal doesn't address what governance or economic models sustain them. [speculative: freedom-preserving systems may require public subsidy, commons governance analogous to public infrastructure, or hybrid models not yet well-defined]
+*Unresolved*. Freedom-preserving systems often struggle economically because they cannot extract monopoly rents from lock-in. Candidate models: public subsidy (as with roads and public standards bodies), commons governance with shared infrastructure funding, hybrid dual-licensing (which risks the permissive-to-proprietary anti-pattern). No model has proven reliably sustainable at scale without compromise. This is not a reason to abandon freedom-preserving goals, but it is a structural challenge requiring explicit governance investment.
 
-**5. Negative Freedom vs. Positive Freedom** [speculative]
-The GNU definition operates primarily in the *negative liberty* register: freedom *from* restriction. But positive freedom — the capacity to actually accomplish things — may require active investment in tooling, documentation, and support. Is there an obligation on system builders to enable positive freedom, not just remove barriers?
+**5. Positive vs. Negative Freedom**
+Addressed under Modifiability §3. *Provisional position*: system builders have positive architectural obligations to enable the exercise of freedoms, not just negative obligations to refrain from restricting them. This is an intentional extension beyond the GNU definition's negative-liberty register.
 
 **6. AI Systems and Freedom**
-The proposal lists "hidden AI orchestration" as an anti-pattern. But it doesn't address deeper questions: What does user sovereignty mean when consequential decisions are made by probabilistic models trained on data the user didn't contribute? Can "freedom-preserving" and "AI-powered" coexist without contradiction? Is an explainable AI system with opaque weights inspectable in the relevant sense?
+Partially addressed under Inspectability §2. The deeper question — whether consequential AI decisions are ever meaningfully inspectable in the relevant sense — remains open. A user who can audit training lineage and test decision boundaries is in a meaningfully better position than one who cannot. But a probabilistic model trained on shared corpora exercises a form of influence that is not fully decomposable into inspectable parts. *Provisional position*: freedom-preserving AI systems must be auditable (lineage and training decisions documented), testable (behavior probeable by users), and interruptible (users can override, reject, or exit AI-driven workflows without losing capability). Full mechanistic transparency may not be achievable; auditability, testability, and interruptibility are achievable and are the operative standard.
 
-⸻
-
-## Questions for Steelman Pass [strawman]
-
-- Is "durable computational self-determination" a coherent goal when AI systems are trained on shared corpora and run on shared infrastructure?
-- Does forkability-as-resilience assume a level of community technical capacity that may not exist for most user populations?
-- Should the proposal distinguish between *freedoms that must be protected absolutely* vs. *freedoms that can be traded off* — and if so, how?
-- Is there a positive obligation on system builders, not just prohibitions on what they must not do?
-- How does data sovereignty relate to code freedom? Are they the same right, or different ones requiring different protections?
+---
 
 ## Decision Record
 
 | Date | Decision | Rationale |
 |---|---|---|
-| TBD | TBD | TBD |
+| 2026-05-24 | Synthesize capability + anti-domination framings as the proposal's theoretical basis | These framings are more action-guiding than instrumentalist or pure commons framings; they imply concrete architectural obligations |
+| 2026-05-24 | Adopt layered sovereignty model with domain-specificity rule | Resolves the "who is the user" ambiguity without privileging organizational or administrative control over end-user rights within end-user domains |
+| 2026-05-24 | Promote formal/practical freedom distinction to document-wide framework | The formal/practical gap is the central mechanism through which freedom-reducing systems evade critique; elevating it to framework level gives it structural force across all principles |
+| 2026-05-24 | Establish positive architectural obligations as first-class commitment | Extends the proposal beyond the GNU negative-liberty register to require active enablement, not just permission |
+| 2026-05-24 | Provide provisional positions on five of six tensions | Steelman pass should commit where evidence supports; only genuine open questions remain open |
+| 2026-05-24 | Articulate AI-inspectability criteria | Hidden AI orchestration is named as an anti-pattern without criteria for what makes AI orchestration non-hidden; auditability + testability + interruptibility are the operative standard |
