@@ -1,1 +1,15 @@
 source_concept_id,target_concept_id,edge_type,cycle,rationale
+FPS-003,FPS-004,lineage,001,Formal freedom is a necessary precondition for practical freedom but does not imply it — practical freedom extends beyond formal permission.
+FPS-001,FPS-002,contradict,001,Individual sovereignty (right to fork/exit) and collective sovereignty (commons governance) can conflict when individual actions fragment shared infrastructure.
+FPS-005,FPS-006,mutation,001,Cloudization is a cloud-era mutation of tivoization — hardware local, computation remote; same anti-pattern adapted to new architectural context.
+FPS-007,FPS-001,contradict,001,Network lock-in effectively constrains user sovereignty even when code is formally free; network effects can replicate vendor lock-in without any license restriction.
+FPS-009,FPS-001,support,001,Data sovereignty is a component of full user sovereignty — control over generated data is as important as control over code.
+FPS-010,FPS-016,contradict,001,The composability paradox undermines inspectability-by-default — emergent system-level opacity defeats per-component transparency.
+FPS-011,FPS-001,contradict,001,Training data extraction extracts value from users without reciprocation, undermining the sovereignty premise.
+FPS-012,FPS-004,contradict,001,Complexity moat directly prevents practical freedom while preserving formal freedom — core mechanism of the formal/practical gap.
+FPS-013,FPS-014,mutation,001,Positive freedom extends and challenges the negative freedom framing — shifts obligation from removing barriers to enabling capacity.
+FPS-008,FPS-002,support,001,Freedom-commons provides a governance model for collective sovereignty — treats software infrastructure as a managed commons.
+FPS-015,FPS-017,contradict,001,Fork fragmentation is the downside of the right-to-fork — the same mechanism that enables resilience can destroy network-dependent commons.
+FPS-020,FPS-017,support,001,Forkability-as-resilience is the architectural operationalization of the right-to-fork principle.
+FPS-019,FPS-004,support,001,Modifiability-first-class architecture directly enables practical freedom by lowering the technical barrier to modification.
+FPS-018,FPS-019,support,001,Shared improvement loop depends on modifiability being first-class — without practical modifiability, improvements cannot be contributed or built upon.

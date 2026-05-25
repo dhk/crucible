@@ -1,1 +1,21 @@
 concept_id,name,status,first_seen_cycle,last_seen_cycle,description
+FPS-001,user-sovereignty,emergent,001,001,The principle that individual users retain ultimate authority over their software environment — execution, data, configuration, automation, and modification.
+FPS-002,collective-sovereignty,emergent,001,001,A community's right to govern shared software commons and infrastructure; potentially in tension with individual user sovereignty.
+FPS-003,formal-freedom,emergent,001,001,Legal and technical permission to modify/inspect/fork/redistribute — necessary but not sufficient for practical freedom.
+FPS-004,practical-freedom,emergent,001,001,The actual exercisable capacity to modify/inspect/fork given real-world constraints of skills, tooling, documentation, and time.
+FPS-005,tivoization,emergent,001,001,Hardware using free software but locking users out of running modified versions via firmware verification; listed as anti-pattern.
+FPS-006,cloudization,emergent,001,001,[speculative] Systems where hardware is local but meaningful computation runs remotely — cloud-era mutation of tivoization.
+FPS-007,network-lock-in,emergent,001,001,Emergent dependency created by network effects even when code is technically free; makes alternatives impractical.
+FPS-008,freedom-commons,emergent,001,001,Model treating freedom-preserving software as public infrastructure requiring commons governance rather than individual or vendor control.
+FPS-009,data-sovereignty,emergent,001,001,User rights over their own generated data — distinct from code freedom and may require different protections.
+FPS-010,composability-paradox,emergent,001,001,[speculative] Composable tools that create emergent opacity and lock-in at the system level even when components are individually free.
+FPS-011,training-data-extraction,emergent,001,001,Free-to-use systems that harvest user behavior to train proprietary models; extracting cognitive labor without reciprocation.
+FPS-012,complexity-moat,emergent,001,001,Open-source code made practically unmodifiable through deliberate or emergent architectural complexity and missing documentation.
+FPS-013,positive-freedom,emergent,001,001,[speculative] Freedom to accomplish — active capacity enabled by tooling/documentation/community support; contrasts with negative freedom from restriction.
+FPS-014,negative-freedom,emergent,001,001,Freedom from restriction or constraint; the primary register of the GNU Free Software Definition.
+FPS-015,fork-fragmentation,emergent,001,001,Risk that individual exercise of the right to fork fragments a community commons that depends on network effects.
+FPS-016,inspectability-by-default,emergent,001,001,Principle that all meaningful system behavior should be understandable and observable — readable source, observable workflows, durable logs.
+FPS-017,right-to-fork,emergent,001,001,Principle that communities must be able to continue a system independently of its original creator; treated as resilience infrastructure.
+FPS-018,shared-improvement-loop,emergent,001,001,Principle that improvements compound socially through contribution, redistribution, remixing, peer review, and publication of derived work.
+FPS-019,modifiability-first-class,emergent,001,001,Treating user ability to adapt systems as a core architectural requirement — modular components, declarative interfaces, portable formats.
+FPS-020,forkability-as-resilience,emergent,001,001,Treating the ability to fork as infrastructure for community resilience and continuity against institutional failure or vendor abandonment.

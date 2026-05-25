@@ -1,0 +1,91 @@
+cycle: "001"
+mode: strawman
+agent: strawman
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-001
+    name: user-sovereignty
+    description: The principle that individual users retain ultimate authority over their software environment — execution, data, configuration, automation, and modification.
+  - id: FPS-002
+    name: collective-sovereignty
+    description: A community's right to govern shared software commons and infrastructure, potentially in tension with individual user sovereignty.
+  - id: FPS-003
+    name: formal-freedom
+    description: Legal and technical permission to modify, inspect, fork, and redistribute — necessary but not sufficient for practical freedom.
+  - id: FPS-004
+    name: practical-freedom
+    description: The actual exercisable capacity to modify/inspect/fork given real-world constraints of skills, tooling, documentation, and time.
+  - id: FPS-005
+    name: tivoization
+    description: Hardware using free software but locking users out of running modified versions via firmware verification; named for TiVo; listed as anti-pattern in source doc.
+  - id: FPS-006
+    name: cloudization
+    description: "[speculative] Systems where hardware is local but meaningful computation runs remotely — passes local-first audits technically while violating their spirit; cloud-era mutation of tivoization."
+  - id: FPS-007
+    name: network-lock-in
+    description: Emergent dependency created by network effects even when code is technically free; makes alternatives impractical without violating any license.
+  - id: FPS-008
+    name: freedom-commons
+    description: Model treating freedom-preserving software as public infrastructure requiring commons governance rather than individual ownership or vendor stewardship.
+  - id: FPS-009
+    name: data-sovereignty
+    description: User rights over their own generated data — distinct from code freedom and may require different protections.
+  - id: FPS-010
+    name: composability-paradox
+    description: "[speculative] Composable tools that create emergent opacity and lock-in at the system level even when individual components are free and inspectable."
+  - id: FPS-011
+    name: training-data-extraction
+    description: Free-to-use systems that harvest user behavior or content to train proprietary models, extracting cognitive labor without reciprocation.
+  - id: FPS-012
+    name: complexity-moat
+    description: Open-source code made practically unmodifiable through deliberate or emergent architectural complexity, missing documentation, or hostile build environments.
+  - id: FPS-013
+    name: positive-freedom
+    description: "[speculative] Freedom to accomplish — active capacity enabled by tooling, documentation, and community support; contrasts with negative freedom from restriction."
+  - id: FPS-014
+    name: negative-freedom
+    description: Freedom from restriction or constraint; the register in which the GNU Free Software Definition primarily operates.
+  - id: FPS-015
+    name: fork-fragmentation
+    description: The risk that individual exercise of the right to fork fragments a community commons that depends on network effects, undermining collective resilience.
+  - id: FPS-016
+    name: inspectability-by-default
+    description: The principle that all meaningful system behavior should be understandable and observable by users — readable source, observable workflows, durable logs.
+  - id: FPS-017
+    name: right-to-fork
+    description: The principle that communities must be able to continue a system independently of its original creator; treated in the document as resilience infrastructure.
+  - id: FPS-018
+    name: shared-improvement-loop
+    description: The principle that improvements should compound socially through contribution, redistribution, remixing, peer review, and publication of derived work.
+  - id: FPS-019
+    name: modifiability-first-class
+    description: Treating user ability to adapt systems as a core architectural requirement — modular components, declarative interfaces, portable formats, replaceable subsystems.
+  - id: FPS-020
+    name: forkability-as-resilience
+    description: Treating the ability to fork as infrastructure for community resilience and continuity against institutional failure or vendor abandonment.
+
+concepts_modified: []
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified: []
+walls_identified:
+  - The document does not address how freedom-preserving principles apply to AI systems with opaque weights.
+  - The document treats "user" as monolithic; organizational contexts create irresolvable multi-party sovereignty conflicts under current framing.
+
+stance:
+  supports:
+    - The core five principles are well-grounded and worth steelmanning.
+    - Anti-patterns section is a strong foundation; expanded meaningfully.
+  challenges:
+    - The premise operates almost entirely in negative liberty; positive obligations are unaddressed.
+    - "Durable computational self-determination" may be incoherent for AI-augmented systems.
+  neutral:
+    - Alternative framings (commons, capability, anti-domination) are not superior — they surface different trade-offs.
+
+rationale:
+  - Strawman pass prioritized surface expansion over convergence; the document needs more conceptual vocabulary before it can be effectively steelmanned.
+
+next_recommended_mode: steelman
+confidence: 0.82
