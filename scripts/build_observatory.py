@@ -493,6 +493,56 @@ def _read_commit(d: Path) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Cycle diff extraction
+# ---------------------------------------------------------------------------
+
+def _extract_cycle_diffs(doc_path: Path, cycles: list[dict]) -> None:
+    """
+    For each cycle, find the git commit that introduced it and extract
+    the diff of doc_path vs the previous commit. Stores result as
+    cycle["diff"] (unified diff string, empty string if unavailable).
+    """
+    import subprocess
+
+    for cycle in cycles:
+        cycle["diff"] = ""
+        cycle_id = cycle.get("id", 0)
+        cycle_dir = f"reviews/cycles/cycle-{cycle_id:03d}/"
+
+        # Find the commit SHA that introduced this cycle directory
+        try:
+            result = subprocess.run(
+                ["git", "log", "--oneline", "--", cycle_dir],
+                capture_output=True, text=True, check=False,
+            )
+            if result.returncode != 0 or not result.stdout.strip():
+                continue
+            sha = result.stdout.strip().splitlines()[0].split()[0]
+        except Exception:
+            continue
+
+        # Extract the diff of doc_path in that commit
+        try:
+            diff_result = subprocess.run(
+                ["git", "show", f"--unified=5", sha, "--", str(doc_path)],
+                capture_output=True, text=True, check=False,
+            )
+            if diff_result.returncode != 0 or not diff_result.stdout.strip():
+                continue
+            # Strip git header lines; keep from first @@ hunk onward
+            lines = diff_result.stdout.splitlines(keepends=True)
+            hunk_start = None
+            for i, line in enumerate(lines):
+                if line.startswith("@@"):
+                    hunk_start = i
+                    break
+            if hunk_start is not None:
+                cycle["diff"] = "".join(lines[hunk_start:])
+        except Exception:
+            continue
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -514,6 +564,8 @@ def main():
     branches    = derive_branches(cycles)
     dead_ends   = enrich_dead_ends(dead_ends, concepts)
     concepts    = assign_positions(concepts, edges)
+
+    _extract_cycle_diffs(doc_path, cycles)
 
     document = build_document(
         doc_path, concepts, cycles, branches, mutations, islands, dead_ends
@@ -545,7 +597,8 @@ def main():
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
 
-    print(f"  {len(concepts)} concepts, {len(edges)} edges, {len(cycles)} cycles")
+    cycles_with_diffs = sum(1 for c in cycles if c.get("diff"))
+    print(f"  {len(concepts)} concepts, {len(edges)} edges, {len(cycles)} cycles ({cycles_with_diffs} with diffs)")
     print(f"  {len(islands)} islands, {len(dead_ends)} dead ends, {len(branches)} branches")
     print(f"  → {out_path}")
 

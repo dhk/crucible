@@ -1,5 +1,6 @@
 /* global React, ReactDOM, AGENTS, STATES, CONCEPTS, EDGES, CYCLES, BRANCHES, DOC,
    ConceptGraph, DebateTimeline, BranchExplorer, AgentObservatory, IslandsView,
+   DocumentEvolution,
    TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle, TweakSelect */
 
 const { useState, useEffect, useMemo, useRef } = React;
@@ -9,7 +10,8 @@ const VIEWS = [
   { id: 'timeline', label: 'Timeline',      short: 'T' },
   { id: 'branches', label: 'Branches',      short: 'B' },
   { id: 'agents',   label: 'Agents',        short: 'A' },
-  { id: 'islands',  label: 'Islands & Fossils', short: 'I' },
+  { id: 'islands',   label: 'Islands & Fossils', short: 'I' },
+  { id: 'evolution', label: 'Evolution',         short: 'E' },
 ];
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -141,7 +143,8 @@ function App() {
             {view === 'timeline' && 'Chronological replay of the debate'}
             {view === 'branches' && 'Competing directions of conceptual exploration'}
             {view === 'agents'   && 'Per-agent behavior, conflict patterns, mutation velocity'}
-            {view === 'islands'  && 'Structural resistance and abandoned terrain'}
+            {view === 'islands'    && 'Structural resistance and abandoned terrain'}
+            {view === 'evolution' && 'Cycle-by-cycle document diff history'}
           </span>
           <div className="view-actions">
             {view === 'graph' && (
@@ -173,7 +176,8 @@ function App() {
           <BranchExplorer selectedCycle={selectedCycle} onSelectCycle={setSelectedCycle} />
         )}
         {view === 'agents' && <AgentObservatory />}
-        {view === 'islands' && <IslandsView />}
+        {view === 'islands'   && <IslandsView />}
+        {view === 'evolution' && <DocumentEvolution />}
       </main>
 
       <Inspector
