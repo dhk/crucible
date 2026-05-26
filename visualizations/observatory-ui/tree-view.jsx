@@ -1,4 +1,5 @@
-/* global React, ReactDOM, AGENTS, STATES, CONCEPTS, EDGES, CYCLES, DOC */
+/* global React, ReactDOM, AGENTS, STATES, CONCEPTS, EDGES, CYCLES, DOC,
+   DocumentEvolution */
 // Tree View — Crucible Observatory rendered in the DHK design system.
 // Concept Graph as horizontal phylogenetic tree: cycle on x-axis, lineage on y-axis.
 
@@ -136,6 +137,7 @@ function buildTreeLayout(concepts, edges, opts) {
 
 // ---------- App ----------
 function TreeApp() {
+  const [activeTab, setActiveTab] = useState('tree');
   const [selectedId, setSelectedId] = useState('C05'); // Force-directed graph — illustrates lineage
   const [showDeadEnds, setShowDeadEnds] = useState(true);
   const [showContradict, setShowContradict] = useState(true);
@@ -199,129 +201,138 @@ function TreeApp() {
           <span className="doc">crucible-observability-ui.md</span>
         </div>
         <nav className="nav">
-          <button className="nav-tab">Timeline</button>
-          <button className="nav-tab active">Concept&nbsp;Tree</button>
-          <button className="nav-tab">Branches</button>
-          <button className="nav-tab">Agents</button>
-          <button className="nav-tab">Islands</button>
+          <button className={`nav-tab${activeTab === 'timeline' ? ' active' : ''}`} onClick={() => setActiveTab('timeline')}>Timeline</button>
+          <button className={`nav-tab${activeTab === 'tree' ? ' active' : ''}`} onClick={() => setActiveTab('tree')}>Concept&nbsp;Tree</button>
+          <button className={`nav-tab${activeTab === 'branches' ? ' active' : ''}`} onClick={() => setActiveTab('branches')}>Branches</button>
+          <button className={`nav-tab${activeTab === 'agents' ? ' active' : ''}`} onClick={() => setActiveTab('agents')}>Agents</button>
+          <button className={`nav-tab${activeTab === 'islands' ? ' active' : ''}`} onClick={() => setActiveTab('islands')}>Islands</button>
+          <button className={`nav-tab${activeTab === 'evolution' ? ' active' : ''}`} onClick={() => setActiveTab('evolution')}>Evolution</button>
         </nav>
       </header>
 
-      <div className="hero">
-        <div className="hero-top">
-          <span className="tag tag-study">DOC · DESIGN BRIEF</span>
-          <span className="tag tag-tree">CONCEPT TREE</span>
-          <span className="meta">cycle 12 · last pass 2d ago</span>
+      {activeTab === 'evolution' ? (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 56px)' }}>
+          <DocumentEvolution />
         </div>
-        <h1>Concept tree</h1>
-        <p className="hero-lede">
-          A phylogeny of the ideas that survived twelve debate cycles. Time runs left to right.
-          Lineages descend from three seed concepts and branch as the strawman proposes, the steelman
-          reinforces, and the adversarial probes. Concepts that failed are kept visible as fossils.
-        </p>
-        <div className="hero-stats">
-          <div className="hero-stat"><span className="val">24</span><span className="label">Concepts</span></div>
-          <div className="hero-stat"><span className="val">12</span><span className="label">Cycles</span></div>
-          <div className="hero-stat"><span className="val">3</span><span className="label">Lineage roots</span></div>
-          <div className="hero-stat"><span className="val">5</span><span className="label">Dead ends</span></div>
-          <div className="hero-stat"><span className="val">74%</span><span className="label">Convergence</span></div>
-        </div>
-      </div>
-
-      <div className="section-divider">
-        <span>Phylogeny</span>
-        <div className="rule"></div>
-        <span>cycles 1 – 12 · 2026-04-18 → 2026-05-22</span>
-      </div>
-
-      <div className="tree-toolbar">
-        <div className="metaphor-tabs">
-          <button className="metaphor-tab">Force graph</button>
-          <button className="metaphor-tab active">Tree</button>
-          <button className="metaphor-tab">Strata</button>
-        </div>
-        <div className="spacer"></div>
-        <button className={`chip-toggle ${showDeadEnds ? 'active' : ''}`} onClick={() => setShowDeadEnds(v => !v)}>
-          <span className="sw" style={{ background: 'var(--text-dim)', opacity: 0.5 }}></span>
-          Dead ends
-        </button>
-        <button className={`chip-toggle ${showContradict ? 'active' : ''}`} onClick={() => setShowContradict(v => !v)}>
-          <span className="sw" style={{ background: 'var(--accent-orange)' }}></span>
-          Contradictions
-        </button>
-      </div>
-
-      <div className="tree-stage">
-        <div className="tree-card">
-          <div className="tree-canvas">
-            <TreeCanvas
-              width={W} height={H}
-              concepts={concepts}
-              layout={layout}
-              selectedId={selectedId}
-              ancestry={ancestry}
-              onSelect={setSelectedId}
-              showContradict={showContradict}
-            />
+      ) : (
+        <>
+          <div className="hero">
+            <div className="hero-top">
+              <span className="tag tag-study">DOC · DESIGN BRIEF</span>
+              <span className="tag tag-tree">CONCEPT TREE</span>
+              <span className="meta">cycle 12 · last pass 2d ago</span>
+            </div>
+            <h1>Concept tree</h1>
+            <p className="hero-lede">
+              A phylogeny of the ideas that survived twelve debate cycles. Time runs left to right.
+              Lineages descend from three seed concepts and branch as the strawman proposes, the steelman
+              reinforces, and the adversarial probes. Concepts that failed are kept visible as fossils.
+            </p>
+            <div className="hero-stats">
+              <div className="hero-stat"><span className="val">24</span><span className="label">Concepts</span></div>
+              <div className="hero-stat"><span className="val">12</span><span className="label">Cycles</span></div>
+              <div className="hero-stat"><span className="val">3</span><span className="label">Lineage roots</span></div>
+              <div className="hero-stat"><span className="val">5</span><span className="label">Dead ends</span></div>
+              <div className="hero-stat"><span className="val">74%</span><span className="label">Convergence</span></div>
+            </div>
           </div>
-        </div>
-        <Inspector concept={selected} lineage={lineage} layout={layout} />
-      </div>
 
-      <div className="tree-legend">
-        <div className="legend-card">
-          <div className="legend-title">Agents</div>
-          {Object.values(AGENTS).map(a => {
-            const n = CONCEPTS.filter(c => c.agent === a.id).length;
-            return (
-              <div key={a.id} className="legend-row">
-                <span className="sw" style={{ background: AGENT_COLOR_HEX[a.id] }}></span>
-                <span className="name">{a.name}</span>
-                <span className="num">{n}</span>
+          <div className="section-divider">
+            <span>Phylogeny</span>
+            <div className="rule"></div>
+            <span>cycles 1 – 12 · 2026-04-18 → 2026-05-22</span>
+          </div>
+
+          <div className="tree-toolbar">
+            <div className="metaphor-tabs">
+              <button className="metaphor-tab">Force graph</button>
+              <button className="metaphor-tab active">Tree</button>
+              <button className="metaphor-tab">Strata</button>
+            </div>
+            <div className="spacer"></div>
+            <button className={`chip-toggle ${showDeadEnds ? 'active' : ''}`} onClick={() => setShowDeadEnds(v => !v)}>
+              <span className="sw" style={{ background: 'var(--text-dim)', opacity: 0.5 }}></span>
+              Dead ends
+            </button>
+            <button className={`chip-toggle ${showContradict ? 'active' : ''}`} onClick={() => setShowContradict(v => !v)}>
+              <span className="sw" style={{ background: 'var(--accent-orange)' }}></span>
+              Contradictions
+            </button>
+          </div>
+
+          <div className="tree-stage">
+            <div className="tree-card">
+              <div className="tree-canvas">
+                <TreeCanvas
+                  width={W} height={H}
+                  concepts={concepts}
+                  layout={layout}
+                  selectedId={selectedId}
+                  ancestry={ancestry}
+                  onSelect={setSelectedId}
+                  showContradict={showContradict}
+                />
               </div>
-            );
-          })}
-        </div>
-        <div className="legend-card">
-          <div className="legend-title">Lifecycle state</div>
-          {['dominant','adopted','contested','emergent','fragmented','resurrected','deprecated'].map(s => {
-            const tone = STATE_TONE[s];
-            const n = CONCEPTS.filter(c => c.state === s).length;
-            return (
-              <div key={s} className="legend-row">
-                <span className="sw" style={{ background: tone.color, opacity: s === 'deprecated' ? 0.35 : 1 }}></span>
-                <span className="name">{STATES[s].label}</span>
-                <span className="num">{n}</span>
-              </div>
-            );
-          })}
-        </div>
-        <div className="legend-card">
-          <div className="legend-title">Edges</div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent)', borderTopStyle: 'solid' }}></span>
-            <span className="name">Lineage · parent → child</span>
+            </div>
+            <Inspector concept={selected} lineage={lineage} layout={layout} />
           </div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent-purple)', borderTopStyle: 'dashed' }}></span>
-            <span className="name">Mutation · concept evolved</span>
-          </div>
-          <div className="legend-row">
-            <span className="legend-edge" style={{ borderColor: 'var(--accent-orange)', borderTopStyle: 'dotted', borderTopWidth: 2 }}></span>
-            <span className="name">Contradiction</span>
-          </div>
-        </div>
-      </div>
 
-      <footer className="site-footer">
-        <div className="inner">
-          <span>Crucible · Observatory</span>
-          <span className="spacer"></span>
-          <span>generated 2026-05-22</span>
-          <span>·</span>
-          <a href="../index.html">← dark mode</a>
-        </div>
-      </footer>
+          <div className="tree-legend">
+            <div className="legend-card">
+              <div className="legend-title">Agents</div>
+              {Object.values(AGENTS).map(a => {
+                const n = CONCEPTS.filter(c => c.agent === a.id).length;
+                return (
+                  <div key={a.id} className="legend-row">
+                    <span className="sw" style={{ background: AGENT_COLOR_HEX[a.id] }}></span>
+                    <span className="name">{a.name}</span>
+                    <span className="num">{n}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="legend-card">
+              <div className="legend-title">Lifecycle state</div>
+              {['dominant','adopted','contested','emergent','fragmented','resurrected','deprecated'].map(s => {
+                const tone = STATE_TONE[s];
+                const n = CONCEPTS.filter(c => c.state === s).length;
+                return (
+                  <div key={s} className="legend-row">
+                    <span className="sw" style={{ background: tone.color, opacity: s === 'deprecated' ? 0.35 : 1 }}></span>
+                    <span className="name">{STATES[s].label}</span>
+                    <span className="num">{n}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="legend-card">
+              <div className="legend-title">Edges</div>
+              <div className="legend-row">
+                <span className="legend-edge" style={{ borderColor: 'var(--accent)', borderTopStyle: 'solid' }}></span>
+                <span className="name">Lineage · parent → child</span>
+              </div>
+              <div className="legend-row">
+                <span className="legend-edge" style={{ borderColor: 'var(--accent-purple)', borderTopStyle: 'dashed' }}></span>
+                <span className="name">Mutation · concept evolved</span>
+              </div>
+              <div className="legend-row">
+                <span className="legend-edge" style={{ borderColor: 'var(--accent-orange)', borderTopStyle: 'dotted', borderTopWidth: 2 }}></span>
+                <span className="name">Contradiction</span>
+              </div>
+            </div>
+          </div>
+
+          <footer className="site-footer">
+            <div className="inner">
+              <span>Crucible · Observatory</span>
+              <span className="spacer"></span>
+              <span>generated 2026-05-22</span>
+              <span>·</span>
+              <a href="../index.html">← dark mode</a>
+            </div>
+          </footer>
+        </>
+      )}
     </>
   );
 }
