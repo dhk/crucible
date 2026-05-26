@@ -1,0 +1,76 @@
+cycle: "003"
+mode: adversarial
+agent: adversarial
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-025
+    name: governance-capture
+    description: "The failure mode in which multi-stakeholder governance bodies are dominated by the well-resourced actors they are meant to check, achieved through funding of full-time participants, agenda-setting, and procedural influence rather than formal veto."
+  - id: FPS-026
+    name: compliance-sovereignty-conflict
+    description: "The structural tension between regulatory compliance obligations (GDPR, HIPAA, SOC2) and user sovereignty as defined in this proposal; in regulated industries, binding law requires organizations to restrict exactly the freedoms the layered sovereignty priority rule protects."
+  - id: FPS-027
+    name: unfunded-obligation
+    description: "The failure mode in which positive architectural obligations (documentation, stable interfaces, test infrastructure) imposed on builders without a corresponding funding model select for well-resourced actors and disadvantage under-resourced projects, potentially concentrating the power the framework was designed to check."
+
+concepts_modified:
+  - id: FPS-024
+    change: "AI-inspectability criteria identified as depending on vendor self-attestation with no external verification mechanism; flagged as dead end for current market conditions without third-party audit rights."
+  - id: FPS-019
+    change: "Testable criterion (competent practitioner alone with public docs) flagged as dead end for large complex systems — only applicable to small projects where freedom-preserving design is already easiest."
+  - id: FPS-021
+    change: "Layered sovereignty priority rule flagged as inapplicable in regulated industries where binding legal obligations require restrictions it prohibits; compliance-sovereignty-conflict island identified."
+
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified:
+  - concept_id: FPS-019
+    reason: "Testable criterion collapses for large complex systems (OS kernels, AI systems); only meaningful where freedom-preserving design is already easiest."
+  - concept_id: FPS-024
+    reason: "AI-inspectability criteria structurally depend on vendor self-attestation; no external verification mechanism proposed; can be satisfied by compliance documents that disclose nothing actionable."
+  - concept_id: FPS-005
+    reason: "Freedom/security distinguishing test ('who does the restriction primarily protect?') is not operationalizable — same mechanism simultaneously serves both legitimate and illegitimate functions; user has no external verification path."
+
+walls_identified:
+  - concept_id: FPS-021
+    resistant_population: "Enterprise IT and legal departments in regulated industries"
+    resistance_type: "compliance-structural"
+  - concept_id: FPS-024
+    resistant_population: "AI model vendors"
+    resistance_type: "IP and copyright liability"
+  - concept_id: FPS-023
+    resistant_population: "Volunteer-maintained and under-resourced open source projects"
+    resistance_type: "unfunded-obligation"
+  - concept_id: FPS-008
+    resistant_population: "Well-resourced corporate actors in standards bodies"
+    resistance_type: "governance-capture via funding dominance"
+
+stance:
+  supports:
+    - FPS-003
+    - FPS-004
+    - FPS-012
+    - FPS-007
+  challenges:
+    - FPS-019
+    - FPS-021
+    - FPS-023
+    - FPS-024
+    - FPS-008
+  neutral:
+    - FPS-001
+    - FPS-002
+    - FPS-017
+    - FPS-020
+
+rationale:
+  - "Economic sustainability is the extinction-event failure mode; all other principles are contingent on it."
+  - "AI-inspectability criteria require enforcement mechanisms or explicit scope reduction."
+  - "Layered sovereignty priority rule has a jurisdiction gap in regulated industries."
+  - "Positive architectural obligations without funding models select for power concentration."
+  - "Multi-stakeholder governance displaces rather than solves capture dynamics."
+
+next_recommended_mode: steelman
+confidence: 0.72

@@ -1,0 +1,89 @@
+cycle: "007"
+mode: strawman
+agent: strawman
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-035
+    name: exit-ecosystem
+    description: >
+      The prerequisite condition that individual exit rights require a viable ecosystem of alternatives
+      to be meaningful. Credible exit requires not just the technical permission to leave but a destination
+      ecosystem with three properties: availability (alternatives exist), viability (alternatives can serve
+      a meaningful fraction of current users), and discoverability (users can find them without expert
+      intermediaries). Derives from the exit-option framing; operationalizes it architecturally.
+  - id: FPS-036
+    name: legible-defaults
+    description: >
+      An alternative to the reversibility criterion "no irreversible defaults": the weaker but defensible
+      requirement that the reversibility status of every default must be made explicit to the user at the
+      point of encounter. Separates the disclosure obligation (communicate reversibility) from the
+      reversibility obligation (be reversible), allowing security-by-design irreversibility while preserving
+      user awareness. Proposed as a partial resolution to the reversibility/security dead end (Failure Mode 9).
+  - id: FPS-037
+    name: user-cooperative-governance
+    description: >
+      An institutional model where users collectively own and govern the platform through cooperative
+      ownership — democratic voting rights, profit-sharing, board representation. Distinct from
+      multi-stakeholder standards bodies (procedurally inclusive but not ownership-inclusive) and from
+      individual sovereignty (creates rights, not collective voice). Structurally different failure-mode
+      profile from standards bodies: governance power is proportional to user membership, not resources
+      spent on participation. Includes a federated cooperative extension for network-scale governance.
+  - id: FPS-038
+    name: freedom-budget
+    description: >
+      The implicit total of freedom-preserving or freedom-eroding cost that each architectural decision
+      contributes. Making the budget explicit — as a tracked design artifact — allows architects to make
+      cumulative trade-offs consciously rather than through individual decisions that each seem minor.
+      Operationalizes the infrastructure dependency footprint as a running account (freedom-cost rating
+      per dependency, tracked across releases) rather than a point-in-time snapshot.
+  - id: FPS-039
+    name: regulatory-alignment
+    description: >
+      The condition where independent regulatory frameworks (GDPR Article 20 data portability, SBOM mandates,
+      right-to-repair legislation, DMA interoperability requirements) incidentally require properties that
+      this proposal endorses. Framed as a bootstrap strategy: freedom-decay indicators can ride alongside
+      compliance indicators already mandated by other frameworks, reducing the marginal cost of freedom
+      assessment without requiring dedicated governance or political advocacy.
+
+concepts_modified:
+  - id: FPS-030
+    change: >
+      Graduated delegation section expanded from a single [speculative] paragraph to a composable
+      sovereignty section with a decomposition matrix mapping the five GNU freedoms to independent
+      delegation decisions. Unbundling identified as a positive architectural obligation.
+
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified: []
+walls_identified: []
+
+stance:
+  supports:
+    - exit-option framing as complement to capability framing (sidesteps individual-capacity problem)
+    - legible-defaults as partial resolution to reversibility/security contradiction
+    - regulatory alignment as low-marginal-cost bootstrap for assessment governance
+    - composable sovereignty as architectural operationalization of graduated delegation
+  challenges:
+    - user-cooperative governance is underdeveloped — cooperative governance at platform scale has
+      its own well-documented failure modes (free-rider, low participation, founder capture)
+      that this pass does not address; steelman should stress-test
+    - exit-ecosystem viability condition is underspecified — "meaningful fraction of current users"
+      is a relative standard that could be set arbitrarily high or low
+  neutral:
+    - freedom-budget concept is speculative and needs a concrete measurement protocol
+      before it can be promoted from emergent status
+
+rationale:
+  - Strawman role is generative, not evaluative. New concepts are added at emergent status;
+    promotion decisions belong to the steelman pass.
+  - Exit-option and active-governance framings are structurally distinct from the five existing
+    framings — they imply different success criteria and different design targets, not just
+    different vocabulary for the same commitments.
+  - Legible-defaults does not resolve the freedom/security tension; it reframes the criterion
+    at a level of specificity that survives the dead end. Whether the weaker criterion is
+    sufficient is an open normative question for the steelman pass.
+
+next_recommended_mode: steelman
+confidence: 0.82

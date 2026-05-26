@@ -1,0 +1,61 @@
+cycle: "009"
+mode: adversarial
+agent: adversarial
+document: docs/active/discuss-the-premise-of-freedom-preservin.md
+
+concepts_added:
+  - id: FPS-041
+    name: disclosure-theater
+    description: The failure mode where legible-defaults and disclosure-requirement criteria produce technically compliant notifications that users cannot meaningfully process at interaction volume — disclosures are present and understandable in principle, but habituated dismissal renders them practically invisible; the formal/practical gap applied to disclosure itself.
+  - id: FPS-042
+    name: cooperative-capture
+    description: The failure mode where user-cooperative governance is captured by the active minority of participants who have systematically different interests from the passive majority; structurally distinct from resource-based capture (FPS-025) — the capture mechanism is participation-attrition rather than funding-dominance, but the governance-misrepresentation outcome is analogous.
+
+concepts_modified:
+  - id: FPS-040
+    change: "Added dead end annotation — matrix independence claims conflate formal and practical separability; runtime verification of composable sovereignty requires provider cooperation or trusted-execution infrastructure not currently specified, reproducing the self-attestation problem in a new register."
+  - id: FPS-035
+    change: "Added dead end annotation — testability claim is premature; three components (availability, viability, discoverability) lack measurement thresholds or evaluator criteria; ecosystem maintenance obligation is unassigned with no governance mechanism."
+  - id: FPS-036
+    change: "Added dead end annotation — disclosure-at-scale fails practical freedom test through attention-economics failure; habituated dismissal behavior is the documented modal outcome of high-volume disclosure requirements; Failure Mode 9 is relocated rather than resolved."
+  - id: FPS-037
+    change: "Added dead end annotation — empirical track record from credit unions and agricultural cooperatives does not transfer to winner-take-all network-effect platforms; participation-attrition produces active-minority governance dominance; added new island for passive platform users."
+  - id: FPS-039
+    change: "Added dead end annotation — compliance outputs are calibrated for regulatory requirements; GDPR Art. 20 and SBOM outputs satisfy regulatory auditors without generating the governance-status annotations freedom-decay monitoring requires; double-duty claim requires genuine requirement overlap that is partial, not full."
+
+concepts_removed: []
+concepts_resurrected: []
+
+dead_ends_identified:
+  - concept_id: FPS-040
+    reason: "Matrix independence claims conflate formal and practical separability — runtime attestation that execution matches published source requires provider cooperation, reproducing self-attestation failure (FPS-024) in a new register."
+  - concept_id: FPS-035
+    reason: "Testability claim is premature — three components lack measurement thresholds; ecosystem maintenance obligation is unassigned with no governance mechanism against free-riding."
+  - concept_id: FPS-036
+    reason: "Legible-defaults fails practical freedom test at scale — disclosure volume produces habituated dismissal (disclosure theater); cookie-consent parallel is direct and documented; FM9 relocated not resolved."
+  - concept_id: FPS-039
+    reason: "Compliance outputs are calibrated for regulatory requirements not freedom-preservation requirements; double-duty claim depends on genuine overlap that is partial; strategy reduces some costs without generating freedom outputs."
+
+walls_identified:
+  - concept_id: FPS-037
+    resistant_population: "Passive platform users (majority of large-platform users)"
+    resistance_type: "participation-attrition"
+    evidence: "Internet forum participation follows 90/9/1 rule; cooperative governance dominated by active minorities in documented cooperative platforms; developer and power-user interests diverge from casual user interests on software platforms"
+    status: identified
+
+stance:
+  supports: []
+  challenges:
+    - FPS-040
+    - FPS-035
+    - FPS-036
+    - FPS-037
+    - FPS-039
+  neutral: []
+
+rationale:
+  - "Cycle 008 steelman pass promoted five emergent concepts as first-class without fully interrogating the formal/practical gap in their own operationalization — the same gap the proposal treats as the central failure mode of freedom-reducing systems."
+  - "Disclosure theater (FPS-041) and cooperative capture (FPS-042) are the two most structurally significant new failure mechanisms — they undermine the two primary resolutions the proposal has so far achieved (FM9 and FM3 alternative)."
+
+next_recommended_mode: steelman
+confidence: 0.82
