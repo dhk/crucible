@@ -58,14 +58,16 @@ The Observatory UI is a prototype visualization of Crucible's debate output — 
 **To run it:**
 
 ```bash
-cd visualizations/observatory-ui
+cd visualizations
 python3 -m http.server 7890
 ```
 
 Then open your browser to:
 
-- [http://localhost:7890/Tree%20View.html](http://localhost:7890/Tree%20View.html) — DHK light theme, tree-focused layout
-- [http://localhost:7890/](http://localhost:7890/) — dark Obsidian variant, all five views
+- [http://localhost:7890/observatory-ui/Tree%20View.html](http://localhost:7890/observatory-ui/Tree%20View.html) — DHK light theme, tree-focused layout
+- [http://localhost:7890/observatory-ui/](http://localhost:7890/observatory-ui/) — dark Obsidian variant, all five views
+
+> Serve from `visualizations/` (not `observatory-ui/`) so the UI can reach `observatory.json` one level up.
 
 No build step. No dependencies to install. The prototype uses React 18 UMD loaded from CDN — just needs a local server because browsers block cross-origin script loading on `file://` URLs.
 
@@ -84,7 +86,7 @@ make new-debate ISSUE=<url-or-number>
 make run-debate DOC=docs/active/<slug>.md ROUNDS=3
 
 # View the result in the Observatory UI
-cd visualizations/observatory-ui && python3 -m http.server 7890
+cd visualizations && python3 -m http.server 7890
 ```
 
 ### Manual (step by step)

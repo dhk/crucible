@@ -124,7 +124,7 @@ p { margin: 0; }
 .crumb .doc { color: var(--text); }
 .crumb .slash { margin: 0 6px; color: var(--border); }
 
-.nav { margin-left: auto; display: flex; gap: var(--space-2); flex-shrink: 0; }
+.nav { margin-left: auto; display: flex; gap: var(--space-2); flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 .nav-tab {
   font-family: var(--font-cond);
   font-size: 13px;
