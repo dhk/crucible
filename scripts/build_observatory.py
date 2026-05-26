@@ -413,30 +413,46 @@ def _convergence_status(score: float, cycles: list) -> str:
 
 
 def _parse_cycle_dir(d: Path) -> dict | None:
-    """Parse directory name into cycle metadata."""
+    """Parse directory name into cycle metadata.
+
+    Accepted patterns:
+      cycle-001          → id=1,  agent derived from concept_delta.yaml
+      cycle-001-strawman → id=1,  agent=strawman
+      CYC-001-strawman   → id=1,  agent=strawman
+      001-strawman       → id=1,  agent=strawman
+    """
     name = d.name
-    # Patterns: CYC-001-strawman, 001-strawman, 1-strawman
-    m = re.match(r"(?:CYC-)?(\d+)-(\w+)", name)
-    if not m:
-        return None
-    cycle_id = int(m.group(1))
-    agent_raw = m.group(2).lower()
-    agent = AGENT_ALIASES.get(agent_raw, agent_raw)
-    return {"id": cycle_id, "agent": agent, "at": str(date.today())}
+    # Pattern with agent suffix
+    m = re.match(r"(?:cycle-|CYC-)?(\d+)-(\w+)", name)
+    if m:
+        cycle_id = int(m.group(1))
+        agent_raw = m.group(2).lower()
+        agent = AGENT_ALIASES.get(agent_raw, agent_raw)
+        return {"id": cycle_id, "agent": agent, "at": str(date.today())}
+    # Pattern without agent suffix: cycle-001
+    m = re.match(r"(?:cycle-|CYC-)?(\d+)$", name)
+    if m:
+        cycle_id = int(m.group(1))
+        return {"id": cycle_id, "agent": "unknown", "at": str(date.today())}
+    return None
 
 
 def _read_concept_delta(d: Path) -> dict:
-    """Read concept-delta.yaml if present."""
-    delta_path = d / "concept-delta.yaml"
+    """Read concept_delta.yaml (or concept-delta.yaml) if present."""
+    delta_path = d / "concept_delta.yaml"
+    if not delta_path.exists():
+        delta_path = d / "concept-delta.yaml"
     if not delta_path.exists():
         return {}
     try:
         import yaml
         data = yaml.safe_load(delta_path.read_text()) or {}
         return {
-            "added":   data.get("added", []),
-            "mutated": data.get("mutated", []),
-            "removed": data.get("removed", data.get("deprecated", [])),
+            "added":   data.get("concepts_added",    data.get("added",   [])),
+            "mutated": data.get("concepts_modified",  data.get("mutated", [])),
+            "removed": data.get("concepts_removed",   data.get("removed", data.get("deprecated", []))),
+            "mode":    data.get("mode", ""),
+            "agent":   data.get("agent", ""),
         }
     except Exception:
         pass

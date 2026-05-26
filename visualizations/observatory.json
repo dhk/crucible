@@ -1,0 +1,1706 @@
+{
+  "document": {
+    "title": "Discuss The Premise Of Freedom Preservin",
+    "path": "/Users/dhk/Documents/dev/crucible/docs/active/discuss-the-premise-of-freedom-preservin.md",
+    "status": "Converging",
+    "convergence": 0.98,
+    "cycles": 9,
+    "branches": 1,
+    "mutations": 0,
+    "concepts": 42,
+    "islands": 6,
+    "deadEnds": 12,
+    "seededAt": "2026-05-25",
+    "lastCycle": "2026-05-25"
+  },
+  "agents": [
+    {
+      "id": "strawman",
+      "name": "Strawman",
+      "glyph": "S",
+      "role": "Exploration",
+      "color": "#5eead4",
+      "dim": "#2c5e58",
+      "desc": "Expands possibilities. Tolerates ambiguity. Proposes alternatives."
+    },
+    {
+      "id": "steelman",
+      "name": "Steelman",
+      "glyph": "St",
+      "role": "Structure",
+      "color": "#a78bfa",
+      "dim": "#4a3d7a",
+      "desc": "Repairs weaknesses. Clarifies assumptions. Improves coherence."
+    },
+    {
+      "id": "adversarial",
+      "name": "Adversarial",
+      "glyph": "A",
+      "role": "Stress-test",
+      "color": "#fb7185",
+      "dim": "#6e2f3b",
+      "desc": "Attacks assumptions. Surfaces contradictions. Identifies failure modes."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "FPS-001",
+      "name": "user-sovereignty",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "The principle that individual users retain ultimate authority over their software environment — execution",
+      "adoption": 0.5,
+      "x": 615,
+      "y": 355
+    },
+    {
+      "id": "FPS-002",
+      "name": "collective-sovereignty",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "A community's right to govern shared software commons and infrastructure; potentially in tension with individual user sovereignty.",
+      "adoption": 0.5,
+      "x": 598,
+      "y": 389
+    },
+    {
+      "id": "FPS-003",
+      "name": "formal-freedom",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Legal and technical permission to modify/inspect/fork/redistribute — necessary but not sufficient for practical freedom; elevated to document-wide cross-cutting framework in cycle 002.",
+      "adoption": 0.5,
+      "x": 572,
+      "y": 416
+    },
+    {
+      "id": "FPS-004",
+      "name": "practical-freedom",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "The actual exercisable capacity to modify/inspect/fork given real-world constraints of skills",
+      "adoption": 0.5,
+      "x": 539,
+      "y": 434
+    },
+    {
+      "id": "FPS-005",
+      "name": "tivoization",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Hardware using free software but locking users out of running modified versions via firmware verification; listed as anti-pattern.",
+      "adoption": 0.5,
+      "x": 502,
+      "y": 440
+    },
+    {
+      "id": "FPS-006",
+      "name": "cloudization",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "[speculative] Systems where hardware is local but meaningful computation runs remotely — cloud-era mutation of tivoization.",
+      "adoption": 0.5,
+      "x": 465,
+      "y": 435
+    },
+    {
+      "id": "FPS-007",
+      "name": "network-lock-in",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Emergent dependency created by network effects even when code is technically free; makes alternatives impractical.",
+      "adoption": 0.5,
+      "x": 431,
+      "y": 418
+    },
+    {
+      "id": "FPS-008",
+      "name": "freedom-commons",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Model treating freedom-preserving software as public infrastructure requiring commons governance rather than individual or vendor control.",
+      "adoption": 0.5,
+      "x": 404,
+      "y": 392
+    },
+    {
+      "id": "FPS-009",
+      "name": "data-sovereignty",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "User rights over their own generated data — distinct from code freedom and may require different protections; addressed within the end-user domain of the layered sovereignty model.",
+      "adoption": 0.5,
+      "x": 386,
+      "y": 359
+    },
+    {
+      "id": "FPS-010",
+      "name": "composability-paradox",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "[speculative] Composable tools that create emergent opacity and lock-in at the system level even when components are individually free.",
+      "adoption": 0.5,
+      "x": 380,
+      "y": 322
+    },
+    {
+      "id": "FPS-011",
+      "name": "training-data-extraction",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Free-to-use systems that harvest user behavior to train proprietary models; extracting cognitive labor without reciprocation.",
+      "adoption": 0.5,
+      "x": 385,
+      "y": 285
+    },
+    {
+      "id": "FPS-012",
+      "name": "complexity-moat",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Open-source code made practically unmodifiable through deliberate or emergent architectural complexity and missing documentation; generalized to a document-wide anti-pattern in cycle 002.",
+      "adoption": 0.5,
+      "x": 402,
+      "y": 251
+    },
+    {
+      "id": "FPS-013",
+      "name": "positive-freedom",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Freedom to accomplish — active capacity enabled by tooling/documentation/community support; contrasts with negative freedom from restriction; operationalized as positive-architectural-obligation in cycle 002.",
+      "adoption": 0.5,
+      "x": 428,
+      "y": 224
+    },
+    {
+      "id": "FPS-014",
+      "name": "negative-freedom",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Freedom from restriction or constraint; the primary register of the GNU Free Software Definition.",
+      "adoption": 0.5,
+      "x": 461,
+      "y": 206
+    },
+    {
+      "id": "FPS-015",
+      "name": "fork-fragmentation",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Risk that individual exercise of the right to fork fragments a community commons that depends on network effects.",
+      "adoption": 0.5,
+      "x": 498,
+      "y": 200
+    },
+    {
+      "id": "FPS-016",
+      "name": "inspectability-by-default",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Principle that all meaningful system behavior should be understandable and observable — readable source",
+      "adoption": 0.5,
+      "x": 535,
+      "y": 205
+    },
+    {
+      "id": "FPS-017",
+      "name": "right-to-fork",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Principle that communities must be able to continue a system independently of its original creator; treated as resilience infrastructure.",
+      "adoption": 0.5,
+      "x": 569,
+      "y": 222
+    },
+    {
+      "id": "FPS-018",
+      "name": "shared-improvement-loop",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Principle that improvements compound socially through contribution",
+      "adoption": 0.5,
+      "x": 596,
+      "y": 248
+    },
+    {
+      "id": "FPS-019",
+      "name": "modifiability-first-class",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Treating user ability to adapt systems as a core architectural requirement — modular components",
+      "adoption": 0.5,
+      "x": 614,
+      "y": 281
+    },
+    {
+      "id": "FPS-020",
+      "name": "forkability-as-resilience",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 1,
+      "group": "core",
+      "desc": "Treating the ability to fork as infrastructure for community resilience; architectural implication added: core value should be protocol-level not concentration-level to survive fragmentation.",
+      "adoption": 0.5,
+      "x": 620,
+      "y": 318
+    },
+    {
+      "id": "FPS-021",
+      "name": "layered-sovereignty",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 2,
+      "group": "core",
+      "desc": "A governance model that resolves multi-party sovereignty by assigning domain-specific rights to end users",
+      "adoption": 0.5,
+      "x": 665,
+      "y": 433
+    },
+    {
+      "id": "FPS-022",
+      "name": "freedom-activation-energy",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 2,
+      "group": "core",
+      "desc": "The threshold of skill",
+      "adoption": 0.5,
+      "x": 387,
+      "y": 485
+    },
+    {
+      "id": "FPS-023",
+      "name": "positive-architectural-obligation",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 2,
+      "group": "core",
+      "desc": "The obligation on system builders to actively enable the exercise of freedoms through architecture — progressive disclosure",
+      "adoption": 0.5,
+      "x": 335,
+      "y": 207
+    },
+    {
+      "id": "FPS-024",
+      "name": "AI-inspectability",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 2,
+      "group": "core",
+      "desc": "Conditions under which AI-powered systems satisfy inspectability-by-default: auditable training lineage",
+      "adoption": 0.5,
+      "x": 613,
+      "y": 155
+    },
+    {
+      "id": "FPS-025",
+      "name": "governance-capture",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 3,
+      "group": "core",
+      "desc": "The failure mode in which multi-stakeholder governance bodies are dominated by the well-resourced actors they are meant to check — achieved through funding of full-time participants and agenda-setting rather than formal veto.",
+      "adoption": 0.5,
+      "x": 674,
+      "y": 539
+    },
+    {
+      "id": "FPS-026",
+      "name": "compliance-sovereignty-conflict",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 3,
+      "group": "core",
+      "desc": "The structural tension between regulatory compliance obligations (GDPR/HIPAA/SOC2) and user sovereignty as defined in this proposal; in regulated industries binding law requires restricting exactly the freedoms the layered sovereignty priority rule protects.",
+      "adoption": 0.5,
+      "x": 223,
+      "y": 361
+    },
+    {
+      "id": "FPS-027",
+      "name": "unfunded-obligation",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 3,
+      "group": "core",
+      "desc": "The failure mode in which positive architectural obligations imposed on builders without a corresponding funding model select for well-resourced actors and disadvantage under-resourced projects — potentially concentrating the power the framework was designed to check.",
+      "adoption": 0.5,
+      "x": 603,
+      "y": 60
+    },
+    {
+      "id": "FPS-028",
+      "name": "freedom-decay",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 4,
+      "group": "core",
+      "desc": "The gradual erosion of practical freedom through processes requiring no deliberate decision — stale documentation",
+      "adoption": 0.5,
+      "x": 630,
+      "y": 656
+    },
+    {
+      "id": "FPS-029",
+      "name": "infrastructure-dependency-stack",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 4,
+      "group": "core",
+      "desc": "The layered infrastructure below the application layer (hardware",
+      "adoption": 0.5,
+      "x": 221,
+      "y": 548
+    },
+    {
+      "id": "FPS-030",
+      "name": "voluntary-delegation",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 4,
+      "group": "core",
+      "desc": "The mechanism by which users actively choose to surrender freedoms in exchange for convenience",
+      "adoption": 0.5,
+      "x": 197,
+      "y": 125
+    },
+    {
+      "id": "FPS-031",
+      "name": "reversibility",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 4,
+      "group": "core",
+      "desc": "The property of systems that allows users to undo state changes",
+      "adoption": 0.5,
+      "x": 592,
+      "y": -28
+    },
+    {
+      "id": "FPS-032",
+      "name": "contributor-obligations",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 4,
+      "group": "core",
+      "desc": "The reciprocal duties that users who benefit from a freedom-preserving commons have toward sustaining it. Cycle 005: promoted from emergent/speculative; distinguished hard obligations (attribution",
+      "adoption": 0.5,
+      "x": 859,
+      "y": 300
+    },
+    {
+      "id": "FPS-033",
+      "name": "meta-governance-gap",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 6,
+      "group": "core",
+      "desc": "The failure mode in which a governance or oversight mechanism is itself ungoverned and unfunded — specifically the periodic freedom assessment mechanism proposed here lacks its own governance charter",
+      "adoption": 0.5,
+      "x": 382,
+      "y": 826
+    },
+    {
+      "id": "FPS-034",
+      "name": "circular-operationalization",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 6,
+      "group": "core",
+      "desc": "The failure mode in which an empirical test for a concept requires conditions that are the outcome the proposal is designed to produce",
+      "adoption": 0.5,
+      "x": 618,
+      "y": -186
+    },
+    {
+      "id": "FPS-035",
+      "name": "exit-ecosystem",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 7,
+      "group": "core",
+      "desc": "The prerequisite condition that individual exit rights require a viable ecosystem of alternatives to be meaningful; credible exit requires availability (alternatives exist)",
+      "adoption": 0.5,
+      "x": 197,
+      "y": 838
+    },
+    {
+      "id": "FPS-036",
+      "name": "legible-defaults",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 7,
+      "group": "core",
+      "desc": "The requirement that the reversibility status of every default or action must be communicated to the user at the point of encounter. Separates disclosure obligation (hard: communicate reversibility status before user commits) from reversibility obligation (where feasible: prefer reversible defaults for non-security-critical operations). Cycle 008: promoted from emergent; replaces reversibility criterion 3 (\"no irreversible defaults\") in §Reversibility; resolves Failure Mode 9 (Reversibility/Security Contradiction).",
+      "adoption": 0.5,
+      "x": -86,
+      "y": 192
+    },
+    {
+      "id": "FPS-037",
+      "name": "user-cooperative-governance",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 7,
+      "group": "core",
+      "desc": "Institutional model where users collectively own and govern the platform through cooperative ownership (democratic voting",
+      "adoption": 0.5,
+      "x": 441,
+      "y": -277
+    },
+    {
+      "id": "FPS-038",
+      "name": "freedom-budget",
+      "state": "emergent",
+      "agent": "strawman",
+      "originCycle": 7,
+      "group": "core",
+      "desc": "The implicit total of freedom-preserving or freedom-eroding cost that each architectural decision contributes; making the budget explicit as a tracked design artifact allows conscious cumulative trade-off tracking. Operationalizes the infrastructure dependency footprint as a running account with per-dependency freedom-cost rating tracked across releases rather than as a point-in-time snapshot.",
+      "adoption": 0.5,
+      "x": 1049,
+      "y": 79
+    },
+    {
+      "id": "FPS-039",
+      "name": "regulatory-alignment",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 7,
+      "group": "core",
+      "desc": "The condition where independent regulatory frameworks (GDPR Article 20 data portability",
+      "adoption": 0.5,
+      "x": 899,
+      "y": 768
+    },
+    {
+      "id": "FPS-040",
+      "name": "composable-sovereignty",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 8,
+      "group": "core",
+      "desc": "The principle that the five GNU freedoms (run",
+      "adoption": 0.5,
+      "x": -1,
+      "y": 779
+    },
+    {
+      "id": "FPS-041",
+      "name": "disclosure-theater",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 9,
+      "group": "core",
+      "desc": "The failure mode where legible-defaults and disclosure-requirement criteria produce technically compliant notifications that users cannot meaningfully process at interaction volume — disclosures are present and understandable in principle but habituated dismissal renders them practically invisible; the formal/practical gap applied to disclosure itself. Identified as the residual mechanism of Failure Mode 9 relocated to the disclosure-effectiveness register.",
+      "adoption": 0.5,
+      "x": -187,
+      "y": 645
+    },
+    {
+      "id": "FPS-042",
+      "name": "cooperative-capture",
+      "state": "adopted",
+      "agent": "strawman",
+      "originCycle": 9,
+      "group": "core",
+      "desc": "The failure mode where user-cooperative governance is captured by the active minority of participants who have systematically different interests from the passive majority; distinct from resource-based capture (FPS-025) — the mechanism is participation-attrition rather than funding-dominance but the governance-misrepresentation outcome is structurally analogous. Applies to large software platforms where 90%+ of users are passive consumers.",
+      "adoption": 0.5,
+      "x": 1187,
+      "y": -5
+    }
+  ],
+  "edges": [
+    {
+      "from": "FPS-003",
+      "to": "FPS-004",
+      "type": "lineage",
+      "cycle": 1,
+      "rationale": "Formal freedom is a necessary precondition for practical freedom but does not imply it — practical freedom extends beyond formal permission."
+    },
+    {
+      "from": "FPS-001",
+      "to": "FPS-002",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "Individual sovereignty (right to fork/exit) and collective sovereignty (commons governance) can conflict when individual actions fragment shared infrastructure."
+    },
+    {
+      "from": "FPS-005",
+      "to": "FPS-006",
+      "type": "mutation",
+      "cycle": 1,
+      "rationale": "Cloudization is a cloud-era mutation of tivoization — hardware local"
+    },
+    {
+      "from": "FPS-007",
+      "to": "FPS-001",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "Network lock-in effectively constrains user sovereignty even when code is formally free; network effects can replicate vendor lock-in without any license restriction."
+    },
+    {
+      "from": "FPS-009",
+      "to": "FPS-001",
+      "type": "support",
+      "cycle": 1,
+      "rationale": "Data sovereignty is a component of full user sovereignty — control over generated data is as important as control over code."
+    },
+    {
+      "from": "FPS-010",
+      "to": "FPS-016",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "The composability paradox undermines inspectability-by-default — emergent system-level opacity defeats per-component transparency."
+    },
+    {
+      "from": "FPS-011",
+      "to": "FPS-001",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "Training data extraction extracts value from users without reciprocation"
+    },
+    {
+      "from": "FPS-012",
+      "to": "FPS-004",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "Complexity moat directly prevents practical freedom while preserving formal freedom — core mechanism of the formal/practical gap."
+    },
+    {
+      "from": "FPS-013",
+      "to": "FPS-014",
+      "type": "mutation",
+      "cycle": 1,
+      "rationale": "Positive freedom extends and challenges the negative freedom framing — shifts obligation from removing barriers to enabling capacity."
+    },
+    {
+      "from": "FPS-008",
+      "to": "FPS-002",
+      "type": "support",
+      "cycle": 1,
+      "rationale": "Freedom-commons provides a governance model for collective sovereignty — treats software infrastructure as a managed commons."
+    },
+    {
+      "from": "FPS-015",
+      "to": "FPS-017",
+      "type": "contradict",
+      "cycle": 1,
+      "rationale": "Fork fragmentation is the downside of the right-to-fork — the same mechanism that enables resilience can destroy network-dependent commons."
+    },
+    {
+      "from": "FPS-020",
+      "to": "FPS-017",
+      "type": "support",
+      "cycle": 1,
+      "rationale": "Forkability-as-resilience is the architectural operationalization of the right-to-fork principle."
+    },
+    {
+      "from": "FPS-019",
+      "to": "FPS-004",
+      "type": "support",
+      "cycle": 1,
+      "rationale": "Modifiability-first-class architecture directly enables practical freedom by lowering the technical barrier to modification."
+    },
+    {
+      "from": "FPS-018",
+      "to": "FPS-019",
+      "type": "support",
+      "cycle": 1,
+      "rationale": "Shared improvement loop depends on modifiability being first-class — without practical modifiability"
+    },
+    {
+      "from": "FPS-021",
+      "to": "FPS-001",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Layered-sovereignty provides a principled resolution of the user-sovereignty ambiguity — domain-specific rights replace monolithic \"user\" framing."
+    },
+    {
+      "from": "FPS-021",
+      "to": "FPS-002",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Layered-sovereignty incorporates collective sovereignty at the governance tier — organizational and community rights are addressed within the model."
+    },
+    {
+      "from": "FPS-022",
+      "to": "FPS-004",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Freedom-activation-energy is the mechanism that determines practical-freedom thresholds — reducing it is the design target for genuinely free systems."
+    },
+    {
+      "from": "FPS-022",
+      "to": "FPS-003",
+      "type": "contradict",
+      "cycle": 2,
+      "rationale": "High activation energy is the mechanism through which formal freedom fails to produce practical freedom; a system can have zero activation-energy barriers while providing formal freedom."
+    },
+    {
+      "from": "FPS-023",
+      "to": "FPS-013",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Positive-architectural-obligation is the design operationalization of positive-freedom — converts the philosophical claim into concrete builder responsibilities."
+    },
+    {
+      "from": "FPS-023",
+      "to": "FPS-019",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Positive-architectural-obligation extends modifiability-first-class with explicit positive duties on builders beyond modular architecture."
+    },
+    {
+      "from": "FPS-024",
+      "to": "FPS-016",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "AI-inspectability defines concrete criteria for inspectability-by-default applied to AI systems — operationalizes the principle for a domain where it was previously underdefined."
+    },
+    {
+      "from": "FPS-012",
+      "to": "FPS-018",
+      "type": "contradict",
+      "cycle": 2,
+      "rationale": "Complexity moat prevents shared-improvement-loop by making systems too opaque for contributors to understand what they are remixing or improving."
+    },
+    {
+      "from": "FPS-006",
+      "to": "FPS-012",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Cloudization is a structural form of complexity moat — the computation is architecturally hidden in remote infrastructure"
+    },
+    {
+      "from": "FPS-022",
+      "to": "FPS-012",
+      "type": "support",
+      "cycle": 2,
+      "rationale": "Complexity moat is the primary mechanism that raises freedom-activation-energy beyond exercisable thresholds; they are cause (moat) and effect (activation-energy) of the same pattern."
+    },
+    {
+      "from": "FPS-025",
+      "to": "FPS-008",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Governance-capture is the primary failure mode of freedom-commons governance — multi-stakeholder bodies are captured by the well-resourced actors they are meant to check; the commons model does not prevent capture"
+    },
+    {
+      "from": "FPS-026",
+      "to": "FPS-021",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Compliance-sovereignty-conflict shows that the layered sovereignty priority rule is inapplicable in regulated industries where binding law requires the very restrictions the rule prohibits; the model's domain-specificity claim does not survive jurisdictional analysis."
+    },
+    {
+      "from": "FPS-027",
+      "to": "FPS-023",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Unfunded-obligation is the failure mode of positive-architectural-obligation — when positive obligations exceed the resources of the builders they are imposed on"
+    },
+    {
+      "from": "FPS-027",
+      "to": "FPS-013",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Positive-freedom requires active investment to enable; unfunded-obligation is the mechanism by which the positive-freedom framework can become inaccessible to the projects that most need it."
+    },
+    {
+      "from": "FPS-025",
+      "to": "FPS-002",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Governance-capture shows that collective-sovereignty governance structures can be captured by the parties they regulate; multi-stakeholder procedural form does not guarantee power-balanced outcomes."
+    },
+    {
+      "from": "FPS-026",
+      "to": "FPS-009",
+      "type": "contradict",
+      "cycle": 3,
+      "rationale": "Compliance-sovereignty-conflict shows that data-sovereignty as defined here conflicts with regulatory data-governance regimes that legally require restricting user data control in certain contexts."
+    },
+    {
+      "from": "FPS-028",
+      "to": "FPS-004",
+      "type": "contradict",
+      "cycle": 4,
+      "rationale": "Freedom-decay is the temporal mechanism by which practical-freedom erodes without deliberate action; a system can satisfy practical-freedom criteria at t=0 and fail them at t=n through drift alone."
+    },
+    {
+      "from": "FPS-028",
+      "to": "FPS-023",
+      "type": "contradict",
+      "cycle": 4,
+      "rationale": "Freedom-decay shows that positive-architectural-obligation is insufficient as a one-time design requirement; obligations must be maintained continuously or the freedoms they enable decay."
+    },
+    {
+      "from": "FPS-029",
+      "to": "FPS-012",
+      "type": "support",
+      "cycle": 4,
+      "rationale": "Infrastructure-dependency-stack extends the complexity-moat anti-pattern below the application layer — captured infrastructure dependencies are a structural form of complexity moat that application design cannot overcome."
+    },
+    {
+      "from": "FPS-029",
+      "to": "FPS-006",
+      "type": "support",
+      "cycle": 4,
+      "rationale": "Cloudization is the application-layer manifestation of the infrastructure-dependency-stack failure mode — the stack analysis generalizes the cloudization concept to all infrastructure layers."
+    },
+    {
+      "from": "FPS-030",
+      "to": "FPS-001",
+      "type": "contradict",
+      "cycle": 4,
+      "rationale": "Voluntary-delegation is a mechanism by which users reduce their own sovereignty through preference; it challenges whether user-sovereignty should be an enforced architecture or a guaranteed option."
+    },
+    {
+      "from": "FPS-030",
+      "to": "FPS-007",
+      "type": "mutation",
+      "cycle": 4,
+      "rationale": "Voluntary-delegation is a preference-driven mutation of network-lock-in — the same outcome (reduced practical freedom) arrived at through choice rather than emergent coercion; the distinction matters for the design response."
+    },
+    {
+      "from": "FPS-031",
+      "to": "FPS-017",
+      "type": "mutation",
+      "cycle": 4,
+      "rationale": "Reversibility is the individual-user temporal analogue of forkability-as-resilience — both address the ability to continue without loss"
+    },
+    {
+      "from": "FPS-032",
+      "to": "FPS-018",
+      "type": "support",
+      "cycle": 4,
+      "rationale": "Contributor-obligations is the reciprocal counterpart to shared-improvement-loop — rights to improvement require corresponding duties of contribution for the commons to remain sustainable."
+    },
+    {
+      "from": "FPS-032",
+      "to": "FPS-008",
+      "type": "support",
+      "cycle": 4,
+      "rationale": "Contributor-obligations operationalizes the commons-governance dimension of freedom-commons at the individual participant level — commons governance requires participant duties"
+    },
+    {
+      "from": "FPS-029",
+      "to": "FPS-028",
+      "type": "support",
+      "cycle": 5,
+      "rationale": "Infrastructure capture is a primary accelerant of freedom-decay — commercially-controlled dependencies that become load-bearing at t=n accelerate decay across all five decay vectors simultaneously; the infrastructure dependency footprint is both a design artifact and a periodic freedom-assessment input."
+    },
+    {
+      "from": "FPS-028",
+      "to": "FPS-022",
+      "type": "support",
+      "cycle": 5,
+      "rationale": "Freedom-decay is the temporal mechanism by which freedom-activation-energy rises without deliberate action — stale documentation and contributor attrition are the primary decay vectors for activation-energy specifically."
+    },
+    {
+      "from": "FPS-031",
+      "to": "FPS-001",
+      "type": "support",
+      "cycle": 5,
+      "rationale": "Reversibility is a sub-principle of user-sovereignty — the ability to undo state changes and exit configurations without data loss operationalizes sovereignty at the individual-action level; irreversibility concentrates effective authority in system design rather than the user."
+    },
+    {
+      "from": "FPS-031",
+      "to": "FPS-009",
+      "type": "mutation",
+      "cycle": 5,
+      "rationale": "Reversibility extends data-sovereignty temporally — where data-sovereignty addresses export rights (transfer mechanism)"
+    },
+    {
+      "from": "FPS-030",
+      "to": "FPS-004",
+      "type": "support",
+      "cycle": 5,
+      "rationale": "The structural coercion framing of voluntary-delegation shows that practical-freedom requires not just individual system properties but ecosystem conditions — genuine alternatives must exist for individual practical-freedom to be meaningful."
+    },
+    {
+      "from": "FPS-032",
+      "to": "FPS-027",
+      "type": "contradict",
+      "cycle": 5,
+      "rationale": "The hard/soft distinction in contributor-obligations is the mechanism by which commons-governance avoids the unfunded-obligation failure mode at the individual participant level — hard obligations are binary and low-cost; soft norms allow culturally-calibrated reciprocity without compliance-cost selection."
+    },
+    {
+      "from": "FPS-028",
+      "to": "FPS-019",
+      "type": "contradict",
+      "cycle": 5,
+      "rationale": "Freedom-decay shows that modifiability-first-class architecture is insufficient as a one-time design achievement — the tiered modifiability criterion applies at t=0 but decays as documentation staleness and contributor concentration increase; modifiability must be maintained"
+    },
+    {
+      "from": "FPS-031",
+      "to": "FPS-020",
+      "type": "contradict",
+      "cycle": 5,
+      "rationale": "Reversibility and forkability-as-resilience address complementary but distinct continuity problems — forkability addresses collective continuation without the original vendor; reversibility addresses individual-user undo-ability of specific state changes; a system providing one does not imply the other."
+    },
+    {
+      "from": "FPS-033",
+      "to": "FPS-028",
+      "type": "contradict",
+      "cycle": 6,
+      "rationale": "Meta-governance-gap shows that the periodic freedom assessment mechanism — the primary defense against freedom-decay — is itself ungoverned and unfunded"
+    },
+    {
+      "from": "FPS-033",
+      "to": "FPS-027",
+      "type": "mutation",
+      "cycle": 6,
+      "rationale": "Meta-governance-gap is the unfunded-obligation anti-pattern applied recursively to the oversight mechanism itself — the same failure mode that affects builder obligations applies to the assessment obligation; this is the second-order form of FPS-027."
+    },
+    {
+      "from": "FPS-034",
+      "to": "FPS-030",
+      "type": "contradict",
+      "cycle": 6,
+      "rationale": "Circular-operationalization shows that the structural coercion framing's distinguishing test requires counterfactual conditions that are the proposal's design goal — the test is inert as a diagnostic in current markets"
+    },
+    {
+      "from": "FPS-034",
+      "to": "FPS-024",
+      "type": "mutation",
+      "cycle": 6,
+      "rationale": "Circular-operationalization is a distinct variant of the self-attestation failure mode — where AI-inspectability (FPS-024) depends on vendor cooperation to verify"
+    },
+    {
+      "from": "FPS-033",
+      "to": "FPS-004",
+      "type": "contradict",
+      "cycle": 6,
+      "rationale": "Meta-governance-gap shows that practical-freedom assessments — the mechanism for detecting when practical freedom has decayed — will not occur reliably without institutional support; the proposal's operative standard (practical freedom) has no reliable measurement mechanism."
+    },
+    {
+      "from": "FPS-032",
+      "to": "FPS-017",
+      "type": "contradict",
+      "cycle": 6,
+      "rationale": "Non-weaponization as misclassified hard obligation converts a fork-protection norm into a fork-suppression instrument — the right-to-fork is undermined by the mechanism nominally designed to protect it from abuse; hard-obligation framing grants adjudicating parties discretion over which forks are legitimate."
+    },
+    {
+      "from": "FPS-031",
+      "to": "FPS-005",
+      "type": "contradict",
+      "cycle": 6,
+      "rationale": "Reversibility criterion 3 (no irreversible defaults) reproduces the freedom/security contradiction inside the reversibility sub-principle — the same tension that tivoization (FPS-005) represents at the hardware layer appears at the defaults layer; irreversible security defaults are necessary for the same reasons verified boot is necessary."
+    },
+    {
+      "from": "FPS-035",
+      "to": "FPS-017",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Exit-ecosystem operationalizes the right-to-fork by specifying that the fork right is only meaningful when alternatives are available"
+    },
+    {
+      "from": "FPS-035",
+      "to": "FPS-007",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Exit-ecosystem is the positive counterpart to network-lock-in — lock-in destroys the exit ecosystem; maintaining the ecosystem is the structural defense against lock-in becoming irreversible."
+    },
+    {
+      "from": "FPS-035",
+      "to": "FPS-030",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Exit-ecosystem provides the structural condition under which voluntary-delegation can be genuine preference rather than structural coercion — when the exit ecosystem is viable"
+    },
+    {
+      "from": "FPS-036",
+      "to": "FPS-031",
+      "type": "mutation",
+      "cycle": 7,
+      "rationale": "Legible-defaults is a mutation of reversibility criterion 3 — it preserves the user-awareness intent while relaxing the irreversibility-prohibition"
+    },
+    {
+      "from": "FPS-036",
+      "to": "FPS-016",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Legible-defaults is a specific application of inspectability-by-default at the level of system defaults — the reversibility status of a default is meaningful system behavior that affects users and should be made understandable at the point of encounter."
+    },
+    {
+      "from": "FPS-037",
+      "to": "FPS-025",
+      "type": "contradict",
+      "cycle": 7,
+      "rationale": "User-cooperative-governance has a structurally different governance-capture failure profile than multi-stakeholder standards bodies — governance power is proportional to user membership rather than participation resources"
+    },
+    {
+      "from": "FPS-037",
+      "to": "FPS-002",
+      "type": "mutation",
+      "cycle": 7,
+      "rationale": "User-cooperative-governance is a specific institutional form of collective-sovereignty — it operationalizes the commons framing through ownership rather than procedural participation; ownership-based governance is distinct from access-based governance."
+    },
+    {
+      "from": "FPS-038",
+      "to": "FPS-029",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Freedom-budget operationalizes the infrastructure-dependency-stack as a running account rather than a point-in-time snapshot — the freedom-cost rating per dependency tracked across releases makes the cumulative freedom cost of dependency accumulation legible to architects."
+    },
+    {
+      "from": "FPS-038",
+      "to": "FPS-028",
+      "type": "support",
+      "cycle": 7,
+      "rationale": "Freedom-budget tracking provides an early-warning mechanism for freedom-decay through dependency accumulation — a rising freedom-cost trend across releases is an indicator that decay is in progress before individual dependencies become load-bearing."
+    },
+    {
+      "from": "FPS-039",
+      "to": "FPS-033",
+      "type": "contradict",
+      "cycle": 7,
+      "rationale": "Regulatory-alignment partially addresses the meta-governance-gap by providing a funded"
+    },
+    {
+      "from": "FPS-039",
+      "to": "FPS-026",
+      "type": "mutation",
+      "cycle": 7,
+      "rationale": "Regulatory-alignment reframes the compliance-sovereignty-conflict — rather than treating all regulation as adversarial to freedom"
+    },
+    {
+      "from": "FPS-040",
+      "to": "FPS-030",
+      "type": "mutation",
+      "cycle": 8,
+      "rationale": "Composable-sovereignty is the architectural design implication of the voluntary-delegation analysis — it structures the design space by showing which freedom-delegation decisions are separable"
+    },
+    {
+      "from": "FPS-040",
+      "to": "FPS-004",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "Composable-sovereignty enables partial practical-freedom even when some freedoms are delegated — a user can retain inspection and export rights while delegating execution"
+    },
+    {
+      "from": "FPS-040",
+      "to": "FPS-019",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "Composable-sovereignty provides the architectural decomposition that makes modifiability-first-class tractable at the freedom level — separating which architectural decisions foreclose which specific freedoms makes the modifiability requirement precise and auditable."
+    },
+    {
+      "from": "FPS-036",
+      "to": "FPS-031",
+      "type": "lineage",
+      "cycle": 8,
+      "rationale": "Legible-defaults is now the operative form of reversibility criterion 3 — it replaces the conflicting \"no irreversible defaults\" criterion"
+    },
+    {
+      "from": "FPS-036",
+      "to": "FPS-003",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "Communicating reversibility status at point of encounter is itself a form of formal freedom provision — it makes the permission structure legible to users before they are locked into a state they cannot undo."
+    },
+    {
+      "from": "FPS-035",
+      "to": "FPS-030",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "Exit-ecosystem is the design obligation implied by the structural coercion interpretation of voluntary-delegation — the system's obligation is to maintain ecosystem-level alternatives"
+    },
+    {
+      "from": "FPS-037",
+      "to": "FPS-033",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "User-cooperative-governance provides an institutional form with a different meta-governance failure profile — ownership-based governance power (proportional to membership) resists resource-based capture and provides a charter basis for assessment mandates that multi-stakeholder bodies lack."
+    },
+    {
+      "from": "FPS-039",
+      "to": "FPS-033",
+      "type": "support",
+      "cycle": 8,
+      "rationale": "Regulatory-alignment partially addresses the meta-governance-gap by enabling freedom-assessment inputs to ride alongside mandated compliance outputs — SBOM generation and data portability requirements generate assessment byproducts without requiring a dedicated assessor institution."
+    },
+    {
+      "from": "FPS-040",
+      "to": "FPS-010",
+      "type": "contradict",
+      "cycle": 8,
+      "rationale": "Composable-sovereignty is the architectural response to the composability-paradox — where the paradox describes emergent lock-in from component composition"
+    },
+    {
+      "from": "FPS-041",
+      "to": "FPS-036",
+      "type": "contradict",
+      "cycle": 9,
+      "rationale": "Disclosure-theater is the failure mode of legible-defaults at scale — the criterion requires disclosure at the point of encounter; disclosure-theater shows this formal requirement fails the practical freedom test through habituated dismissal at interaction volume; the formal/practical gap applies to the disclosure mechanism itself."
+    },
+    {
+      "from": "FPS-041",
+      "to": "FPS-004",
+      "type": "contradict",
+      "cycle": 9,
+      "rationale": "Disclosure-theater shows that practical-freedom cannot be operationalized through disclosure requirements alone — high-volume disclosures produce habituation"
+    },
+    {
+      "from": "FPS-042",
+      "to": "FPS-037",
+      "type": "contradict",
+      "cycle": 9,
+      "rationale": "Cooperative-capture is the primary failure mode of user-cooperative-governance on large platforms — participation-attrition concentrates governance in active minorities whose interests diverge from the passive majority; the cooperative model changes the capture mechanism from funding-dominance (FPS-025) to participation-dominance without eliminating governance misrepresentation."
+    },
+    {
+      "from": "FPS-042",
+      "to": "FPS-025",
+      "type": "mutation",
+      "cycle": 9,
+      "rationale": "Cooperative-capture is a participation-attrition mutation of governance-capture — both produce governance dominated by parties whose interests diverge from the nominal beneficiaries; the mechanism differs (resource-spending vs. participation-time) but the structural outcome is analogous; the cooperative form shifts the failure mode rather than eliminating it."
+    },
+    {
+      "from": "FPS-039",
+      "to": "FPS-041",
+      "type": "support",
+      "cycle": 9,
+      "rationale": "Regulatory-alignment via compliance outputs risks producing disclosure-theater — compliance-driven freedom outputs satisfy regulatory auditors rather than freedom-preservation requirements; GDPR Art. 20 exports and SBOM outputs may satisfy formal criteria while failing practical freedom requirements"
+    },
+    {
+      "from": "FPS-040",
+      "to": "FPS-024",
+      "type": "mutation",
+      "cycle": 9,
+      "rationale": "Composable-sovereignty matrix independence claims reproduce the self-attestation failure mode (FPS-024) in a new register — just as AI-inspectability criteria depend on vendor self-reporting"
+    }
+  ],
+  "cycles": [
+    {
+      "id": 1,
+      "agent": "unknown",
+      "title": "Cycle 1",
+      "rationale": "Created: 2026-05-25T00:29:30.459014+00:00",
+      "added": [],
+      "mutated": [],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 2,
+      "agent": "unknown",
+      "title": "Cycle 2",
+      "rationale": "Created: 2026-05-25T00:33:06.273822+00:00",
+      "added": [
+        {
+          "id": "FPS-021",
+          "name": "layered-sovereignty",
+          "description": "A governance model that resolves multi-party sovereignty by assigning domain-specific rights to end users, administrators, and organizations, with a priority rule that no layer may eliminate a lower layer's rights within that lower layer's domain. Sovereignty is domain-specific, not strictly hierarchical.\n"
+        },
+        {
+          "id": "FPS-022",
+          "name": "freedom-activation-energy",
+          "description": "The threshold of skill, effort, tooling, and knowledge required before a formally-permitted freedom becomes practically exercisable. Reducing activation energy is a positive design obligation for freedom-preserving systems; high activation energy is the mechanism through which formal freedom fails to produce practical freedom.\n"
+        },
+        {
+          "id": "FPS-023",
+          "name": "positive-architectural-obligation",
+          "description": "The obligation on system builders to actively enable the exercise of freedoms through architecture — progressive disclosure, sufficient documentation, stable interfaces, test infrastructure — beyond merely refraining from restricting them. An intentional extension beyond the GNU definition's negative-liberty register.\n"
+        },
+        {
+          "id": "FPS-024",
+          "name": "AI-inspectability",
+          "description": "The specific conditions under which AI-powered systems satisfy inspectability-by-default: (1) auditable training lineage, (2) traceable inference paths, (3) testable decision boundaries, (4) surfaced uncertainty. Distinguishes from post-hoc saliency explanations which satisfy the appearance but not the substance of inspectability.\n"
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-001",
+          "change": "status updated to active; last_seen_cycle updated to 002; resolved via layered sovereignty model"
+        },
+        {
+          "id": "FPS-002",
+          "change": "status updated to active; last_seen_cycle updated to 002; incorporated into layered sovereignty model at governance tier"
+        },
+        {
+          "id": "FPS-003",
+          "change": "status updated to active; last_seen_cycle updated to 002; elevated to document-wide cross-cutting framework"
+        },
+        {
+          "id": "FPS-004",
+          "change": "status updated to active; last_seen_cycle updated to 002; promoted to operative standard (not just necessary condition)"
+        },
+        {
+          "id": "FPS-005",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-006",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-007",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-008",
+          "change": "status updated to active; last_seen_cycle updated to 002; incorporated into governance model structure"
+        },
+        {
+          "id": "FPS-009",
+          "change": "status updated to active; last_seen_cycle updated to 002; addressed in layered sovereignty end-user domain definition"
+        },
+        {
+          "id": "FPS-010",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-011",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-012",
+          "change": "status updated to active; last_seen_cycle updated to 002; elevated to document-wide anti-pattern framework; generalized beyond modifiability"
+        },
+        {
+          "id": "FPS-013",
+          "change": "status updated to active; last_seen_cycle updated to 002; speculative tag removed; operationalized as positive-architectural-obligation"
+        },
+        {
+          "id": "FPS-014",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-015",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-016",
+          "change": "status updated to active; last_seen_cycle updated to 002; extended with AI-inspectability criteria"
+        },
+        {
+          "id": "FPS-017",
+          "change": "status updated to active; last_seen_cycle updated to 002"
+        },
+        {
+          "id": "FPS-018",
+          "change": "status updated to active; last_seen_cycle updated to 002; dependency on practical modifiability made explicit"
+        },
+        {
+          "id": "FPS-019",
+          "change": "status updated to active; last_seen_cycle updated to 002; extended with testable criterion and positive obligations"
+        },
+        {
+          "id": "FPS-020",
+          "change": "status updated to active; last_seen_cycle updated to 002; architectural implication added (protocol-level vs. concentration-level value)"
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 3,
+      "agent": "unknown",
+      "title": "Cycle 3",
+      "rationale": "Created: 2026-05-25T00:38:21.964558+00:00",
+      "added": [
+        {
+          "id": "FPS-025",
+          "name": "governance-capture",
+          "description": "The failure mode in which multi-stakeholder governance bodies are dominated by the well-resourced actors they are meant to check, achieved through funding of full-time participants, agenda-setting, and procedural influence rather than formal veto."
+        },
+        {
+          "id": "FPS-026",
+          "name": "compliance-sovereignty-conflict",
+          "description": "The structural tension between regulatory compliance obligations (GDPR, HIPAA, SOC2) and user sovereignty as defined in this proposal; in regulated industries, binding law requires organizations to restrict exactly the freedoms the layered sovereignty priority rule protects."
+        },
+        {
+          "id": "FPS-027",
+          "name": "unfunded-obligation",
+          "description": "The failure mode in which positive architectural obligations (documentation, stable interfaces, test infrastructure) imposed on builders without a corresponding funding model select for well-resourced actors and disadvantage under-resourced projects, potentially concentrating the power the framework was designed to check."
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-024",
+          "change": "AI-inspectability criteria identified as depending on vendor self-attestation with no external verification mechanism; flagged as dead end for current market conditions without third-party audit rights."
+        },
+        {
+          "id": "FPS-019",
+          "change": "Testable criterion (competent practitioner alone with public docs) flagged as dead end for large complex systems — only applicable to small projects where freedom-preserving design is already easiest."
+        },
+        {
+          "id": "FPS-021",
+          "change": "Layered sovereignty priority rule flagged as inapplicable in regulated industries where binding legal obligations require restrictions it prohibits; compliance-sovereignty-conflict island identified."
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 4,
+      "agent": "unknown",
+      "title": "Cycle 4",
+      "rationale": "Created: 2026-05-25T00:43:38.018915+00:00",
+      "added": [
+        {
+          "id": "FPS-028",
+          "name": "freedom-decay",
+          "description": "The gradual erosion of practical freedom through processes that require no deliberate decision — stale documentation, accumulating network effects, contributor attrition, expanding external service dependencies, and growing codebase complexity. A system designed to be free at release can become unfree within years without any actor choosing that outcome.\n"
+        },
+        {
+          "id": "FPS-029",
+          "name": "infrastructure-dependency-stack",
+          "description": "[speculative] The layered infrastructure below the application layer (hardware, network, platform, infrastructure services) whose freedom properties are inherited by applications built on top of them. A freedom-preserving application running on a captured infrastructure layer inherits the capture.\n"
+        },
+        {
+          "id": "FPS-030",
+          "name": "voluntary-delegation",
+          "description": "The mechanism by which users actively choose to surrender freedoms in exchange for convenience, reliability, or social participation — distinct from coercive lock-in. Raises the question of whether freedom-preserving design should constrain user choices or ensure genuine choice is available.\n"
+        },
+        {
+          "id": "FPS-031",
+          "name": "reversibility",
+          "description": "[speculative] The property of systems that allows users to undo state changes, exit configurations, and restore prior capability without data loss or capability degradation. Distinct from forkability (community continuation) and data portability (export rights); addresses the temporal dimension of individual user freedom.\n"
+        },
+        {
+          "id": "FPS-032",
+          "name": "contributor-obligations",
+          "description": "[speculative] The reciprocal duties that users who benefit from a freedom-preserving commons have toward sustaining it — upkeep contribution, attribution preservation, non-weaponization of exit rights. The missing counterpart to the rights-focused framing that may be required to prevent free-rider depletion of commons.\n"
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-004",
+          "change": "Implicitly extended by the temporal framing addition: practical freedom is now framed as a property that must be maintained over time, not just achieved at design time.\n"
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 5,
+      "agent": "unknown",
+      "title": "Cycle 5",
+      "rationale": "Created: 2026-05-25T00:46:50.569544+00:00",
+      "added": [],
+      "mutated": [
+        {
+          "id": "FPS-028",
+          "name": "freedom-decay",
+          "change": "Promoted from emergent/speculative to active. Added concrete decay indicators (documentation staleness, contributor concentration, dependency accumulation, network effect growth, codebase comprehension ceiling) with observable metrics for each. Added periodic assessment mechanism with inputs, cadence triggers, intervention threshold (two of five indicators degraded), and governance structure. Infrastructure capture named as primary freedom-decay accelerant. Infrastructure dependency footprint identified as assessment input.\n"
+        },
+        {
+          "id": "FPS-029",
+          "name": "infrastructure-dependency-stack",
+          "change": "Promoted from emergent/speculative to active. Removed [speculative] annotation. Added concrete design implication: systems must document their infrastructure dependency footprint (enumeration of each external dependency with governance status — commercially controlled, commons-governed, or self-hostable). Preference for commons-governed dependencies elevated from candidate implication to requirement. Connected to freedom-decay: infrastructure capture is a primary accelerant of freedom-decay; the footprint is both a design artifact and a periodic assessment input.\n"
+        },
+        {
+          "id": "FPS-030",
+          "name": "voluntary-delegation",
+          "change": "Promoted from emergent to active. Committed to interpretation 3 (structural coercion) as the operative assumption. Acknowledged interpretations 1 and 2 as real boundary conditions with an empirical distinguishing test: when exit costs approach zero and genuine alternatives exist, do users continue to choose the freedom-reducing arrangement? Added concrete design implication: the system's obligation is to ensure genuine alternatives exist (ecosystem model), not to prevent freedom-reducing choices (prohibition model).\n"
+        },
+        {
+          "id": "FPS-031",
+          "name": "reversibility",
+          "change": "Promoted from emergent/speculative to active. Defined precisely as the individual-user temporal mechanism allowing users to undo state changes, exit configurations, and restore prior capability without data loss. Distinguished from forkability (collective continuity), data portability (transfer mechanism), and exit rights (permission mechanism). Integrated as a sub-principle of User Sovereignty. Added four testable criteria: state undo, exit without loss, no irreversible defaults, degradation transparency. Rationale: irreversibility chills user agency through accumulated exit costs, concentrating effective authority in system design rather than the user.\n"
+        },
+        {
+          "id": "FPS-032",
+          "name": "contributor-obligations",
+          "change": "Promoted from emergent/speculative to active. Distinguished hard obligations (attribution, non-weaponization) from soft norms (upkeep contribution). Hard obligations are enforceable through license terms or governance policy; soft norms are reinforced through community culture and recognition. Rationale for hard/soft distinction: upkeep as a hard obligation produces the unfunded-obligation anti-pattern at the individual level; attribution and non-weaponization are binary, low-cost to comply with, and their absence directly degrades the commons. Integrated into governance model framing.\n"
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 6,
+      "agent": "unknown",
+      "title": "Cycle 6",
+      "rationale": "Created: 2026-05-25T00:53:45.156151+00:00",
+      "added": [
+        {
+          "id": "FPS-033",
+          "name": "meta-governance-gap",
+          "description": "The failure mode in which a governance or oversight mechanism is itself ungoverned and unfunded — specifically, the periodic freedom assessment mechanism proposed here lacks its own governance charter, funding model, and enforcement authority, making it subject to the same freedom-decay it is designed to detect; the unfunded-obligation anti-pattern applied recursively."
+        },
+        {
+          "id": "FPS-034",
+          "name": "circular-operationalization",
+          "description": "The failure mode in which an empirical test for a concept requires conditions that are the outcome the proposal is designed to produce, making the test inert in the current state where it would be most needed; specifically, the structural coercion distinguishing test for voluntary delegation requires zero-exit-cost conditions that do not currently exist, making the test non-diagnostic in status-quo markets."
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-030",
+          "change": "Distinguishing test for structural coercion flagged as circular operationalization — the test requires counterfactual conditions that are the proposal's design goal; framing is analytically coherent but provides no present-tense diagnostic tool."
+        },
+        {
+          "id": "FPS-032",
+          "change": "Non-weaponization obligation flagged as misclassified in the hard tier — intent-determination defeats enforceability; hard-obligation framing produces fork-suppression instrument; reclassification to soft norm needed."
+        },
+        {
+          "id": "FPS-031",
+          "change": "Reversibility criterion 3 flagged as internally contradicting security-by-design practices — intentionally irreversible security defaults conflict with the no-irreversible-defaults requirement; scoping exception needed."
+        },
+        {
+          "id": "FPS-028",
+          "change": "Periodic assessment mechanism flagged as itself ungoverned and unfunded — subject to the freedom-decay it was designed to detect; assessment governance clause vacuous under conditions of community stress."
+        },
+        {
+          "id": "FPS-019",
+          "change": "Tiered modifiability criterion flagged as self-assignment problem — tiers claimed by builders with no external verification; self-attestation-dependent despite being introduced to improve on AI-inspectability self-attestation failure."
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 7,
+      "agent": "unknown",
+      "title": "Cycle 7",
+      "rationale": "Created: 2026-05-25T01:01:03.784888+00:00",
+      "added": [
+        {
+          "id": "FPS-035",
+          "name": "exit-ecosystem",
+          "description": "The prerequisite condition that individual exit rights require a viable ecosystem of alternatives to be meaningful. Credible exit requires not just the technical permission to leave but a destination ecosystem with three properties: availability (alternatives exist), viability (alternatives can serve a meaningful fraction of current users), and discoverability (users can find them without expert intermediaries). Derives from the exit-option framing; operationalizes it architecturally.\n"
+        },
+        {
+          "id": "FPS-036",
+          "name": "legible-defaults",
+          "description": "An alternative to the reversibility criterion \"no irreversible defaults\": the weaker but defensible requirement that the reversibility status of every default must be made explicit to the user at the point of encounter. Separates the disclosure obligation (communicate reversibility) from the reversibility obligation (be reversible), allowing security-by-design irreversibility while preserving user awareness. Proposed as a partial resolution to the reversibility/security dead end (Failure Mode 9).\n"
+        },
+        {
+          "id": "FPS-037",
+          "name": "user-cooperative-governance",
+          "description": "An institutional model where users collectively own and govern the platform through cooperative ownership — democratic voting rights, profit-sharing, board representation. Distinct from multi-stakeholder standards bodies (procedurally inclusive but not ownership-inclusive) and from individual sovereignty (creates rights, not collective voice). Structurally different failure-mode profile from standards bodies: governance power is proportional to user membership, not resources spent on participation. Includes a federated cooperative extension for network-scale governance.\n"
+        },
+        {
+          "id": "FPS-038",
+          "name": "freedom-budget",
+          "description": "The implicit total of freedom-preserving or freedom-eroding cost that each architectural decision contributes. Making the budget explicit — as a tracked design artifact — allows architects to make cumulative trade-offs consciously rather than through individual decisions that each seem minor. Operationalizes the infrastructure dependency footprint as a running account (freedom-cost rating per dependency, tracked across releases) rather than a point-in-time snapshot.\n"
+        },
+        {
+          "id": "FPS-039",
+          "name": "regulatory-alignment",
+          "description": "The condition where independent regulatory frameworks (GDPR Article 20 data portability, SBOM mandates, right-to-repair legislation, DMA interoperability requirements) incidentally require properties that this proposal endorses. Framed as a bootstrap strategy: freedom-decay indicators can ride alongside compliance indicators already mandated by other frameworks, reducing the marginal cost of freedom assessment without requiring dedicated governance or political advocacy.\n"
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-030",
+          "change": "Graduated delegation section expanded from a single [speculative] paragraph to a composable sovereignty section with a decomposition matrix mapping the five GNU freedoms to independent delegation decisions. Unbundling identified as a positive architectural obligation.\n"
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 8,
+      "agent": "unknown",
+      "title": "Cycle 8",
+      "rationale": "Created: 2026-05-25T01:26:12.148627+00:00",
+      "added": [
+        {
+          "id": "FPS-040",
+          "name": "composable-sovereignty",
+          "description": "The principle that the five GNU freedoms (run, inspect, modify, redistribute, share) are separable architectural concerns that can be independently delegated or exercised. Operationalized through the decomposition matrix already in the document; named as a distinct concept to enable tracking across future passes. Design requirement: each architectural decision must be assessed to determine which freedoms it forecloses and whether that foreclosure is technically necessary.\n"
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-031",
+          "change": "Criterion 3 replaced with legible-defaults criterion. \"No irreversible defaults\" removed and replaced with: disclosure obligation (hard — reversibility status communicated at point of encounter) plus reversibility obligation (where feasible). Removes the conflict with security-by-design practices. Partially resolves Failure Mode 9.\n"
+        },
+        {
+          "id": "FPS-032",
+          "change": "Non-weaponization reclassified from hard obligation to soft norm. Attribution is now the sole hard obligation. Rationale updated: non-weaponization requires intent-determination that no license mechanism can adjudicate. Closes Failure Mode 8.\n"
+        },
+        {
+          "id": "FPS-035",
+          "change": "Promoted from emergent to active. [speculative] tag removed from §Right To Fork. Three-component definition (availability, viability, discoverability) confirmed as testable and integrated as a design requirement.\n"
+        },
+        {
+          "id": "FPS-036",
+          "change": "Promoted from emergent to active. Now the operative form of reversibility criterion 3 — replaces \"no irreversible defaults\" formulation. Separates disclosure obligation (hard) from reversibility obligation (where feasible).\n"
+        },
+        {
+          "id": "FPS-037",
+          "change": "Promoted from emergent to active. [speculative] tag removed from the main user-cooperative section. Federated cooperative extension retains [speculative extension] tag.\n"
+        },
+        {
+          "id": "FPS-039",
+          "change": "Promoted from emergent to active. Regulatory alignment section header no longer marked [speculative]. Convergent regulatory table confirmed as having sufficient empirical backing.\n"
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    },
+    {
+      "id": 9,
+      "agent": "unknown",
+      "title": "Cycle 9",
+      "rationale": "Created: 2026-05-25T02:18:20.616037+00:00",
+      "added": [
+        {
+          "id": "FPS-041",
+          "name": "disclosure-theater",
+          "description": "The failure mode where legible-defaults and disclosure-requirement criteria produce technically compliant notifications that users cannot meaningfully process at interaction volume — disclosures are present and understandable in principle, but habituated dismissal renders them practically invisible; the formal/practical gap applied to disclosure itself."
+        },
+        {
+          "id": "FPS-042",
+          "name": "cooperative-capture",
+          "description": "The failure mode where user-cooperative governance is captured by the active minority of participants who have systematically different interests from the passive majority; structurally distinct from resource-based capture (FPS-025) — the capture mechanism is participation-attrition rather than funding-dominance, but the governance-misrepresentation outcome is analogous."
+        }
+      ],
+      "mutated": [
+        {
+          "id": "FPS-040",
+          "change": "Added dead end annotation — matrix independence claims conflate formal and practical separability; runtime verification of composable sovereignty requires provider cooperation or trusted-execution infrastructure not currently specified, reproducing the self-attestation problem in a new register."
+        },
+        {
+          "id": "FPS-035",
+          "change": "Added dead end annotation — testability claim is premature; three components (availability, viability, discoverability) lack measurement thresholds or evaluator criteria; ecosystem maintenance obligation is unassigned with no governance mechanism."
+        },
+        {
+          "id": "FPS-036",
+          "change": "Added dead end annotation — disclosure-at-scale fails practical freedom test through attention-economics failure; habituated dismissal behavior is the documented modal outcome of high-volume disclosure requirements; Failure Mode 9 is relocated rather than resolved."
+        },
+        {
+          "id": "FPS-037",
+          "change": "Added dead end annotation — empirical track record from credit unions and agricultural cooperatives does not transfer to winner-take-all network-effect platforms; participation-attrition produces active-minority governance dominance; added new island for passive platform users."
+        },
+        {
+          "id": "FPS-039",
+          "change": "Added dead end annotation — compliance outputs are calibrated for regulatory requirements; GDPR Art. 20 and SBOM outputs satisfy regulatory auditors without generating the governance-status annotations freedom-decay monitoring requires; double-duty claim requires genuine requirement overlap that is partial, not full."
+        }
+      ],
+      "removed": [],
+      "at": "2026-05-25",
+      "branch": "main",
+      "commit": ""
+    }
+  ],
+  "branches": [
+    {
+      "id": "main",
+      "label": "main",
+      "parent": null,
+      "color": "#9ca3af",
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "status": "active",
+      "desc": ""
+    }
+  ],
+  "islands": [
+    {
+      "id": "I1",
+      "name": "compliance-structural",
+      "stratum": 0,
+      "severity": 0.5,
+      "cycles": [
+        3
+      ],
+      "desc": "GDPR/HIPAA/SOC2 legally require organizations to restrict user data export and execution in ways that conflict with the layered sovereignty priority rule"
+    },
+    {
+      "id": "I2",
+      "name": "IP and copyright liability",
+      "stratum": 1,
+      "severity": 0.5,
+      "cycles": [
+        3
+      ],
+      "desc": "Disclosing training data provenance exposes vendors to copyright infringement claims; structural legal incentive against genuine compliance with training lineage auditability"
+    },
+    {
+      "id": "I3",
+      "name": "unfunded-obligation",
+      "stratum": 2,
+      "severity": 0.5,
+      "cycles": [
+        3
+      ],
+      "desc": "Progressive disclosure / stable interfaces / test infrastructure require sustained funding; volunteer projects structurally cannot meet these as hard requirements"
+    },
+    {
+      "id": "I4",
+      "name": "governance-capture via funding dominance",
+      "stratum": 3,
+      "severity": 0.5,
+      "cycles": [
+        3
+      ],
+      "desc": "W3C dominated by browser vendors; IETF steered by companies funding full-time participants; ITU captured by nation-states — multi-stakeholder governance displaces rather than solves capture"
+    },
+    {
+      "id": "I5",
+      "name": "structural-disengagement",
+      "stratum": 4,
+      "severity": 0.5,
+      "cycles": [
+        6
+      ],
+      "desc": "Parties with expertise to conduct genuine freedom assessments are uncompensated with no enforcement standing; persistent watchdog communities historically do not form without dedicated funding or regulatory mandate; assessment mechanisms without institutional support decay or become compliance theater"
+    },
+    {
+      "id": "I6",
+      "name": "participation-attrition",
+      "stratum": 5,
+      "severity": 0.5,
+      "cycles": [
+        9
+      ],
+      "desc": "Internet forum participation follows 90/9/1 rule; cooperative governance dominated by active minorities in documented cooperative platforms; developer and power-user interests diverge from casual user interests systematically on software platforms"
+    }
+  ],
+  "deadEnds": [
+    {
+      "id": "D1",
+      "name": "modifiability-first-class",
+      "cycle": 3,
+      "agent": "adversarial",
+      "reason": "Testable criterion (competent practitioner alone with public docs) collapses for large complex systems — only meaningful where freedom-preserving design is already easiest."
+    },
+    {
+      "id": "D2",
+      "name": "AI-inspectability",
+      "cycle": 3,
+      "agent": "adversarial",
+      "reason": "AI-inspectability criteria structurally depend on vendor self-attestation; no external verification mechanism; can be satisfied by compliance documents that disclose nothing actionable."
+    },
+    {
+      "id": "D3",
+      "name": "tivoization",
+      "cycle": 3,
+      "agent": "adversarial",
+      "reason": "Freedom/security distinguishing test is not operationalizable — same mechanism simultaneously serves both legitimate and illegitimate functions; user has no external verification path."
+    },
+    {
+      "id": "D4",
+      "name": "voluntary-delegation",
+      "cycle": 6,
+      "agent": "adversarial",
+      "reason": "Circular operationalization — empirical distinguishing test for structural coercion requires zero-exit-cost conditions that are the proposal's design goal not current reality; test is inert in the markets where it is most needed."
+    },
+    {
+      "id": "D5",
+      "name": "contributor-obligations",
+      "cycle": 6,
+      "agent": "adversarial",
+      "reason": "Non-weaponization misclassified as hard obligation — intent-determination requirement defeats enforceability; produces fork-suppression instrument rather than commons protection."
+    },
+    {
+      "id": "D6",
+      "name": "modifiability-first-class",
+      "cycle": 6,
+      "agent": "adversarial",
+      "reason": "Tier self-assignment without external verification — tiered modifiability criterion is self-attestation-dependent; reproduces the AI-inspectability self-attestation failure mode it was introduced to improve upon."
+    },
+    {
+      "id": "D7",
+      "name": "reversibility",
+      "cycle": 6,
+      "agent": "adversarial",
+      "reason": "Reversibility criterion 3 conflicts with security-by-design — no-irreversible-defaults requirement conflicts with intentionally irreversible security defaults (key generation"
+    },
+    {
+      "id": "D8",
+      "name": "freedom-decay",
+      "cycle": 6,
+      "agent": "adversarial",
+      "reason": "Assessment mechanism meta-governance-gap — the periodic assessment mechanism is itself ungoverned and unfunded; unfunded-obligation anti-pattern applied recursively; mechanism designed to detect freedom-decay is subject to freedom-decay."
+    },
+    {
+      "id": "D9",
+      "name": "composable-sovereignty",
+      "cycle": 9,
+      "agent": "adversarial",
+      "reason": "Matrix independence claims conflate formal and practical separability — runtime attestation that execution matches published source requires provider cooperation; self-attestation failure mode (FPS-024) reproduced in a new register."
+    },
+    {
+      "id": "D10",
+      "name": "exit-ecosystem",
+      "cycle": 9,
+      "agent": "adversarial",
+      "reason": "Exit ecosystem testability claim premature — three components (availability"
+    },
+    {
+      "id": "D11",
+      "name": "legible-defaults",
+      "cycle": 9,
+      "agent": "adversarial",
+      "reason": "Legible-defaults fails practical freedom test at disclosure scale — habituated dismissal is the documented modal outcome of high-volume disclosure requirements (cookie-consent parallel); FM9 relocated not resolved."
+    },
+    {
+      "id": "D12",
+      "name": "regulatory-alignment",
+      "cycle": 9,
+      "agent": "adversarial",
+      "reason": "Regulatory compliance outputs calibrated for regulatory requirements not freedom-preservation requirements; double-duty claim depends on genuine overlap that is partial; strategy reduces costs without generating freedom outputs."
+    }
+  ]
+}
