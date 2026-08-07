@@ -1,123 +1,175 @@
 # Crucible
 
-> Give it to the Crucible.
- <img width="1536" height="1024" alt="2c7f0f7823c9d207a01c83a8e5da5ca487421215568de7335011c1788ff788dc" src="https://github.com/user-attachments/assets/2359f094-89b3-4651-aaf3-8077fec37432" />
+> Give a durable work product structured opposition—and keep the reasoning trail.
 
+Crucible is an **early prototype** of a Git-native debate engine for design documents, strategy memos, and architecture proposals. It can produce useful artifacts, but its automated workflow gives an AI coding agent broad write access, changes Git history, and opens a pull request. Review the trust boundary below before running it.
 
-Crucible is a Git-native debate engine that improves design documents, strategy memos, architecture proposals, and other durable work products through structured, agentic review cycles.
+## Why it matters
 
-The core idea: two or more agents pass a Markdown document back and forth, each reviewing from a deliberate stance, committing changes with rationale, and opening or updating pull requests that preserve the evolution of the work.
-
-Crucible generates evolutionary pressure. Fossil can observe, index, and visualize the resulting concept lineage.
-
-## Core tenets
-
-1. People can create meaningfully better work products using agentic review cycles.
-2. Agentic review cycles can act as a useful proxy for human debate when roles, rationale, and evidence are explicitly preserved.
-3. The debate history is part of the work product, not disposable process exhaust.
-4. Concept mutation, dead ends, and resistance are first-class artifacts.
-
-## Review modes
-
-- `strawman`: expands possibilities and creates conceptual variation.
-- `steelman`: strengthens coherence, structure, and implementation viability.
-- `adversarial`: stress-tests assumptions, incentives, failure modes, and hidden risks.
-
-## Basic workflow
-
-```text
-seed document
-  -> strawman pass
-  -> steelman pass
-  -> adversarial pass
-  -> repeat until convergence, escalation, or termination
+```mermaid
+flowchart LR
+    A[Durable document] --> B[Structured disagreement]
+    B --> C[Preserved rationale and concept changes]
+    C --> D[Stronger, inspectable decision artifact]
 ```
 
-Each pass should produce:
+Strawman passes expand the solution space, steelman passes strengthen it, and adversarial passes probe assumptions and failure modes. The history—rationale, mutations, dead ends, and resistance—is part of the result.
 
-- document changes
-- rationale metadata
-- concept registry updates
-- commit summary
-- PR summary
-- recommended next pass
+## Choose your path
 
-## Relationship to Fossil
+### Inspect the example Observatory (viewer only)
 
-```text
-Crucible = debate engine / pressure system
-Fossil    = lineage archive / concept observability system
-```
+This path is read-only with respect to the repository. It serves the checked-in generated JSON; if that file cannot be loaded, the UI displays a prominent **MOCK DATA** label.
 
-Crucible makes ideas mutate. Fossil shows what happened to them.
-
-## Check me out
-
-The Observatory UI is a prototype visualization of Crucible's debate output — concept lineage, agent activity, branches, resistance patterns, and dead ends, all in one inspectable surface.
-
-**To run it:**
+| Requirement | Why |
+|---|---|
+| Python 3 (or another local static server) | Serves files over HTTP |
+| Network access to Google Fonts and unpkg | Loads fonts, React 18, ReactDOM, and Babel from CDNs |
+| Modern browser | Runs the prototype UI |
 
 ```bash
 cd visualizations
 python3 -m http.server 7890
 ```
 
-Then open your browser to:
+Open [the primary multi-view Observatory](http://localhost:7890/observatory-ui/). `Tree View.html` is retained as an explicitly classified experimental light-theme, tree-focused variant; it is useful design work, not a second canonical viewer.
 
-- [http://localhost:7890/observatory-ui/Tree%20View.html](http://localhost:7890/observatory-ui/Tree%20View.html) — DHK light theme, tree-focused layout
-- [http://localhost:7890/observatory-ui/](http://localhost:7890/observatory-ui/) — dark Obsidian variant, all five views
+Serve from `visualizations/`, not `visualizations/observatory-ui/`, so the viewer can request `../observatory.json`. There is no package install or local build step for the viewer, but it is not dependency-free: its runtime libraries are CDN-hosted.
 
-> Serve from `visualizations/` (not `observatory-ui/`) so the UI can reach `observatory.json` one level up.
+### Run an automated debate (mutating and high trust)
 
-No build step. No dependencies to install. The prototype uses React 18 UMD loaded from CDN — just needs a local server because browsers block cross-origin script loading on `file://` URLs.
+The automation is experimental. There is currently **no dry-run or report-only mode**; that product work is tracked in [issue #18](https://github.com/dhk/crucible/issues/18). Use the manual path below first if you are evaluating Crucible or do not want an AI tool operating with bypassed permission prompts.
 
-> The UI loads from `visualizations/observatory.json` if present (generated by `make build-observatory` or `make run-debate`), and falls back to mocked data if not.
+#### Prerequisites
 
-## Quickstart
+| Requirement | Used for |
+|---|---|
+| Python 3.10+ and `make` | Local scripts and targets |
+| Git repository with configured author identity | Branches, staging, and commits |
+| Clean working tree on the intended base branch | Prevents user changes from being mixed into generated commits |
+| Claude CLI installed, authenticated, and on `PATH` | Every automated agent pass |
+| Claude filesystem/tool access to this checkout | Direct document, review, and registry edits |
+| GitHub CLI (`gh`) installed and authenticated | Issue lookup and pull-request creation |
+| GitHub read access to the source issue | `make new-debate` |
+| GitHub permission to push the branch and create a PR | Completing the full workflow (push is still a separate operator step) |
+| Network access | Claude and GitHub calls |
 
-### Automated (recommended)
+#### Current side effects
+
+| Command | External calls | File writes | Git/GitHub effects |
+|---|---|---|---|
+| `make new-debate ISSUE=…` | `gh issue view` | May initialize missing registry CSVs; creates `docs/active/<slug>.md` | Runs `git checkout -b debate/<issue>-<slug>`, stages the seed document, and commits it |
+| `make run-cycle …` | Runs `claude --dangerously-skip-permissions -p <prompt>` | Creates `reviews/cycles/cycle-NNN/{rationale.md,concept_delta.yaml}`, writes the full prompt to `/tmp/crucible-cycle-NNN-<mode>.md`, and instructs Claude to edit the document and registry files in place | Stages the document, cycle directory, and all of `concepts/registry/`, then commits |
+| `make run-debate …` | Repeats `run-cycle` three times per round; finally runs `gh pr create` | All cycle writes above; rewrites `visualizations/observatory.json` | Creates one commit per successful pass and attempts to open a PR from the current branch to `main`; it does **not** push the branch itself |
+| `make build-observatory …` | None | Writes the selected output JSON (default `visualizations/observatory.json`) | None |
+
+`--dangerously-skip-permissions` disables Claude Code's normal permission prompts. The prompt limits requested edits to the debate document, cycle artifacts, and concept registries, but the operating-system process is not sandboxed by Crucible. Run it only in a disposable or recoverable checkout with credentials and unrelated files kept outside the agent's reach.
+
+## Recommended trust-building path
+
+This path lets a human inspect and approve each mutation. It does not invoke Claude automatically and does not commit or open a PR for you.
 
 ```bash
-# Start a debate from a GitHub issue
-make new-debate ISSUE=<url-or-number>
+# 1. Start clean and create your own branch.
+git status --short
+git switch -c debate/manual-example
 
-# Run 3 full rounds (strawman → steelman → adversarial × 3)
-# Commits each pass, builds observatory.json, opens a PR when done
+# 2. Initialize registries and scaffold one cycle.
+make init
+make new-cycle MODE=strawman DOC=docs/active/design-doc.md CYCLE=010
+
+# 3. Review agents/strawman.md and prompts/run_pass.md, then use the model/tool
+#    of your choice without bypassing its permission controls. Inspect every edit.
+git diff -- docs/active/design-doc.md reviews/cycles/cycle-010 concepts/registry
+
+# 4. Generate derived artifacts only after approving the source edits.
+make extract-concepts MODE=strawman DOC=docs/active/design-doc.md CYCLE=010
+make pr-body MODE=strawman CYCLE=010
+make build-observatory DOC=docs/active/design-doc.md
+
+# 5. Validate and commit explicitly.
+python3 scripts/validate_registry.py
+python3 scripts/build_graph.py
+python3 scripts/compute_idea_health.py
+git diff --check
+git status --short
+git add <reviewed-paths>
+git commit
+```
+
+`make init` creates only missing registry files. `make new-cycle` writes both cycle files even if that cycle directory already exists, so choose a new cycle number or inspect and preserve existing files first. `make extract-concepts` appends candidate rows to `concepts/registry/concepts.csv`; review that diff before continuing. `make pr-body` writes `reviews/cycles/cycle-NNN/pr_body.md`, and `make build-observatory` rewrites the selected JSON output.
+
+## Automated path
+
+After reading the side-effect matrix and confirming a clean, disposable/recoverable checkout:
+
+```bash
+git status --short
+make new-debate ISSUE=<url-or-number>
 make run-debate DOC=docs/active/<slug>.md ROUNDS=3
 
-# View the result in the Observatory UI
-cd visualizations && python3 -m http.server 7890
+# run-debate does not push; inspect first, then push deliberately
+git log --oneline --decorate <base-branch>..HEAD
+git diff <base-branch>...HEAD
+git push -u origin "$(git branch --show-current)"
 ```
 
-### Manual (step by step)
+If any cycle fails, `run-debate` asks whether to continue. Continuing can leave incomplete cycle artifacts and may still advance the cycle counter, so stop and inspect unless you understand the failure.
 
-```bash
-make init
-make new-cycle MODE=strawman DOC=docs/active/design-doc.md
-# invoke Claude with the agent role (see agents/strawman.md)
-make extract-concepts DOC=docs/active/design-doc.md CYCLE=001 MODE=strawman
-make pr-body CYCLE=001 MODE=strawman
-make build-observatory DOC=docs/active/design-doc.md
+## Recovery
+
+Before a run, record `git status --short`, the current branch, and `git rev-parse HEAD`. If automation stops:
+
+1. Do not run another cycle immediately.
+2. Inspect `git status --short`, `git diff`, and `git log --oneline --decorate -10`.
+3. Preserve wanted edits by committing them or copying them outside the checkout.
+4. Remove unwanted untracked files individually and restore tracked files deliberately; avoid broad destructive cleanup commands.
+5. If `new-debate` created a branch but failed before committing, switch back only after resolving or preserving its working-tree changes.
+6. If a PR was created from an unpushed/unexpected branch state, close or correct it in GitHub after confirming the intended commits.
+
+## Architecture and trust boundary
+
+```mermaid
+flowchart TB
+    H[Human operator] -->|selects issue, document, rounds| O[Python orchestration]
+    O --> R1[Strawman role]
+    O --> R2[Steelman role]
+    O --> R3[Adversarial role]
+    R1 & R2 & R3 -->|Claude CLI with permission prompts bypassed| E[In-place edits]
+    E --> D[Debate document]
+    E --> C[Cycle rationale and concept deltas]
+    E --> G[Concept registries]
+    D & C & G --> GH[Git commits and history]
+    G & C --> B[Observatory JSON builder]
+    B --> V[Read-only Observatory viewer]
+    GH --> P[GitHub pull request]
+    G -. optional future consumer .-> F[Fossil]
 ```
 
-## Repository layout
+The roles are prompt definitions, not isolated security principals. Crucible asks Claude to edit a bounded list of files, but the CLI flag bypasses interactive permission checks; Git and GitHub are the durable audit and collaboration layers.
 
-```text
-.github/                 GitHub workflows and PR templates
-agents/                  Agent role definitions (strawman, steelman, adversarial)
-prompts/                 Reusable prompts for agent passes
-docs/
-  active/                Work products currently under debate
-  concepts/              Core theory: debate engine, lifecycle model, islands, convergence
-  design/                UX specs and visualization design documents
-  architecture/          System design: schema, storage, build pipeline
-  research/              Prior art, theoretical grounding, open questions
-  snapshots/             Point-in-time document snapshots
-reviews/cycles/          Per-cycle review artifacts (document delta, rationale, concept delta)
-concepts/registry/       Concept, edge, mutation, and island registers (CSV)
-concepts/lineage/        Derived lineage outputs
-scripts/                 Local automation scripts
-templates/               Cycle, metadata, and PR templates
-examples/                Example seed documents and outputs
-visualizations/          Observatory UI prototype and generated graph artifacts
-```
+## Fossil: implemented vs intended
+
+Implemented today:
+
+- debate documents carry a `fossil_export: true` metadata hint;
+- PR templates contain a Fossil export checklist/notes section;
+- registry CSVs, cycle metadata, and Observatory JSON provide potential lineage inputs.
+
+Not implemented in this repository:
+
+- no Fossil client, API call, exporter, synchronization job, or compatibility test;
+- no automatic ingestion into a Fossil instance;
+- no guarantee that the current schemas match a Fossil release.
+
+Fossil is therefore an **intended optional consumer**, not a working integration.
+
+## Status and repository map
+
+This is a research/prototyping repository: schemas, prompts, scripts, and viewers can change; security hardening, packaging, and stable compatibility guarantees are not yet present. See [docs/README.md](docs/README.md) for the documentation index, [CONTRIBUTING.md](CONTRIBUTING.md) for validation and change guidance, and [SECURITY.md](SECURITY.md) for the security policy.
+
+Key directories are `agents/` (roles), `scripts/` (automation), `docs/active/` (work products), `reviews/cycles/` (per-pass records), `concepts/registry/` (structured lineage), and `visualizations/` (generated data and prototype viewers).
+
+## License
+
+See [LICENSE](LICENSE).

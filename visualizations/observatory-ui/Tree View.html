@@ -37,6 +37,7 @@
       const res = await fetch('../observatory.json');
       if (res.ok) {
         const data = await res.json();
+        window.OBSERVATORY_DATA_SOURCE = 'generated';
         Object.assign(window, {
           DOC:       data.document,
           AGENTS:    Object.fromEntries(data.agents.map(a => [a.id, a])),

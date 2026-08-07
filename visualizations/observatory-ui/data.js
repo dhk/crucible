@@ -5,6 +5,8 @@
 // Coordinates are normalized to a 1000x640 canvas and pre-computed so the graph
 // reads as an intentional composition, not a random force field.
 
+window.OBSERVATORY_DATA_SOURCE = 'mock';
+
 const AGENTS = {
   strawman:    { id: 'strawman',    name: 'Strawman',    color: '#5eead4', dim: '#2c5e58', glyph: 'S',  role: 'Exploration', desc: 'Expands possibilities. Tolerates ambiguity. Proposes alternatives.' },
   steelman:    { id: 'steelman',    name: 'Steelman',    color: '#a78bfa', dim: '#4a3d7a', glyph: 'St', role: 'Structure',   desc: 'Repairs weaknesses. Clarifies assumptions. Improves coherence.' },
