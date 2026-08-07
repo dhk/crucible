@@ -228,6 +228,12 @@ function TopBar({ view, setView }) {
         <span className="doc-title">crucible-observability-ui.md</span>
       </div>
       <div className="top-pills">
+        {window.OBSERVATORY_DATA_SOURCE === 'mock' && (
+          <span className="pill" style={{ color: '#fde68a', borderColor: '#f59e0b', fontWeight: 700 }}
+            title="observatory.json could not be loaded; the viewer is showing the bundled demonstration dataset">
+            MOCK DATA · DEMONSTRATION ONLY
+          </span>
+        )}
         <span className="pill"><span className="pill-dot" style={{ background: '#5eead4' }}></span>converging <span className="pill-val">74%</span></span>
         <span className="pill">cycle <span className="pill-val mono">12 / ∞</span></span>
         <span className="pill">last pass <span className="pill-val">2d ago</span></span>

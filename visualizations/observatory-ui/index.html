@@ -10,9 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="views/graph.css" />
-<link rel="stylesheet" href="views/timeline.css" />
-<link rel="stylesheet" href="views/agents.css" />
 <link rel="stylesheet" href="views/evolution.css" />
 </head>
 <body>
@@ -41,6 +38,7 @@
       const res = await fetch('../observatory.json');
       if (res.ok) {
         const data = await res.json();
+        window.OBSERVATORY_DATA_SOURCE = 'generated';
         // Hydrate globals from real data
         Object.assign(window, {
           DOC:       data.document,

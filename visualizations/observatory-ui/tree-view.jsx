@@ -200,6 +200,12 @@ function TreeApp() {
           <span className="slash">/</span>
           <span className="doc">crucible-observability-ui.md</span>
         </div>
+        {window.OBSERVATORY_DATA_SOURCE === 'mock' && (
+          <span style={{ border: '1px solid #d97706', color: '#92400e', background: '#fef3c7', padding: '5px 8px', fontSize: 11, fontWeight: 700, letterSpacing: '.04em' }}
+            title="observatory.json could not be loaded; the viewer is showing the bundled demonstration dataset">
+            MOCK DATA · DEMONSTRATION ONLY
+          </span>
+        )}
         <nav className="nav">
           <button className={`nav-tab${activeTab === 'timeline' ? ' active' : ''}`} onClick={() => setActiveTab('timeline')}>Timeline</button>
           <button className={`nav-tab${activeTab === 'tree' ? ' active' : ''}`} onClick={() => setActiveTab('tree')}>Concept&nbsp;Tree</button>
