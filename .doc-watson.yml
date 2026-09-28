@@ -1,0 +1,61 @@
+# Doc Watson enrollment: this repository's documentation contract.
+# Schema: https://github.com/dhk/doc-watson/blob/main/schemas/enrollment.schema.json
+# Level, audience, trigger decisions and exemptions are owner-declared facts.
+# Tools may question them; only the owner changes them.
+# Declared by the owner 2026-09-28 from the baseline audit's drafts.
+
+schema: 1
+standard: 0.3.0 # standard version last audited against
+level: 1 # declared by the owner, 2026-09-28
+audience: Operators who run the debate engine on their own documents, contributors, and agents working in this repository.
+
+# One decision per trigger rule, each with its reason.
+triggers:
+  install-guide:
+    applies: false
+    reason: No package install; prerequisites for both paths fit README tables (README.md:24-28, :43-55).
+  user-guides:
+    applies: false
+    reason: The viewer, manual and automated paths fit the README (README.md:20-117).
+  architecture:
+    applies: true
+    reason: Orchestration scripts, three agent roles, registries, a JSON builder and a viewer do not fit one read; README.md:130-149 and docs/architecture/ hold it.
+  adrs:
+    applies: false
+    reason: No repository decision with recorded alternatives; debated documents carry their own decision records.
+  agent-memory:
+    applies: true
+    reason: Agents work here (automation runs the Claude CLI; CLAUDE.md holds working rules and validation).
+  machine-contracts:
+    applies: true
+    reason: scripts/validate_registry.py and scripts/build_observatory.py parse the registry CSVs and cycle concept_delta.yaml files.
+  codeowners:
+    applies: false
+    reason: One owner; .github/CODEOWNERS lists only @dhk.
+  contributing:
+    applies: false
+    reason: Outside contributions are not invited (owner, 2026-09-28).
+  governance:
+    applies: false
+    reason: One maintainer.
+  roadmap:
+    applies: false
+    reason: Planned work is tracked as GitHub issues (README.md:41); no audience asking for a roadmap.
+  runbooks:
+    applies: false
+    reason: Nothing is hosted or pages anyone; local recovery is in README.md:119-128.
+  handover:
+    applies: false
+    reason: No other party operates this repository.
+
+# Concerns deliberately not met. Truthfulness, hygiene and duplication, and
+# maintenance and verification cannot be exempted.
+exemptions: []
+
+last_audit:
+  revision: "a192d8b"
+  date: "2026-09-28"
+  record: https://github.com/dhk/doc-watson-audit/tree/main/audits/dhk/crucible/2026-09-28
+
+# What a sweep may do on divergence: issue-and-draft-pr, issue, or report.
+on_drift: issue-and-draft-pr
