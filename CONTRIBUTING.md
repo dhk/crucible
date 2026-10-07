@@ -2,6 +2,14 @@
 
 Crucible is an early prototype. Contributions should improve the existing debate engine, documentation, schemas, and viewer without implying stability or capabilities the repository does not have.
 
+## How contributions are accepted
+
+Contributions from anyone are welcome: issues, fixes, documentation and
+ideas. Every change is merged only after the maintainer, [@dhk](https://github.com/dhk),
+reviews and approves it. Opening a pull request is an offer, not a guarantee
+that it will be merged; a change may be declined or reshaped to fit the
+project's direction.
+
 ## Before changing anything
 
 1. Read the README trust boundary and side-effect matrix.
