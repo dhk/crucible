@@ -52,7 +52,7 @@ The viewer reads a static file and never queries Git or the registry. After a cy
 
 ## CI
 
-`.github/workflows/crucible_validate.yml` runs on pull requests that touch `docs/`, `reviews/`, `concepts/`, `scripts/`, `templates/` or `.github/workflows/`. It runs `validate_registry.py`, `build_graph.py` and `compute_idea_health.py`. It does not run `build_observatory.py` and does not check that the committed `observatory.json` is current.
+`.github/workflows/crucible_validate.yml` runs on pull requests that touch `docs/`, `reviews/`, `concepts/`, `scripts/`, `templates/` or `.github/workflows/`. It runs `validate_registry.py`, `build_graph.py` and `compute_idea_health.py`, then `git diff --check` between the pull request's base commit and the merge commit, so whitespace errors anywhere in the change fail the job. It does not run `build_observatory.py` and does not check that the committed `observatory.json` is current.
 
 ## Planned, not implemented
 
